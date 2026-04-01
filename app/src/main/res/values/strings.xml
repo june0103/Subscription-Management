@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">구독체크</string>
+
+    <string name="tab_home">홈</string>
+    <string name="tab_calendar">캘린더</string>
+    <string name="tab_settings">설정</string>
+
+    <string name="this_month_label">이번 달</string>
+
+    <string name="home_header_label">구독 캘린더</string>
+    <string name="home_header_title">이번 달 결제 요약</string>
+    <string name="home_due_this_week_title">이번 주 알림</string>
+    <string name="home_next_due_title">가장 가까운 결제</string>
+    <string name="home_annual_count_title">연간 구독</string>
+    <string name="home_monthly_count_title">월간 구독</string>
+    <string name="home_upcoming_title">다가오는 결제</string>
+    <string name="home_more">전체 보기</string>
+    <string name="home_add_subscription">구독 추가</string>
+    <string name="home_payment_date_format">다음 결제 %1$s</string>
+    <string name="home_month_total_format">%1$s 예상 지출</string>
+    <string name="home_month_badge_format">%1$d월</string>
+    <string name="home_count_format">%1$d개</string>
+    <string name="home_due_this_week_value">%1$d건</string>
+    <string name="home_cycle_monthly">월간</string>
+    <string name="home_cycle_annual">연간</string>
+    <string name="home_empty_title">등록된 구독이 없습니다</string>
+    <string name="home_empty_body">구독을 추가하면 결제 일정이 여기에 표시됩니다.</string>
+    <string name="summary_empty_amount">예정 없음</string>
+
+    <string name="calendar_title">캘린더</string>
+    <string name="calendar_previous_month">이전 달</string>
+    <string name="calendar_next_month">다음 달</string>
+    <string name="calendar_month_summary_format">%1$d건 예정</string>
+    <string name="calendar_selected_meta_format">%1$d건 예정</string>
+    <string name="calendar_item_subtitle_format">%1$s · %2$s 알림</string>
+    <string name="calendar_empty_title">예정된 결제가 없습니다</string>
+    <string name="calendar_empty_body">선택한 날짜에 예정된 결제가 없습니다.</string>
+
+    <string name="weekday_sun">일</string>
+    <string name="weekday_mon">월</string>
+    <string name="weekday_tue">화</string>
+    <string name="weekday_wed">수</string>
+    <string name="weekday_thu">목</string>
+    <string name="weekday_fri">금</string>
+    <string name="weekday_sat">토</string>
+
+    <string name="editor_title_add">구독 등록</string>
+    <string name="editor_title_edit">구독 수정</string>
+    <string name="editor_label_service_name">서비스명</string>
+    <string name="editor_label_currency">통화</string>
+    <string name="editor_label_amount">금액</string>
+    <string name="editor_label_cycle">결제 주기</string>
+    <string name="editor_label_billing_day">결제일</string>
+    <string name="editor_label_annual_month">연간 결제 월</string>
+    <string name="editor_label_reminder">알림 시점</string>
+    <string name="editor_button_save">저장</string>
+    <string name="editor_button_delete">삭제</string>
+    <string name="editor_save_success_message">구독 정보가 저장되었습니다.</string>
+    <string name="editor_delete_success_message">구독이 삭제되었습니다.</string>
+    <string name="editor_error_name_required">서비스명을 입력해 주세요.</string>
+    <string name="editor_error_amount_required">금액을 입력해 주세요.</string>
+    <string name="editor_error_amount_invalid_krw">원화는 정수 금액만 입력할 수 있습니다.</string>
+    <string name="editor_error_amount_invalid_usd">달러는 소수 둘째 자리까지 입력할 수 있습니다.</string>
+    <string name="editor_day_value_format">%1$d일</string>
+    <string name="editor_month_value_format">%1$d월</string>
+    <string name="editor_reminder_days_value_format">%1$d일 전</string>
+    <string name="editor_delete_dialog_title">구독 삭제</string>
+    <string name="editor_delete_dialog_body">이 구독을 삭제하면 홈과 캘린더에서도 바로 사라집니다.</string>
+    <string name="editor_delete_dialog_confirm">삭제</string>
+    <string name="editor_delete_dialog_cancel">취소</string>
+    <string name="editor_suggestion_source_catalog">추천 서비스</string>
+    <string name="editor_suggestion_source_installed">설치된 앱</string>
+
+    <string name="settings_title">설정</string>
+    <string name="settings_notifications_title">결제 알림</string>
+    <string name="settings_notifications_subtitle">구독별 설정한 날짜에 맞춰 알림을 보냅니다.</string>
+    <string name="settings_time_title">알림 시각</string>
+    <string name="settings_time_subtitle">모든 구독에 공통으로 적용됩니다.</string>
+    <string name="settings_time_change">시각 변경</string>
+    <string name="settings_status_off">알림이 꺼져 있습니다. 켜면 매일 %1$s에 리마인더를 확인합니다.</string>
+    <string name="settings_status_permission_required">Android 알림 권한이 필요합니다. 허용하면 매일 %1$s에 리마인더를 확인합니다.</string>
+    <string name="settings_status_system_disabled">시스템에서 앱 알림이 꺼져 있습니다. 설정에서 다시 켜야 실제 알림이 표시됩니다.</string>
+    <string name="settings_status_on">매일 %1$s에 결제 예정 구독을 확인해 알려드립니다.</string>
+    <string name="settings_permission_denied">알림 권한이 없어 리마인더를 켤 수 없습니다.</string>
+    <string name="settings_time_picker_title">알림 시각 선택</string>
+
+    <string name="subscription_list_title_annual">연간 구독</string>
+    <string name="subscription_list_title_monthly">월간 구독</string>
+    <string name="subscription_list_count_format">%1$d개 구독</string>
+    <string name="subscription_list_empty_annual">등록된 연간 구독이 없습니다</string>
+    <string name="subscription_list_empty_monthly">등록된 월간 구독이 없습니다</string>
+    <string name="subscription_list_empty_body">구독을 추가하면 목록이 표시됩니다.</string>
+
+    <string name="notification_channel_name">구독 결제 알림</string>
+    <string name="notification_channel_description">결제일 전에 구독 결제를 미리 알려드립니다.</string>
+    <string name="notification_single_title">결제 예정: %1$s</string>
+    <string name="notification_single_body">%1$s · %2$s 결제 예정</string>
+    <string name="notification_summary_title">확인할 구독 결제 %1$d건</string>
+    <string name="notification_summary_body">오늘 리마인더에 포함된 결제 일정을 확인해 보세요.</string>
+    <string name="notification_summary_line">%1$s · %2$s · %3$s</string>
+</resources>
