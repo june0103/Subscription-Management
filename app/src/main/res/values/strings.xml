@@ -3,9 +3,6 @@
 <resources>
     <string name="app_name">구독체크</string>
 
-    <!-- 글꼴: IBM Plex Sans KR을 res/font에 넣으면 이 두 값만 바꾼다 -->
-    <string name="font_family_sans" translatable="false">sans-serif</string>
-    <string name="font_family_medium" translatable="false">sans-serif-medium</string>
 
     <string name="tab_home">홈</string>
     <string name="tab_calendar">캘린더</string>

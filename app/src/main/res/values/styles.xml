@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   구독체크 디자인 시스템의 타입 스케일과 컴포넌트 스타일.
-  글꼴은 @string/font_family_* 한 곳에서 바꾼다 (IBM Plex Sans KR 번들 전까지 시스템 글꼴).
+  글꼴: IBM Plex Sans KR (res/font). 본문 400·굵게 700은 @font/ibm_plex_sans_kr, 600은 semibold 파일.
 -->
 <resources>
 
@@ -9,8 +9,8 @@
     <style name="TextAppearance.Gudok.AmountHero" parent="TextAppearance.Material3.HeadlineMedium">
         <item name="android:textSize">34sp</item>
         <item name="lineHeight">40sp</item>
-        <item name="android:fontFamily">@string/font_family_sans</item>
-        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:fontFeatureSettings">tnum</item>
@@ -19,8 +19,8 @@
     <style name="TextAppearance.Gudok.DateDay" parent="TextAppearance.Material3.HeadlineSmall">
         <item name="android:textSize">26sp</item>
         <item name="lineHeight">28sp</item>
-        <item name="android:fontFamily">@string/font_family_sans</item>
-        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:fontFeatureSettings">tnum</item>
@@ -29,8 +29,8 @@
     <style name="TextAppearance.Gudok.ValueLarge" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">22sp</item>
         <item name="lineHeight">28sp</item>
-        <item name="android:fontFamily">@string/font_family_sans</item>
-        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFeatureSettings">tnum</item>
     </style>
@@ -39,8 +39,8 @@
     <style name="TextAppearance.Gudok.Headline" parent="TextAppearance.Material3.HeadlineSmall">
         <item name="android:textSize">24sp</item>
         <item name="lineHeight">32sp</item>
-        <item name="android:fontFamily">@string/font_family_sans</item>
-        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">-0.01</item>
         <item name="android:textColor">@color/ink</item>
@@ -49,8 +49,8 @@
     <style name="TextAppearance.Gudok.Title" parent="TextAppearance.Material3.TitleMedium">
         <item name="android:textSize">18sp</item>
         <item name="lineHeight">26sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
-        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/ink</item>
     </style>
@@ -58,8 +58,8 @@
     <style name="TextAppearance.Gudok.BodyStrong" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textSize">16sp</item>
         <item name="lineHeight">24sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
-        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
         <item name="android:fontFeatureSettings">tnum</item>
         <item name="android:textColor">@color/ink</item>
     </style>
@@ -67,16 +67,16 @@
     <style name="TextAppearance.Gudok.Body" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textSize">15sp</item>
         <item name="lineHeight">22sp</item>
-        <item name="android:fontFamily">@string/font_family_sans</item>
-        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
         <item name="android:textColor">@color/ink</item>
     </style>
 
     <style name="TextAppearance.Gudok.Label" parent="TextAppearance.Material3.LabelLarge">
         <item name="android:textSize">13sp</item>
         <item name="lineHeight">18sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
-        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/ink_2</item>
     </style>
@@ -84,8 +84,8 @@
     <style name="TextAppearance.Gudok.Caption" parent="TextAppearance.Material3.BodySmall">
         <item name="android:textSize">12sp</item>
         <item name="lineHeight">16sp</item>
-        <item name="android:fontFamily">@string/font_family_sans</item>
-        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/ink_2</item>
     </style>
@@ -170,8 +170,8 @@
 
     <style name="TextAppearance.Gudok.Chip" parent="TextAppearance.Material3.LabelLarge">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
-        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
         <item name="android:letterSpacing">0</item>
     </style>
 
@@ -216,7 +216,7 @@
         <item name="android:background">@drawable/bg_segment_item</item>
         <item name="android:textColor">@color/segment_text</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
     </style>
 
     <style name="Widget.Gudok.SectionLabel" parent="">
@@ -236,7 +236,7 @@
         <item name="android:paddingEnd">10dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
         <item name="android:textColor">@color/due_later_ink</item>
     </style>
 
@@ -246,8 +246,8 @@
 
     <style name="TextAppearance.Gudok.NavLabel" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
-        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
     </style>
 
     <style name="Widget.Gudok.Weekday" parent="">
@@ -256,7 +256,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
         <item name="android:textColor">@color/ink_2</item>
     </style>
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.management.subscription.R
@@ -60,8 +61,9 @@ class CalendarDayAdapter(
                 day.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, circleColor))
             }
             day.setTextColor(ContextCompat.getColor(context, textColor))
+            // setTypeface(null, …)는 시스템 글꼴로 돌아가므로 앱 글꼴을 넘긴다.
             day.setTypeface(
-                null,
+                ResourcesCompat.getFont(context, R.font.ibm_plex_sans_kr),
                 if (item.isToday || item.isSelected || item.dotColors.isNotEmpty()) Typeface.BOLD else Typeface.NORMAL
             )
             binding.root.alpha = if (item.isInCurrentMonth) 1f else 0.4f

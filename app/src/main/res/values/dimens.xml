@@ -20,7 +20,7 @@
     <dimen name="service_icon">44dp</dimen>
     <dimen name="service_icon_sm">36dp</dimen>
     <dimen name="date_tile_width">52dp</dimen>
-    <dimen name="date_tile_height">60dp</dimen>
+    <dimen name="date_tile_height">64dp</dimen>
     <dimen name="due_label_height">24dp</dimen>
     <dimen name="calendar_day_circle">36dp</dimen>
 </resources>

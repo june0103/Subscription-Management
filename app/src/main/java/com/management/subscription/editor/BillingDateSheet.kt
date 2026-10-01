@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.CheckedTextView
 import android.widget.GridLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -89,7 +90,10 @@ class BillingDateSheet : BottomSheetDialogFragment() {
                         }
                     )
                 )
-                if (isChecked) setTypeface(typeface, android.graphics.Typeface.BOLD)
+                setTypeface(
+                    ResourcesCompat.getFont(context, R.font.ibm_plex_sans_kr),
+                    if (isChecked) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL
+                )
                 contentDescription = getString(R.string.editor_day_value_format, day)
                 isClickable = true
                 isFocusable = true
