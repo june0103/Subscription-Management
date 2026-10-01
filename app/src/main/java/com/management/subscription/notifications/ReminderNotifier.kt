@@ -11,6 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.management.subscription.MainActivity
 import com.management.subscription.R
 import com.management.subscription.data.ScheduledSubscription
+import com.management.subscription.util.DueFormatter
 import com.management.subscription.util.SubscriptionFormatters
 
 object ReminderNotifier {
@@ -65,7 +66,8 @@ object ReminderNotifier {
         .setContentTitle(
             context.getString(
                 R.string.notification_single_title,
-                schedule.subscription.name
+                schedule.subscription.name,
+                DueFormatter.label(schedule.dDay)
             )
         )
         .setContentText(
@@ -75,7 +77,7 @@ object ReminderNotifier {
                     schedule.subscription.amountMinor,
                     schedule.subscription.currencyCode
                 ),
-                SubscriptionFormatters.shortDate(schedule.paymentDate)
+                SubscriptionFormatters.dateWithWeekday(schedule.paymentDate)
             )
         )
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -99,7 +101,7 @@ object ReminderNotifier {
                         schedule.subscription.amountMinor,
                         schedule.subscription.currencyCode
                     ),
-                    SubscriptionFormatters.shortDate(schedule.paymentDate)
+                    DueFormatter.label(schedule.dDay)
                 )
             )
         }

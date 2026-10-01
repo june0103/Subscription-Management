@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 구독체크 디자인 시스템 색 토큰 (라이트). 다크 값은 values-night/colors.xml. -->
 <resources>
-    <color name="home_background">#FFF6F1E8</color>
-    <color name="home_surface">#FFFFFBF6</color>
-    <color name="home_surface_alt">#FFF0E5D6</color>
-    <color name="home_navy">#FF0F1F3A</color>
-    <color name="home_navy_soft">#FF20365F</color>
-    <color name="home_sand">#FFD9B88B</color>
-    <color name="home_text_primary">#FF1E1B18</color>
-    <color name="home_text_secondary">#FF6F685F</color>
-    <color name="home_divider">#FFE5D9CA</color>
-    <color name="home_accent_coral">#FFE97B5A</color>
-    <color name="home_accent_sky">#FF4E93B8</color>
-    <color name="home_accent_mint">#FF5A9A80</color>
-    <color name="home_accent_gold">#FFC89A3D</color>
-    <color name="home_accent_rose">#FFBD6783</color>
-    <color name="home_badge_background">#FFF3EADF</color>
-    <color name="home_chip_background">#FFECE2D4</color>
-    <color name="home_text_muted">#FFA59A8B</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="bg">#FFF4F3EF</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="surface_sunken">#FFECEAE4</color>
+    <color name="line">#FFE2DFD7</color>
+    <color name="line_strong">#FF8C93A3</color>
+
+    <color name="ink">#FF14213D</color>
+    <color name="ink_2">#FF4F586B</color>
+    <color name="ink_3">#FF626A7C</color>
+
+    <color name="brand">#FF14213D</color>
+    <color name="on_brand">#FFFFFFFF</color>
+    <color name="on_brand_2">#FFAEB6C8</color>
+    <color name="brand_divider">#FF2C3954</color>
+    <color name="sand">#FFD9B88B</color>
+
+    <color name="primary">#FF14213D</color>
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="focus">#FF2F5BD3</color>
+
+    <color name="due_today">#FFC7402A</color>
+    <color name="on_due_today">#FFFFFFFF</color>
+    <color name="due_today_soft">#FFFCE7E1</color>
+    <color name="due_today_ink">#FFA3321D</color>
+    <color name="due_soon_soft">#FFFBF0D6</color>
+    <color name="due_soon_ink">#FF7D5300</color>
+    <color name="due_later_soft">#FFECEAE4</color>
+    <color name="due_later_ink">#FF3A4252</color>
+    <color name="success">#FF2A7353</color>
+    <color name="success_soft">#FFE1F1E8</color>
+
+    <color name="cat_video">#FF6B4FD6</color>
+    <color name="cat_music">#FFC2417F</color>
+    <color name="cat_book">#FF24806B</color>
+    <color name="cat_game">#FF2F6FD6</color>
+    <color name="cat_life">#FFA2650F</color>
+    <color name="cat_work">#FF4D5B78</color>
+    <color name="cat_etc">#FF6E7484</color>
+
+    <color name="scrim">#7A0E1422</color>
 </resources>

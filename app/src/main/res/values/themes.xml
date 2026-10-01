@@ -1,10 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.SubscriptionManagement" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/home_background</item>
-        <item name="android:windowBackground">@color/home_background</item>
-        <item name="colorPrimary">@color/home_navy</item>
-        <item name="colorSecondary">@color/home_sand</item>
+
+    <style name="Theme.SubscriptionManagement" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="android:fontFamily">@string/font_family_sans</item>
+        <item name="fontFamily">@string/font_family_sans</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/surface_sunken</item>
+        <item name="colorOnPrimaryContainer">@color/ink</item>
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorOnSecondary">@color/on_primary</item>
+        <item name="colorSecondaryContainer">@color/surface_sunken</item>
+        <item name="colorOnSecondaryContainer">@color/ink</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorOnSurfaceVariant">@color/ink_2</item>
+        <item name="colorSurfaceVariant">@color/surface_sunken</item>
+        <item name="colorSurfaceContainerLowest">@color/surface</item>
+        <item name="colorSurfaceContainerLow">@color/surface</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_sunken</item>
+        <item name="colorOutline">@color/line_strong</item>
+        <item name="colorOutlineVariant">@color/line</item>
+        <item name="colorError">@color/due_today</item>
+        <item name="colorOnError">@color/on_due_today</item>
+        <item name="android:textColorPrimary">@color/ink</item>
+        <item name="android:textColorSecondary">@color/ink_2</item>
+        <item name="android:textColorHint">@color/ink_3</item>
+
+        <!-- 그림자 높이에 따라 면에 남색 틴트를 섞지 않는다. 면 색은 토큰 그대로. -->
+        <item name="elevationOverlayEnabled">false</item>
+
+        <item name="toolbarStyle">@style/Widget.Gudok.Toolbar</item>
+        <item name="materialButtonStyle">@style/Widget.Gudok.Button.Primary</item>
+        <item name="textInputStyle">@style/Widget.Gudok.TextInput</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Gudok.BottomSheet</item>
+        <item name="materialSwitchStyle">@style/Widget.Gudok.Switch</item>
     </style>
+
+    <style name="ThemeOverlay.Gudok.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="colorSurfaceContainerLow">@color/surface</item>
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="bottomSheetStyle">@style/Widget.Gudok.BottomSheet</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+    </style>
+
+    <style name="Widget.Gudok.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Gudok.Sheet</item>
+    </style>
+
+    <style name="ShapeAppearance.Gudok.Sheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_lg</item>
+        <item name="cornerSizeTopRight">@dimen/radius_lg</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Gudok.Md" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_md</item>
+    </style>
+
+    <style name="ShapeAppearance.Gudok.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

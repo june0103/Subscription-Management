@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
-        android:icon="@android:drawable/ic_menu_view"
+        android:icon="@drawable/nav_home"
         android:title="@string/tab_home" />
     <item
         android:id="@+id/calendarFragment"
-        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:icon="@drawable/nav_calendar"
         android:title="@string/tab_calendar" />
     <item
         android:id="@+id/settingsFragment"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/nav_settings"
         android:title="@string/tab_settings" />
 </menu>

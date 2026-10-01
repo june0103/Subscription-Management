@@ -1,261 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/home_background"
-    android:clipToPadding="false"
-    android:fillViewport="true"
+    android:background="@color/bg"
     android:overScrollMode="never">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="32dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="@string/calendar_title"
-            android:textColor="@color/home_text_primary"
-            android:textSize="28sp" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/home_surface"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/home_divider"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="20dp">
-
-                <ImageButton
-                    android:id="@+id/buttonPrevMonth"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/bg_home_chip"
-                    android:contentDescription="@string/calendar_previous_month"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_media_previous"
-                    android:tint="@color/home_navy" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvMonthTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-black"
-                        android:textColor="@color/home_text_primary"
-                        android:textSize="22sp" />
-
-                    <TextView
-                        android:id="@+id/tvMonthSummary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="@color/home_text_secondary"
-                        android:textSize="13sp" />
-
-                    <LinearLayout
-                        android:id="@+id/layoutMonthTotals"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/buttonNextMonth"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/bg_home_chip"
-                    android:contentDescription="@string/calendar_next_month"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_media_next"
-                    android:tint="@color/home_navy" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        android:paddingStart="@dimen/screen_gutter"
+        android:paddingTop="@dimen/space_4"
+        android:paddingEnd="@dimen/screen_gutter"
+        android:paddingBottom="@dimen/space_6">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/weekday_sun"
-                android:textColor="@color/home_text_secondary"
-                android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonPrevMonth"
+                style="@style/Widget.Gudok.Button.Icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/calendar_previous_month"
+                app:icon="@drawable/ic_chevron_left" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/weekday_mon"
-                android:textColor="@color/home_text_secondary"
-                android:textStyle="bold" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/weekday_tue"
-                android:textColor="@color/home_text_secondary"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvMonthTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:accessibilityHeading="true"
+                    android:accessibilityLiveRegion="polite"
+                    android:textAppearance="@style/TextAppearance.Gudok.Headline"
+                    tools:text="2026년 10월" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/weekday_wed"
-                android:textColor="@color/home_text_secondary"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvMonthSummary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFeatureSettings="tnum"
+                    android:textAppearance="@style/TextAppearance.Gudok.Label"
+                    tools:text="9건 · 72,480원 + $30.99" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/weekday_thu"
-                android:textColor="@color/home_text_secondary"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/weekday_fri"
-                android:textColor="@color/home_text_secondary"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/weekday_sat"
-                android:textColor="@color/home_text_secondary"
-                android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonNextMonth"
+                style="@style/Widget.Gudok.Button.Icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/calendar_next_month"
+                app:icon="@drawable/ic_chevron_right"
+                app:iconTint="@color/ink" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCalendarDays"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/home_surface"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/home_divider"
-            app:strokeWidth="1dp">
+            android:layout_marginTop="@dimen/space_4"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/space_1"
+            android:paddingTop="@dimen/space_3"
+            android:paddingBottom="@dimen/space_2">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:importantForAccessibility="noHideDescendants"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/space_2">
 
-                <TextView
-                    android:id="@+id/tvSelectedDate"
-                    android:layout_width="wrap_content"
+                <TextView style="@style/Widget.Gudok.Weekday" android:text="@string/weekday_sun" android:textColor="@color/due_today_ink" />
+                <TextView style="@style/Widget.Gudok.Weekday" android:text="@string/weekday_mon" />
+                <TextView style="@style/Widget.Gudok.Weekday" android:text="@string/weekday_tue" />
+                <TextView style="@style/Widget.Gudok.Weekday" android:text="@string/weekday_wed" />
+                <TextView style="@style/Widget.Gudok.Weekday" android:text="@string/weekday_thu" />
+                <TextView style="@style/Widget.Gudok.Weekday" android:text="@string/weekday_fri" />
+                <TextView style="@style/Widget.Gudok.Weekday" android:text="@string/weekday_sat" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCalendarDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="35"
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/item_calendar_day"
+                tools:spanCount="7" />
+        </LinearLayout>
+
+        <!-- 선택한 날짜 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_6"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/selectedDateTile"
+                layout="@layout/view_date_tile" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_3"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-black"
-                    android:textColor="@color/home_text_primary"
-                    android:textSize="22sp" />
+                    android:gravity="center_vertical"
+                    android:minHeight="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvSelectedDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:accessibilityHeading="true"
+                        android:textAppearance="@style/TextAppearance.Gudok.Title"
+                        tools:text="10월 1일 (목)" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedDue"
+                        style="@style/Widget.Gudok.DueLabel"
+                        tools:text="오늘 결제" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvSelectedMeta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:textColor="@color/home_text_secondary"
-                    android:textSize="13sp" />
+                    android:layout_marginTop="2dp"
+                    android:fontFeatureSettings="tnum"
+                    android:textAppearance="@style/TextAppearance.Gudok.Label"
+                    tools:text="2건 · 22,790원" />
 
-                <LinearLayout
-                    android:id="@+id/layoutSelectedTotals"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSelectedSubscriptions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:orientation="vertical" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSelectedSubscriptions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardEmptyState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:cardBackgroundColor="@color/home_surface_alt"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                    android:layout_marginTop="@dimen/space_2"
+                    android:background="@drawable/bg_card"
+                    android:nestedScrollingEnabled="false"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_scheduled_subscription" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/cardEmptyState"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/calendar_empty_title"
-                    android:textColor="@color/home_text_primary"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="@dimen/space_2"
+                    android:background="@drawable/bg_card"
+                    android:padding="@dimen/space_4"
                     android:text="@string/calendar_empty_body"
-                    android:textColor="@color/home_text_secondary"
-                    android:textSize="13sp" />
+                    android:textAppearance="@style/TextAppearance.Gudok.Body"
+                    android:textColor="@color/ink_2"
+                    android:visibility="gone" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>

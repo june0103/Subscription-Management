@@ -1,79 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/home_background"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarSubscriptionList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/home_background"
-        app:navigationIcon="@android:drawable/ic_menu_revert"
-        app:navigationIconTint="@color/home_navy"
-        app:titleTextColor="@color/home_text_primary" />
+        android:layout_height="?attr/actionBarSize"
+        app:navigationContentDescription="@string/action_back"
+        app:navigationIcon="@drawable/ic_chevron_left"
+        tools:title="월간 구독" />
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="20dp">
+        android:overScrollMode="never">
 
-        <TextView
-            android:id="@+id/tvSubscriptionCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/home_text_secondary"
-            android:textSize="14sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSubscriptions"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardEmptyState"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:cardBackgroundColor="@color/home_surface_alt"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            android:orientation="vertical"
+            android:paddingStart="@dimen/screen_gutter"
+            android:paddingEnd="@dimen/screen_gutter"
+            android:paddingBottom="@dimen/space_6">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvSubscriptionCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_1"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.Gudok.Label"
+                tools:text="9개 · 매달 72,480원 + $30.99" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSubscriptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_3"
+                android:background="@drawable/bg_card"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_scheduled_subscription" />
+
+            <LinearLayout
+                android:id="@+id/cardEmptyState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_3"
+                android:background="@drawable/bg_card"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="@dimen/space_6"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvEmptyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/home_text_primary"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
+                    tools:text="등록된 월간 구독이 없어요" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="@dimen/space_1"
                     android:text="@string/subscription_list_empty_body"
-                    android:textColor="@color/home_text_secondary"
-                    android:textSize="13sp" />
+                    android:textAppearance="@style/TextAppearance.Gudok.Body"
+                    android:textColor="@color/ink_2" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
-
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -1,11 +1,12 @@
 package com.management.subscription.home
 
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.text.color
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,15 +17,8 @@ import com.management.subscription.MainActivity
 import com.management.subscription.R
 import com.management.subscription.data.BillingCycle
 import com.management.subscription.data.CurrencyTotal
-import com.management.subscription.data.ScheduledSubscription
 import com.management.subscription.data.SubscriptionRepository
 import com.management.subscription.databinding.FragmentHomeBinding
-import com.management.subscription.databinding.ItemCurrencyTotalBinding
-import com.management.subscription.domain.SubscriptionScheduleCalculator
-import com.management.subscription.subscriptionlist.ScheduledSubscriptionAdapter
-import com.management.subscription.subscriptionlist.ScheduledSubscriptionItemUiModel
-import com.management.subscription.services.ServiceIconResolver
-import com.management.subscription.util.DdayFormatter
 import com.management.subscription.util.SubscriptionFormatters
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -41,8 +35,8 @@ class HomeFragment : Fragment() {
         ViewModelProvider(this, HomeViewModel.factory(repository))[HomeViewModel::class.java]
     }
 
-    private val subscriptionAdapter = ScheduledSubscriptionAdapter { item ->
-        (activity as? MainActivity)?.openEditor(item.id)
+    private val timelineAdapter = TimelineAdapter { subscriptionId ->
+        (activity as? MainActivity)?.openEditor(subscriptionId)
     }
 
     override fun onCreateView(
@@ -58,27 +52,26 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerUpcoming.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = subscriptionAdapter
+            adapter = timelineAdapter
             itemAnimator = null
         }
 
-        binding.fabAddSubscription.setOnClickListener {
-            (activity as? MainActivity)?.openEditor()
-        }
-        binding.tvViewAll.setOnClickListener {
+        val openEditor = View.OnClickListener { (activity as? MainActivity)?.openEditor() }
+        binding.fabAddSubscription.setOnClickListener(openEditor)
+        binding.buttonEmptyAdd.setOnClickListener(openEditor)
+
+        val openCalendar = View.OnClickListener {
             (activity as? MainActivity)?.openCalendarTab(LocalDate.now())
         }
+        binding.tvViewAll.setOnClickListener(openCalendar)
+        binding.buttonCalendarAll.setOnClickListener(openCalendar)
+        binding.cardTodayBanner.setOnClickListener(openCalendar)
         binding.cardAnnualSubscriptions.setOnClickListener {
             (activity as? MainActivity)?.openSubscriptionList(BillingCycle.ANNUAL)
         }
         binding.cardMonthlySubscriptions.setOnClickListener {
             (activity as? MainActivity)?.openSubscriptionList(BillingCycle.MONTHLY)
         }
-
-        val today = LocalDate.now()
-        binding.tvMonthBadge.text = getString(R.string.home_month_badge_format, today.monthValue)
-        binding.tvMonthlyLabel.text =
-            getString(R.string.home_month_total_format, getString(R.string.this_month_label))
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
@@ -94,76 +87,95 @@ class HomeFragment : Fragment() {
     }
 
     private fun renderHome(state: HomeUiState) {
+        binding.tvTodayDate.text = SubscriptionFormatters.headerDate(state.today)
+        renderHeadline(state)
+        renderTodayBanner(state)
+
+        binding.tvMonthlyLabel.text =
+            getString(R.string.home_month_total_format, state.today.monthValue)
+        renderHeroAmount(state.monthTotals)
+        binding.tvMonthlyCountValue.text = getString(R.string.home_count_format, state.monthlyCount)
+        binding.tvAnnualCountValue.text = getString(R.string.home_count_format, state.annualCount)
         binding.tvDueThisWeekValue.text =
             getString(R.string.home_due_this_week_value, state.dueThisWeekCount)
-        binding.tvNextDueValue.text = state.nextDueLabel
-        binding.tvAnnualCountValue.text = getString(R.string.home_count_format, state.annualCount)
-        binding.tvMonthlyCountValue.text = getString(R.string.home_count_format, state.monthlyCount)
-
-        renderCurrencyTotals(
-            container = binding.layoutMonthlyTotals,
-            totals = state.currencyTotals,
-            amountColor = R.color.white,
-            codeColor = R.color.home_sand,
-            emptyTextColor = R.color.white
-        )
 
         binding.recyclerUpcoming.isVisible = state.hasSubscriptions
+        binding.buttonCalendarAll.isVisible = state.hasSubscriptions
+        binding.buttonCalendarAll.text =
+            getString(R.string.home_calendar_all_format, state.today.monthValue)
         binding.cardHomeEmptyState.isVisible = !state.hasSubscriptions
-        subscriptionAdapter.submitList(state.upcomingSchedules.map(::toUiModel))
+        timelineAdapter.submitList(state.timeline)
     }
 
-    private fun renderCurrencyTotals(
-        container: LinearLayout,
-        totals: List<CurrencyTotal>,
-        amountColor: Int,
-        codeColor: Int,
-        emptyTextColor: Int
-    ) {
-        container.removeAllViews()
-        if (totals.isEmpty()) {
-            val rowBinding = ItemCurrencyTotalBinding.inflate(layoutInflater, container, false)
-            rowBinding.tvCurrencyCode.text = ""
-            rowBinding.tvCurrencyAmount.text = getString(R.string.summary_empty_amount)
-            rowBinding.tvCurrencyAmount.setTextColor(
-                ContextCompat.getColor(requireContext(), emptyTextColor)
-            )
-            container.addView(rowBinding.root)
-            return
-        }
+    private fun renderHeadline(state: HomeUiState) {
+        when {
+            !state.hasSubscriptions -> {
+                binding.tvHeadline.text = getString(R.string.home_headline_empty)
+                binding.tvHeadlineSub.text = getString(R.string.home_headline_empty_sub)
+            }
 
-        totals.forEach { total ->
-            val rowBinding = ItemCurrencyTotalBinding.inflate(layoutInflater, container, false)
-            rowBinding.tvCurrencyCode.text = total.currencyCode
-            rowBinding.tvCurrencyAmount.text = total.formattedAmount
-            rowBinding.tvCurrencyCode.setTextColor(ContextCompat.getColor(requireContext(), codeColor))
-            rowBinding.tvCurrencyAmount.setTextColor(ContextCompat.getColor(requireContext(), amountColor))
-            container.addView(rowBinding.root)
+            state.todaySchedules.isNotEmpty() -> {
+                val count = getString(R.string.home_count_format, state.todaySchedules.size)
+                val accent = ContextCompat.getColor(requireContext(), R.color.due_today_ink)
+                binding.tvHeadline.text = SpannableStringBuilder()
+                    .append(getString(R.string.home_headline_today_prefix))
+                    .color(accent) { append(count) }
+                    .append(getString(R.string.home_headline_today_suffix))
+                binding.tvHeadlineSub.text = getString(
+                    R.string.home_headline_sub_format,
+                    joinNames(state.todaySchedules.map { it.subscription.name }),
+                    SubscriptionFormatters.totals(state.todayTotals)
+                )
+            }
+
+            else -> {
+                val next = state.nextSchedules.firstOrNull()
+                if (next == null) {
+                    binding.tvHeadline.text = getString(R.string.home_headline_none)
+                    binding.tvHeadlineSub.text = ""
+                } else {
+                    val ending = if (next.dDay == 1) {
+                        getString(R.string.home_headline_tomorrow)
+                    } else {
+                        getString(R.string.home_headline_days_format, next.dDay)
+                    }
+                    binding.tvHeadline.text = getString(R.string.home_headline_next_format, ending)
+                    binding.tvHeadlineSub.text = getString(
+                        R.string.home_headline_next_sub_format,
+                        SubscriptionFormatters.dateWithWeekday(next.paymentDate),
+                        joinNames(state.nextSchedules.map { it.subscription.name }),
+                        SubscriptionFormatters.totals(state.nextTotals)
+                    )
+                }
+            }
         }
+        binding.tvHeadlineSub.isVisible = binding.tvHeadlineSub.text.isNotEmpty()
     }
 
-    private fun toUiModel(schedule: ScheduledSubscription): ScheduledSubscriptionItemUiModel {
-        return ScheduledSubscriptionItemUiModel(
-            id = schedule.subscription.id,
-            serviceIconModel = ServiceIconResolver.resolve(requireContext(), schedule.subscription),
-            title = schedule.subscription.name,
-            subtitle = getString(
-                R.string.home_payment_date_format,
-                SubscriptionFormatters.shortDate(schedule.paymentDate)
-            ),
-            cycleLabel = getCycleLabel(schedule.subscription.billingCycle),
-            amountLabel = SubscriptionFormatters.currency(
-                schedule.subscription.amountMinor,
-                schedule.subscription.currencyCode
-            ),
-            trailingLabel = DdayFormatter.format(schedule.dDay)
+    private fun renderTodayBanner(state: HomeUiState) {
+        binding.cardTodayBanner.isVisible = state.todaySchedules.isNotEmpty()
+        if (state.todaySchedules.isEmpty()) return
+        binding.tvTodayTitle.text = getString(
+            R.string.home_today_banner_format,
+            SubscriptionFormatters.totals(state.todayTotals)
         )
+        binding.tvTodayNames.text = state.todaySchedules.joinToString(" · ") { it.subscription.name }
     }
 
-    private fun getCycleLabel(cycle: BillingCycle): String {
-        return when (cycle) {
-            BillingCycle.MONTHLY -> getString(R.string.home_cycle_monthly)
-            BillingCycle.ANNUAL -> getString(R.string.home_cycle_annual)
+    /** 원화 합계를 크게, 다른 통화는 아래 줄에 "+ $30.99"로. 서로 더하지 않는다. */
+    private fun renderHeroAmount(totals: List<CurrencyTotal>) {
+        val primary = totals.firstOrNull()
+        binding.tvHeroAmount.text = primary?.formattedAmount ?: getString(R.string.home_hero_zero)
+        val rest = totals.drop(1)
+        binding.tvHeroSub.isVisible = rest.isNotEmpty()
+        binding.tvHeroSub.text = rest.joinToString(" ") { "+ " + it.formattedAmount }
+    }
+
+    private fun joinNames(names: List<String>): String {
+        return when (names.size) {
+            0 -> ""
+            1, 2 -> names.joinToString(", ")
+            else -> getString(R.string.names_and_more_format, names.first(), names.size - 1)
         }
     }
 }

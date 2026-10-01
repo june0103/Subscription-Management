@@ -15,6 +15,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import androidx.core.content.ContextCompat
+import com.management.subscription.BuildConfig
 import com.management.subscription.R
 import com.management.subscription.data.SettingsRepository
 import com.management.subscription.databinding.FragmentSettingsBinding
@@ -71,6 +73,7 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tvAppVersion.text = BuildConfig.VERSION_NAME
         configureListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -142,7 +145,7 @@ class SettingsFragment : Fragment() {
 
         binding.tvReminderTimeValue.text =
             SubscriptionFormatters.reminderTime(state.reminderHour, state.reminderMinute)
-        binding.layoutReminderTime.alpha = if (state.notificationsEnabled) 1f else 0.76f
+        binding.layoutReminderTime.alpha = if (state.notificationsEnabled) 1f else 0.6f
 
         renderStatus(state)
         isRenderingState = false
@@ -158,6 +161,9 @@ class SettingsFragment : Fragment() {
         val appNotificationsEnabled = NotificationManagerCompat.from(requireContext())
             .areNotificationsEnabled()
 
+        val isActive = state.notificationsEnabled &&
+            NotificationPermissionHelper.hasNotificationPermission(requireContext()) &&
+            appNotificationsEnabled
         binding.tvNotificationStatus.text = when {
             !state.notificationsEnabled -> getString(R.string.settings_status_off, formattedTime)
             !NotificationPermissionHelper.hasNotificationPermission(requireContext()) ->
@@ -165,5 +171,13 @@ class SettingsFragment : Fragment() {
             !appNotificationsEnabled -> getString(R.string.settings_status_system_disabled)
             else -> getString(R.string.settings_status_on, formattedTime)
         }
+        // 켜져서 실제로 동작할 때만 success 배너, 아니면 조용한 회색 배너.
+        binding.tvNotificationStatus.backgroundTintList = ContextCompat.getColorStateList(
+            requireContext(),
+            if (isActive) R.color.success_soft else R.color.surface_sunken
+        )
+        binding.tvNotificationStatus.setTextColor(
+            ContextCompat.getColor(requireContext(), if (isActive) R.color.success else R.color.ink_2)
+        )
     }
 }

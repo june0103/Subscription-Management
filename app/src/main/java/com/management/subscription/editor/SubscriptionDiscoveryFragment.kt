@@ -45,7 +45,6 @@ class SubscriptionDiscoveryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbarDiscovery.title = "\uC790\uB3D9 \uCC3E\uAE30"
         binding.toolbarDiscovery.setNavigationOnClickListener {
             findNavController().popBackStack()
         }

@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 서비스 추천 한 줄: 등록 화면 드롭다운과 '설치된 앱에서 찾기' 목록에서 같이 쓴다 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/surface"
     android:gravity="center_vertical"
-    android:minHeight="64dp"
+    android:minHeight="68dp"
     android:orientation="horizontal"
-    android:paddingStart="16dp"
-    android:paddingTop="10dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="10dp">
+    android:paddingHorizontal="@dimen/space_4"
+    android:paddingVertical="@dimen/space_3">
 
     <FrameLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp">
+        android:layout_width="@dimen/service_icon"
+        android:layout_height="@dimen/service_icon">
 
         <ImageView
             android:id="@+id/ivServiceIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="@drawable/bg_service_icon_frame"
-            android:padding="5dp"
+            android:importantForAccessibility="no"
             android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/tvBadge"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_home_badge"
-            android:fontFamily="sans-serif-black"
+            android:background="@drawable/bg_service_badge"
             android:gravity="center"
-            android:textColor="@color/home_navy"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:importantForAccessibility="no"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="N" />
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="@dimen/space_3"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvServiceName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
             android:maxLines="1"
-            android:textColor="@color/home_text_primary"
-            android:textSize="15sp" />
+            android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
+            tools:text="Netflix" />
 
         <TextView
             android:id="@+id/tvSource"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/home_text_secondary"
-            android:textSize="12sp" />
+            android:textAppearance="@style/TextAppearance.Gudok.Caption"
+            tools:text="설치된 앱" />
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_chevron_right" />
 </LinearLayout>

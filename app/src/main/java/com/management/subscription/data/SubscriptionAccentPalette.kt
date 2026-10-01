@@ -5,11 +5,12 @@ import com.management.subscription.R
 
 object SubscriptionAccentPalette {
     private val colors = listOf(
-        R.color.home_accent_coral,
-        R.color.home_accent_sky,
-        R.color.home_accent_mint,
-        R.color.home_accent_gold,
-        R.color.home_accent_rose
+        R.color.cat_video,
+        R.color.cat_music,
+        R.color.cat_book,
+        R.color.cat_game,
+        R.color.cat_life,
+        R.color.cat_work
     )
 
     @ColorRes

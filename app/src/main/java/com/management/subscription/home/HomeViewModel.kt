@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.management.subscription.data.BillingCycle
 import com.management.subscription.data.SubscriptionRepository
 import com.management.subscription.domain.SubscriptionScheduleCalculator
-import com.management.subscription.util.DdayFormatter
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -21,20 +20,36 @@ class HomeViewModel(
 
     val uiState = repository.observeSubscriptions()
         .map { subscriptions ->
-            val currentMonth = YearMonth.from(today)
-            val monthlySchedules =
-                SubscriptionScheduleCalculator.subscriptionsForMonth(subscriptions, currentMonth, today)
-            val upcomingSchedules =
-                SubscriptionScheduleCalculator.upcomingSubscriptions(subscriptions, today)
+            val monthlySchedules = SubscriptionScheduleCalculator.subscriptionsForMonth(
+                subscriptions,
+                YearMonth.from(today),
+                today
+            )
+            val upcoming = SubscriptionScheduleCalculator.upcomingSubscriptions(subscriptions, today)
+            val groups = upcoming.groupBy { it.paymentDate }
+                .map { (date, schedules) ->
+                    TimelineGroup(
+                        date = date,
+                        dDay = schedules.first().dDay,
+                        schedules = schedules,
+                        totals = SubscriptionScheduleCalculator.currencyTotals(schedules)
+                    )
+                }
+            val todayGroup = groups.firstOrNull { it.dDay == 0 }
+            val nextGroup = groups.firstOrNull { it.dDay > 0 }
 
             HomeUiState(
+                today = today,
                 hasSubscriptions = subscriptions.isNotEmpty(),
-                dueThisWeekCount = upcomingSchedules.count { it.dDay in 0..7 },
+                todaySchedules = todayGroup?.schedules.orEmpty(),
+                todayTotals = todayGroup?.totals.orEmpty(),
+                nextSchedules = nextGroup?.schedules.orEmpty(),
+                nextTotals = nextGroup?.totals.orEmpty(),
+                dueThisWeekCount = upcoming.count { it.dDay in 0..7 },
                 monthlyCount = subscriptions.count { it.billingCycle == BillingCycle.MONTHLY },
                 annualCount = subscriptions.count { it.billingCycle == BillingCycle.ANNUAL },
-                nextDueLabel = upcomingSchedules.firstOrNull()?.let { DdayFormatter.format(it.dDay) } ?: "--",
-                currencyTotals = SubscriptionScheduleCalculator.currencyTotals(monthlySchedules),
-                upcomingSchedules = upcomingSchedules.take(5)
+                monthTotals = SubscriptionScheduleCalculator.currencyTotals(monthlySchedules),
+                timeline = groups.take(TIMELINE_GROUP_COUNT)
             )
         }
         .stateIn(
@@ -44,6 +59,8 @@ class HomeViewModel(
         )
 
     companion object {
+        private const val TIMELINE_GROUP_COUNT = 4
+
         fun factory(repository: SubscriptionRepository): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")

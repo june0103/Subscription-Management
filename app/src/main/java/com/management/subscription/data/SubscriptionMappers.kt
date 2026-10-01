@@ -17,6 +17,7 @@ fun SubscriptionEntity.toPreview(): SubscriptionPreview {
         billingDay = billingDay,
         annualMonth = annualMonth,
         reminderDaysBefore = reminderDaysBefore,
-        accentColorRes = accentColorRes
+        // DB에 저장된 리소스 ID는 빌드마다 바뀔 수 있어 쓰지 않고, id로 매번 다시 고른다.
+        accentColorRes = SubscriptionAccentPalette.pick(id)
     )
 }

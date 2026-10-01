@@ -9,5 +9,6 @@ data class CalendarDayUiModel(
     val isInCurrentMonth: Boolean,
     val isToday: Boolean,
     val isSelected: Boolean,
-    @ColorRes val dotColors: List<Int>
+    @ColorRes val dotColors: List<Int>,
+    val contentDescription: String
 )

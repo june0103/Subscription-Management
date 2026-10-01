@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DateTile: 결제일을 일력처럼 크게. 오늘/1~3일 안이면 코드에서 배경과 글자색을 바꾼다. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/date_tile_width"
+    android:layout_height="@dimen/date_tile_height"
+    android:background="@drawable/bg_date_tile"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTileMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@string/font_family_medium"
+        android:includeFontPadding="false"
+        android:textColor="@color/ink_2"
+        android:textSize="11sp"
+        tools:text="10월" />
+
+    <TextView
+        android:id="@+id/tvTileDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/TextAppearance.Gudok.DateDay"
+        android:textColor="@color/ink"
+        tools:text="15" />
+
+    <TextView
+        android:id="@+id/tvTileWeekday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textColor="@color/ink_2"
+        android:textSize="11sp"
+        tools:text="목" />
+</LinearLayout>

@@ -7,7 +7,7 @@ data class ScheduledSubscriptionItemUiModel(
     val serviceIconModel: ServiceIconModel,
     val title: String,
     val subtitle: String,
-    val cycleLabel: String,
     val amountLabel: String,
-    val trailingLabel: String
+    /** 결제까지 남은 날. null이면 DueLabel을 숨긴다. */
+    val dDay: Int?
 )

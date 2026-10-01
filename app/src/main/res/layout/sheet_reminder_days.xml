@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 알림 시점 직접 설정: 당일(0) ~ 30일 전 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/screen_gutter"
+    android:paddingBottom="@dimen/space_6">
+
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/space_2"
+        android:alpha="0.6"
+        android:background="@drawable/bg_sheet_handle" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_4"
+        android:accessibilityHeading="true"
+        android:text="@string/reminder_sheet_title"
+        android:textAppearance="@style/TextAppearance.Gudok.Title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_1"
+        android:text="@string/reminder_sheet_body"
+        android:textAppearance="@style/TextAppearance.Gudok.Label"
+        android:textColor="@color/ink_2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_6"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonMinus"
+            style="@style/Widget.Gudok.Button.Stepper"
+            android:contentDescription="@string/reminder_sheet_minus"
+            app:icon="@drawable/ic_remove" />
+
+        <TextView
+            android:id="@+id/tvReminderValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:accessibilityLiveRegion="polite"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Gudok.AmountHero"
+            android:textColor="@color/ink"
+            tools:text="7일 전" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonPlus"
+            style="@style/Widget.Gudok.Button.Stepper"
+            android:contentDescription="@string/reminder_sheet_plus"
+            app:icon="@drawable/ic_add" />
+    </LinearLayout>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_4"
+        android:contentDescription="@string/editor_label_reminder"
+        android:stepSize="1"
+        android:valueFrom="0"
+        android:valueTo="30"
+        app:labelBehavior="gone"
+        app:thumbColor="@color/primary"
+        app:tickVisible="false"
+        app:trackColorActive="@color/primary"
+        app:trackColorInactive="@color/surface_sunken" />
+
+    <TextView
+        android:id="@+id/tvReminderPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Gudok.Label"
+        android:textColor="@color/ink_2"
+        tools:text="다음 결제(10월 15일) 기준 10월 8일 오전 9:00에 알려드려요" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonConfirm"
+        style="@style/Widget.Gudok.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_6"
+        android:text="@string/action_confirm" />
+</LinearLayout>

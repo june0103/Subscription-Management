@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.management.subscription.R
 import com.management.subscription.data.BillingCycle
+import com.management.subscription.data.SettingsRepository
 import com.management.subscription.data.SubscriptionDraft
 import com.management.subscription.data.SubscriptionRepository
 import com.management.subscription.services.ResolvedServiceIdentity
@@ -16,11 +17,13 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SubscriptionEditorViewModel(
     private val repository: SubscriptionRepository,
     private val suggestionRepository: ServiceSuggestionRepository,
+    private val settingsRepository: SettingsRepository,
     private val subscriptionId: String?
 ) : ViewModel() {
 
@@ -40,12 +43,15 @@ class SubscriptionEditorViewModel(
 
     init {
         viewModelScope.launch {
-            val initialState = if (subscriptionId == null) {
-                _uiState.value.copy(isLoading = false)
-            } else {
-                loadInitialState()
+            val settings = settingsRepository.getSettings()
+            _uiState.update {
+                it.copy(reminderHour = settings.reminderHour, reminderMinute = settings.reminderMinute)
             }
-            _uiState.value = initialState
+            if (subscriptionId != null) {
+                loadSubscription(subscriptionId)
+            } else {
+                _uiState.update { it.copy(isLoading = false) }
+            }
             suggestionRepository.preload()
             refreshSuggestionsForCurrentName()
         }
@@ -60,15 +66,17 @@ class SubscriptionEditorViewModel(
             selectedIdentityLabel = null
         }
 
-        _uiState.value = _uiState.value.copy(
-            name = name,
-            suggestionQuery = name,
-            isSuggestionsLoading = false,
-            serviceKey = if (shouldClearIdentity) null else _uiState.value.serviceKey,
-            linkedPackageName = if (shouldClearIdentity) null else _uiState.value.linkedPackageName,
-            suggestions = if (name.isBlank()) emptyList() else suggestionRepository.suggestionsFor(name),
-            nameErrorResId = null
-        )
+        _uiState.update { state ->
+            state.copy(
+                name = name,
+                suggestionQuery = name,
+                isSuggestionsLoading = false,
+                serviceKey = if (shouldClearIdentity) null else state.serviceKey,
+                linkedPackageName = if (shouldClearIdentity) null else state.linkedPackageName,
+                suggestions = if (name.isBlank()) emptyList() else suggestionRepository.suggestionsFor(name),
+                nameErrorResId = null
+            )
+        }
     }
 
     fun onSuggestionSelected(suggestion: ServiceSuggestionUiModel) {
@@ -85,35 +93,54 @@ class SubscriptionEditorViewModel(
         linkedPackageName: String?
     ) {
         selectedIdentityLabel = displayName
-        _uiState.value = _uiState.value.copy(
-            name = displayName,
-            suggestionQuery = displayName,
-            isSuggestionsLoading = false,
-            serviceKey = serviceKey,
-            linkedPackageName = linkedPackageName,
-            suggestions = suggestionRepository.suggestionsFor(displayName),
-            nameErrorResId = null
-        )
+        _uiState.update {
+            it.copy(
+                name = displayName,
+                suggestionQuery = displayName,
+                isSuggestionsLoading = false,
+                serviceKey = serviceKey,
+                linkedPackageName = linkedPackageName,
+                suggestions = suggestionRepository.suggestionsFor(displayName),
+                nameErrorResId = null,
+                textSyncVersion = it.textSyncVersion + 1
+            )
+        }
     }
 
-    fun submit(
-        name: String,
-        amountText: String,
-        currencyCode: String,
-        billingCycle: BillingCycle,
-        billingDay: Int,
-        annualMonth: Int,
-        reminderDaysBefore: Int
-    ) {
-        val trimmedName = name.trim()
-        val amountMinor = SubscriptionFormatters.parseAmountToMinor(amountText, currencyCode)
-        val annualMonthValue = if (billingCycle == BillingCycle.ANNUAL) annualMonth else null
-        val currentState = _uiState.value
+    fun onAmountChanged(amountText: String) {
+        _uiState.update { it.copy(amountText = amountText, amountErrorResId = null) }
+    }
+
+    fun onCurrencyChanged(currencyCode: String) {
+        _uiState.update { it.copy(currencyCode = currencyCode, amountErrorResId = null) }
+    }
+
+    fun onCycleChanged(cycle: BillingCycle) {
+        _uiState.update { it.copy(billingCycle = cycle) }
+    }
+
+    fun onBillingDateChanged(billingDay: Int, annualMonth: Int?) {
+        _uiState.update {
+            it.copy(
+                billingDay = billingDay.coerceIn(1, 31),
+                annualMonth = annualMonth?.coerceIn(1, 12) ?: it.annualMonth
+            )
+        }
+    }
+
+    fun onReminderDaysChanged(daysBefore: Int) {
+        _uiState.update { it.copy(reminderDaysBefore = daysBefore.coerceIn(0, MAX_REMINDER_DAYS)) }
+    }
+
+    fun submit() {
+        val state = _uiState.value
+        val trimmedName = state.name.trim()
+        val amountMinor = SubscriptionFormatters.parseAmountToMinor(state.amountText, state.currencyCode)
 
         val nameError = if (trimmedName.isBlank()) R.string.editor_error_name_required else null
         val amountError = when {
-            amountText.isBlank() -> R.string.editor_error_amount_required
-            amountMinor == null -> if (currencyCode == "USD") {
+            state.amountText.isBlank() -> R.string.editor_error_amount_required
+            amountMinor == null -> if (state.currencyCode == "USD") {
                 R.string.editor_error_amount_invalid_usd
             } else {
                 R.string.editor_error_amount_invalid_krw
@@ -123,43 +150,31 @@ class SubscriptionEditorViewModel(
         }
 
         if (nameError != null || amountError != null) {
-            _uiState.value = currentState.copy(
-                name = name,
-                suggestionQuery = name,
-                amountText = amountText,
-                currencyCode = currencyCode,
-                billingCycle = billingCycle,
-                billingDay = billingDay,
-                annualMonth = annualMonth,
-                reminderDaysBefore = reminderDaysBefore,
-                nameErrorResId = nameError,
-                amountErrorResId = amountError
-            )
+            _uiState.update { it.copy(nameErrorResId = nameError, amountErrorResId = amountError) }
             return
         }
 
-        val resolvedIdentity = resolveIdentity(trimmedName, currentState)
+        val resolvedIdentity = resolveIdentity(trimmedName, state)
 
         viewModelScope.launch {
             val draft = SubscriptionDraft(
                 name = trimmedName,
                 amountMinor = checkNotNull(amountMinor),
-                currencyCode = currencyCode,
+                currencyCode = state.currencyCode,
                 serviceKey = resolvedIdentity.serviceKey,
                 linkedPackageName = resolvedIdentity.linkedPackageName,
-                billingCycle = billingCycle,
-                billingDay = billingDay,
-                annualMonth = annualMonthValue,
-                reminderDaysBefore = reminderDaysBefore
+                billingCycle = state.billingCycle,
+                billingDay = state.billingDay,
+                annualMonth = if (state.billingCycle == BillingCycle.ANNUAL) state.annualMonth else null,
+                reminderDaysBefore = state.reminderDaysBefore
             )
 
             if (subscriptionId == null) {
                 repository.createSubscription(draft)
-                _events.emit(EditorEvent.Saved)
             } else {
                 repository.updateSubscription(subscriptionId, draft)
-                _events.emit(EditorEvent.Saved)
             }
+            _events.emit(EditorEvent.Saved(trimmedName))
         }
     }
 
@@ -171,38 +186,36 @@ class SubscriptionEditorViewModel(
         }
     }
 
-    private suspend fun loadInitialState(): SubscriptionEditorUiState {
-        if (subscriptionId == null) {
-            return _uiState.value.copy(isLoading = false)
-        }
-
-        val subscription = repository.getSubscription(subscriptionId)
+    private suspend fun loadSubscription(id: String) {
+        val subscription = repository.getSubscription(id)
         if (subscription == null) {
-            _uiState.value = SubscriptionEditorUiState()
             _events.emit(EditorEvent.Close)
-            return SubscriptionEditorUiState()
+            return
         }
 
         selectedIdentityLabel = subscription.name
-        return SubscriptionEditorUiState(
-            isLoading = false,
-            isSuggestionsLoading = true,
-            isEditMode = true,
-            name = subscription.name,
-            suggestionQuery = subscription.name,
-            amountText = SubscriptionFormatters.editAmount(
-                subscription.amountMinor,
-                subscription.currencyCode
-            ),
-            currencyCode = subscription.currencyCode,
-            serviceKey = subscription.serviceKey,
-            linkedPackageName = subscription.linkedPackageName,
-            billingCycle = subscription.billingCycle,
-            billingDay = subscription.billingDay,
-            annualMonth = subscription.annualMonth ?: 1,
-            reminderDaysBefore = subscription.reminderDaysBefore,
-            showDelete = true
-        )
+        _uiState.update {
+            it.copy(
+                isLoading = false,
+                isSuggestionsLoading = true,
+                isEditMode = true,
+                name = subscription.name,
+                suggestionQuery = subscription.name,
+                amountText = SubscriptionFormatters.editAmount(
+                    subscription.amountMinor,
+                    subscription.currencyCode
+                ),
+                currencyCode = subscription.currencyCode,
+                serviceKey = subscription.serviceKey,
+                linkedPackageName = subscription.linkedPackageName,
+                billingCycle = subscription.billingCycle,
+                billingDay = subscription.billingDay,
+                annualMonth = subscription.annualMonth ?: it.annualMonth,
+                reminderDaysBefore = subscription.reminderDaysBefore,
+                showDelete = true,
+                textSyncVersion = it.textSyncVersion + 1
+            )
+        }
     }
 
     private fun resolveIdentity(
@@ -220,24 +233,27 @@ class SubscriptionEditorViewModel(
     }
 
     private fun refreshSuggestionsForCurrentName() {
-        val currentState = _uiState.value
-        val currentName = currentState.name
-        _uiState.value = currentState.copy(
-            isLoading = false,
-            isSuggestionsLoading = false,
-            suggestionQuery = currentName,
-            suggestions = if (currentName.isBlank()) {
-                emptyList()
-            } else {
-                suggestionRepository.suggestionsFor(currentName)
-            }
-        )
+        _uiState.update { state ->
+            state.copy(
+                isLoading = false,
+                isSuggestionsLoading = false,
+                suggestionQuery = state.name,
+                suggestions = if (state.name.isBlank()) {
+                    emptyList()
+                } else {
+                    suggestionRepository.suggestionsFor(state.name)
+                }
+            )
+        }
     }
 
     companion object {
+        const val MAX_REMINDER_DAYS = 30
+
         fun factory(
             repository: SubscriptionRepository,
             suggestionRepository: ServiceSuggestionRepository,
+            settingsRepository: SettingsRepository,
             subscriptionId: String?
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
@@ -246,6 +262,7 @@ class SubscriptionEditorViewModel(
                     return SubscriptionEditorViewModel(
                         repository = repository,
                         suggestionRepository = suggestionRepository,
+                        settingsRepository = settingsRepository,
                         subscriptionId = subscriptionId
                     ) as T
                 }
@@ -255,7 +272,7 @@ class SubscriptionEditorViewModel(
 }
 
 sealed interface EditorEvent {
-    data object Saved : EditorEvent
+    data class Saved(val name: String) : EditorEvent
     data object Deleted : EditorEvent
     data object Close : EditorEvent
 }

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  구독체크 디자인 시스템의 타입 스케일과 컴포넌트 스타일.
+  글꼴은 @string/font_family_* 한 곳에서 바꾼다 (IBM Plex Sans KR 번들 전까지 시스템 글꼴).
+-->
+<resources>
+
+    <!-- 숫자 -->
+    <style name="TextAppearance.Gudok.AmountHero" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">34sp</item>
+        <item name="lineHeight">40sp</item>
+        <item name="android:fontFamily">@string/font_family_sans</item>
+        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.DateDay" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">26sp</item>
+        <item name="lineHeight">28sp</item>
+        <item name="android:fontFamily">@string/font_family_sans</item>
+        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.ValueLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">22sp</item>
+        <item name="lineHeight">28sp</item>
+        <item name="android:fontFamily">@string/font_family_sans</item>
+        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <!-- 텍스트 -->
+    <style name="TextAppearance.Gudok.Headline" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">24sp</item>
+        <item name="lineHeight">32sp</item>
+        <item name="android:fontFamily">@string/font_family_sans</item>
+        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">26sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.BodyStrong" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">24sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">22sp</item>
+        <item name="android:fontFamily">@string/font_family_sans</item>
+        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.Label" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">16sp</item>
+        <item name="android:fontFamily">@string/font_family_sans</item>
+        <item name="fontFamily">@string/font_family_sans</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
+    <!-- 컴포넌트 -->
+    <style name="Widget.Gudok.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/bg</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Gudok.Title</item>
+        <item name="titleTextColor">@color/ink</item>
+        <item name="navigationIconTint">@color/ink</item>
+    </style>
+
+    <style name="Widget.Gudok.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Gudok.BodyStrong</item>
+        <item name="backgroundTint">@color/button_primary_bg</item>
+        <item name="android:textColor">@color/button_primary_text</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Gudok.Pill</item>
+    </style>
+
+    <style name="Widget.Gudok.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Gudok.BodyStrong</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="strokeColor">@color/line_strong</item>
+        <item name="iconTint">@color/ink</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Gudok.Pill</item>
+    </style>
+
+    <style name="Widget.Gudok.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Gudok.BodyStrong</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
+    <style name="Widget.Gudok.Button.Danger" parent="Widget.Gudok.Button.Text">
+        <item name="android:textColor">@color/due_today_ink</item>
+    </style>
+
+    <style name="Widget.Gudok.Button.Stepper" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/ink</item>
+        <item name="strokeColor">@color/line_strong</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Gudok.Pill</item>
+    </style>
+
+    <style name="Widget.Gudok.Button.Icon" parent="Widget.Material3.Button.IconButton">
+        <item name="iconTint">@color/ink</item>
+        <item name="iconSize">24dp</item>
+    </style>
+
+    <style name="Widget.Gudok.Chip" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textAppearance">@style/TextAppearance.Gudok.Chip</item>
+        <item name="android:textColor">@color/chip_text</item>
+        <item name="chipBackgroundColor">@color/chip_bg</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipMinHeight">@dimen/chip_height</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipIconVisible">false</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Gudok.Pill</item>
+        <item name="ensureMinTouchTargetSize">true</item>
+        <item name="chipStartPadding">6dp</item>
+        <item name="chipEndPadding">6dp</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.Chip" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="fontFamily">@string/font_family_medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Widget.Gudok.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/input_stroke</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxBackgroundColor">@color/surface</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_md</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_md</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_md</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_md</item>
+        <item name="hintEnabled">false</item>
+        <item name="errorTextColor">@color/due_today_ink</item>
+        <item name="boxStrokeErrorColor">@color/due_today</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="suffixTextColor">@color/ink_2</item>
+        <item name="prefixTextColor">@color/ink_2</item>
+        <item name="helperTextTextColor">@color/ink_2</item>
+    </style>
+
+    <style name="Widget.Gudok.TextInput.Search" parent="Widget.Gudok.TextInput">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxBackgroundColor">@color/surface_sunken</item>
+        <item name="startIconTint">@color/ink_3</item>
+    </style>
+
+    <style name="Widget.Gudok.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="trackTint">@color/switch_track</item>
+        <item name="thumbTint">@color/switch_thumb</item>
+        <item name="trackDecorationTint">@color/switch_track_decoration</item>
+    </style>
+
+    <!-- 둘 중 하나 고르기 (원화/달러, 매월/매년) -->
+    <style name="Widget.Gudok.Segment" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_segment_item</item>
+        <item name="android:textColor">@color/segment_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+    </style>
+
+    <style name="Widget.Gudok.SectionLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/space_2</item>
+        <item name="android:textAppearance">@style/TextAppearance.Gudok.Label</item>
+    </style>
+
+    <!-- DueLabel: 배경색은 DueTone에 따라 코드에서 backgroundTint로 바꾼다 -->
+    <style name="Widget.Gudok.DueLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/due_label_height</item>
+        <item name="android:background">@drawable/bg_pill</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="android:textColor">@color/due_later_ink</item>
+    </style>
+
+    <style name="Widget.Gudok.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/surface_sunken</item>
+    </style>
+
+    <style name="TextAppearance.Gudok.NavLabel" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="fontFamily">@string/font_family_medium</item>
+    </style>
+
+    <style name="Widget.Gudok.Weekday" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@string/font_family_medium</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
+    <style name="Widget.Gudok.Divider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/line</item>
+    </style>
+
+</resources>

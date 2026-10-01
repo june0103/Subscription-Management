@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.management.subscription.R
 
 object ServiceIconBinder {
 
@@ -28,6 +29,7 @@ object ServiceIconBinder {
                     badgeView.isVisible = true
                     badgeView.text = "?"
                     badgeView.backgroundTintList = null
+                    badgeView.setTextColor(ContextCompat.getColor(context, R.color.ink_3))
                 }
             }
 
@@ -42,10 +44,8 @@ object ServiceIconBinder {
                 imageView.isVisible = false
                 badgeView.isVisible = true
                 badgeView.text = iconModel.text
-                badgeView.backgroundTintList = ContextCompat.getColorStateList(
-                    context,
-                    iconModel.accentColorRes
-                )
+                badgeView.backgroundTintList = null
+                badgeView.setTextColor(ContextCompat.getColor(context, iconModel.accentColorRes))
             }
         }
     }

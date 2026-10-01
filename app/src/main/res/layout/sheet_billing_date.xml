@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DayPicker 바텀시트: 연간이면 월 칩이 위에 나온다. 날짜를 누르면 바로 닫힌다. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/screen_gutter"
+        android:paddingBottom="@dimen/space_6">
+
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/space_2"
+            android:alpha="0.6"
+            android:background="@drawable/bg_sheet_handle" />
+
+        <TextView
+            android:id="@+id/tvSheetTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:accessibilityHeading="true"
+            android:textAppearance="@style/TextAppearance.Gudok.Title"
+            tools:text="매월 며칠에 결제되나요?" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_1"
+            android:text="@string/billing_sheet_body"
+            android:textAppearance="@style/TextAppearance.Gudok.Label"
+            android:textColor="@color/ink_2" />
+
+        <LinearLayout
+            android:id="@+id/layoutMonths"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                style="@style/Widget.Gudok.SectionLabel"
+                android:text="@string/billing_sheet_month_label" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupMonths"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="@dimen/space_2"
+                app:chipSpacingVertical="0dp"
+                app:selectionRequired="true"
+                app:singleSelection="true" />
+
+            <TextView
+                style="@style/Widget.Gudok.SectionLabel"
+                android:layout_marginTop="@dimen/space_4"
+                android:text="@string/billing_sheet_day_label" />
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/gridDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
+            android:columnCount="7"
+            android:useDefaultMargins="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
+            android:text="@string/billing_sheet_month_end_help"
+            android:textAppearance="@style/TextAppearance.Gudok.Caption" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,62 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardDay"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:layout_margin="4dp"
-    app:cardBackgroundColor="@color/home_surface"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="0dp">
+    android:layout_height="52dp"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvDay"
+        android:layout_width="@dimen/calendar_day_circle"
+        android:layout_height="@dimen/calendar_day_circle"
+        android:fontFeatureSettings="tnum"
+        android:gravity="center"
+        android:textColor="@color/ink"
+        android:textSize="15sp"
+        tools:text="15" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="8dp">
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:layout_marginTop="3dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@color/home_text_primary"
-            android:textSize="15sp" />
+        <View
+            android:id="@+id/dotOne"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_calendar_dot" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+        <View
+            android:id="@+id/dotTwo"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/bg_calendar_dot" />
 
-            <View
-                android:id="@+id/dotOne"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginHorizontal="2dp"
-                android:background="@drawable/bg_calendar_dot"
-                android:visibility="invisible" />
-
-            <View
-                android:id="@+id/dotTwo"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginHorizontal="2dp"
-                android:background="@drawable/bg_calendar_dot"
-                android:visibility="invisible" />
-
-            <View
-                android:id="@+id/dotThree"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginHorizontal="2dp"
-                android:background="@drawable/bg_calendar_dot"
-                android:visibility="invisible" />
-        </LinearLayout>
+        <View
+            android:id="@+id/dotThree"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/bg_calendar_dot" />
     </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

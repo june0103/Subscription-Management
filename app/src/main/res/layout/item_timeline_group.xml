@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 홈 결제 타임라인 한 묶음: DateTile + DueLabel + 같은 날 결제되는 구독 행들 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/space_4">
+
+    <include
+        android:id="@+id/dateTile"
+        layout="@layout/view_date_tile" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_3"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvDueLabel"
+                style="@style/Widget.Gudok.DueLabel"
+                tools:text="오늘 결제" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvGroupSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.Gudok.Label"
+                tools:text="2건 · 22,790원" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutRows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:background="@drawable/bg_card"
+            android:divider="@drawable/divider_line"
+            android:orientation="vertical"
+            android:showDividers="middle" />
+    </LinearLayout>
+</LinearLayout>

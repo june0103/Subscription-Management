@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.management.subscription.data.SubscriptionRepository
 import com.management.subscription.domain.SubscriptionScheduleCalculator
+import com.management.subscription.util.SubscriptionFormatters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -62,7 +63,9 @@ class CalendarViewModel(
                     isInCurrentMonth = YearMonth.from(date) == month,
                     isToday = date == today,
                     isSelected = date == normalizedSelectedDate,
-                    dotColors = dotColors
+                    dotColors = dotColors,
+                    contentDescription = SubscriptionFormatters.dateWithWeekday(date) +
+                        if (dotColors.isEmpty()) "" else ", 결제 있음"
                 )
             }
         )
@@ -94,7 +97,9 @@ class CalendarViewModel(
         val firstDay = month.atDay(1)
         val offset = if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.value
         val gridStart = firstDay.minusDays(offset.toLong())
-        return List(42) { index -> gridStart.plusDays(index.toLong()) }
+        // 그 달에 필요한 주만 그린다(4~6주).
+        val cellCount = ((offset + month.lengthOfMonth() + 6) / 7) * 7
+        return List(cellCount) { index -> gridStart.plusDays(index.toLong()) }
     }
 
     companion object {

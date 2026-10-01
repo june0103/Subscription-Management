@@ -1,8 +1,11 @@
 package com.management.subscription
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -39,9 +42,11 @@ class MainActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applySystemBarInsets()
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.mainNavHost) as NavHostFragment
@@ -51,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             currentDestinationId = destination.id
             binding.bottomNavigation.isVisible = destination.id in topLevelDestinations
+            binding.bottomNavigationDivider.isVisible = binding.bottomNavigation.isVisible
             updateBannerVisibility()
         }
         binding.adBannerContainer.addOnLayoutChangeListener { _, left, _, right, _, oldLeft, _, oldRight, _ ->
@@ -102,6 +108,18 @@ class MainActivity : AppCompatActivity() {
         val focusDate = pendingCalendarFocusDate
         pendingCalendarFocusDate = null
         return focusDate
+    }
+
+    /** targetSdk 35+는 edge-to-edge가 강제되므로 상태바·내비게이션바·키보드 영역만큼 여백을 준다. */
+    private fun applySystemBarInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.rootMain) { view, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            view.setPadding(bars.left, bars.top, bars.right, maxOf(bars.bottom, ime.bottom))
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     private fun updateBannerVisibility() {

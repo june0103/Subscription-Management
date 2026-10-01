@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 구독체크 디자인 시스템 색 토큰 (다크). -->
+<resources>
+    <color name="bg">#FF0E1422</color>
+    <color name="surface">#FF182033</color>
+    <color name="surface_sunken">#FF222B40</color>
+    <color name="line">#FF2A3450</color>
+    <color name="line_strong">#FF6A7590</color>
+
+    <color name="ink">#FFEEF1F6</color>
+    <color name="ink_2">#FFA9B1C2</color>
+    <color name="ink_3">#FF8890A2</color>
+
+    <color name="brand">#FF22305A</color>
+    <color name="on_brand">#FFFFFFFF</color>
+    <color name="on_brand_2">#FFAEB6C8</color>
+    <color name="brand_divider">#FF33426E</color>
+    <color name="sand">#FFD9B88B</color>
+
+    <color name="primary">#FFE6EAF3</color>
+    <color name="on_primary">#FF14213D</color>
+    <color name="focus">#FF8FA9FF</color>
+
+    <color name="due_today">#FFC7402A</color>
+    <color name="on_due_today">#FFFFFFFF</color>
+    <color name="due_today_soft">#FF3A1D19</color>
+    <color name="due_today_ink">#FFFFB4A3</color>
+    <color name="due_soon_soft">#FF33280F</color>
+    <color name="due_soon_ink">#FFF2C46B</color>
+    <color name="due_later_soft">#FF253049</color>
+    <color name="due_later_ink">#FFC9CFDB</color>
+    <color name="success">#FF8ED3B0</color>
+    <color name="success_soft">#FF15301F</color>
+
+    <color name="cat_video">#FFA898FF</color>
+    <color name="cat_music">#FFF08DBB</color>
+    <color name="cat_book">#FF6FCFB6</color>
+    <color name="cat_game">#FF82AEFF</color>
+    <color name="cat_life">#FFE9B060</color>
+    <color name="cat_work">#FFAFBAD3</color>
+    <color name="cat_etc">#FFA3A9B7</color>
+
+    <color name="scrim">#A3000000</color>
+</resources>

@@ -14,11 +14,10 @@ import androidx.navigation.fragment.findNavController
 import com.management.subscription.MainActivity
 import com.management.subscription.R
 import com.management.subscription.data.BillingCycle
-import com.management.subscription.data.ScheduledSubscription
 import com.management.subscription.data.SubscriptionRepository
 import com.management.subscription.databinding.FragmentSubscriptionCycleListBinding
-import com.management.subscription.services.ServiceIconResolver
-import com.management.subscription.util.DdayFormatter
+import com.management.subscription.domain.SubscriptionScheduleCalculator
+import com.management.subscription.ui.LineDividerDecoration
 import com.management.subscription.util.SubscriptionFormatters
 import kotlinx.coroutines.launch
 
@@ -65,6 +64,7 @@ class SubscriptionCycleListFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@SubscriptionCycleListFragment.adapter
             itemAnimator = null
+            addItemDecoration(LineDividerDecoration(requireContext()))
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -85,8 +85,19 @@ class SubscriptionCycleListFragment : Fragment() {
             BillingCycle.ANNUAL -> getString(R.string.subscription_list_title_annual)
             BillingCycle.MONTHLY -> getString(R.string.subscription_list_title_monthly)
         }
-        binding.tvSubscriptionCount.text =
-            getString(R.string.subscription_list_count_format, state.count)
+        val totals = SubscriptionScheduleCalculator.currencyTotals(state.schedules)
+        binding.tvSubscriptionCount.text = if (state.schedules.isEmpty()) {
+            getString(R.string.subscription_list_count_format, 0)
+        } else {
+            getString(
+                when (state.cycle) {
+                    BillingCycle.ANNUAL -> R.string.subscription_list_summary_annual_format
+                    BillingCycle.MONTHLY -> R.string.subscription_list_summary_monthly_format
+                },
+                state.count,
+                SubscriptionFormatters.totals(totals)
+            )
+        }
         binding.recyclerSubscriptions.isVisible = state.schedules.isNotEmpty()
         binding.cardEmptyState.isVisible = state.schedules.isEmpty()
         binding.tvEmptyTitle.text = when (state.cycle) {
@@ -94,27 +105,8 @@ class SubscriptionCycleListFragment : Fragment() {
             BillingCycle.MONTHLY -> getString(R.string.subscription_list_empty_monthly)
         }
 
-        adapter.submitList(state.schedules.map(::toUiModel))
-    }
-
-    private fun toUiModel(schedule: ScheduledSubscription): ScheduledSubscriptionItemUiModel {
-        return ScheduledSubscriptionItemUiModel(
-            id = schedule.subscription.id,
-            serviceIconModel = ServiceIconResolver.resolve(requireContext(), schedule.subscription),
-            title = schedule.subscription.name,
-            subtitle = getString(
-                R.string.home_payment_date_format,
-                SubscriptionFormatters.shortDate(schedule.paymentDate)
-            ),
-            cycleLabel = when (schedule.subscription.billingCycle) {
-                BillingCycle.MONTHLY -> getString(R.string.home_cycle_monthly)
-                BillingCycle.ANNUAL -> getString(R.string.home_cycle_annual)
-            },
-            amountLabel = SubscriptionFormatters.currency(
-                schedule.subscription.amountMinor,
-                schedule.subscription.currencyCode
-            ),
-            trailingLabel = DdayFormatter.format(schedule.dDay)
+        adapter.submitList(
+            state.schedules.map { ScheduledSubscriptionAdapter.toUiModel(requireContext(), it) }
         )
     }
 }
