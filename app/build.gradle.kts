@@ -20,7 +20,7 @@ val hasReleaseSigning = keystorePropertiesFile.exists() &&
 
 android {
     namespace = "com.management.subscription"
-    compileSdk = 35
+    compileSdk = 36
 
     val admobAppId = providers.gradleProperty("ADMOB_APP_ID")
         .orElse("ca-app-pub-3940256099942544~3347511713")
@@ -44,9 +44,9 @@ android {
     defaultConfig {
         applicationId = "com.management.subscription"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 36
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["ADMOB_APP_ID"] = admobAppId
