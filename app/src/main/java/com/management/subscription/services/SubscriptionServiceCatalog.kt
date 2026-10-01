@@ -41,7 +41,7 @@ object SubscriptionServiceCatalog {
             key = "prime_video",
             displayName = "Prime Video",
             aliases = listOf("prime video", "amazon prime video", "\uD504\uB77C\uC784 \uBE44\uB514\uC624"),
-            logoRes = R.drawable.ic_service_generic_ott,
+            logoRes = R.drawable.ic_service_prime_video,
             packageNames = setOf("com.amazon.avod.thirdpartyclient")
         ),
         service(
@@ -55,19 +55,21 @@ object SubscriptionServiceCatalog {
             key = "wavve",
             displayName = "wavve",
             aliases = listOf("wavve", "\uC6E8\uC774\uBE0C"),
-            logoRes = R.drawable.ic_service_wavve
+            logoRes = R.drawable.ic_service_wavve,
+            packageNames = setOf("kr.co.captv.pooqV2")
         ),
         service(
             key = "watcha",
             displayName = "WATCHA",
             aliases = listOf("watcha", "\uC649\uCC28"),
-            logoRes = R.drawable.ic_service_watcha
+            logoRes = R.drawable.ic_service_watcha,
+            packageNames = setOf("com.frograms.wplay")
         ),
         service(
             key = "laftel",
             displayName = "Laftel",
             aliases = listOf("laftel", "\uB77C\uD504\uD154"),
-            logoRes = R.drawable.ic_service_generic_ott,
+            logoRes = R.drawable.ic_service_laftel,
             packageNames = setOf("laftel.net.laftel")
         ),
         service(
@@ -88,7 +90,8 @@ object SubscriptionServiceCatalog {
             key = "apple_tv_plus",
             displayName = "Apple TV+",
             aliases = listOf("apple tv+", "apple tv plus", "\uC560\uD50C tv+", "\uC560\uD50C tv \uD50C\uB7EC\uC2A4"),
-            logoRes = R.drawable.ic_service_apple_tv_plus
+            logoRes = R.drawable.ic_service_apple_tv_plus,
+            packageNames = setOf("com.apple.atve.androidtv.appletv")
         ),
         service(
             key = "google_one",
@@ -108,48 +111,49 @@ object SubscriptionServiceCatalog {
             key = "claude_pro",
             displayName = "Claude Pro",
             aliases = listOf("claude", "claude pro", "\uD074\uB85C\uB4DC", "\uD074\uB85C\uB4DC \uD504\uB85C"),
-            logoRes = R.drawable.ic_service_generic_ai,
+            logoRes = R.drawable.ic_service_claude_pro,
             packageNames = setOf("com.anthropic.claude")
         ),
         service(
             key = "gemini_advanced",
             displayName = "Gemini Advanced",
             aliases = listOf("gemini", "gemini advanced", "\uC81C\uBBF8\uB098\uC774", "\uC81C\uBBF8\uB098\uC774 \uC5B4\uB4DC\uBC34\uC2A4"),
-            logoRes = R.drawable.ic_service_generic_ai,
+            logoRes = R.drawable.ic_service_gemini_advanced,
             packageNames = setOf("com.google.android.apps.bard")
         ),
         service(
             key = "perplexity_pro",
             displayName = "Perplexity Pro",
             aliases = listOf("perplexity", "perplexity pro"),
-            logoRes = R.drawable.ic_service_generic_ai,
+            logoRes = R.drawable.ic_service_perplexity_pro,
             packageNames = setOf("ai.perplexity.app.android")
         ),
         service(
             key = "copilot_pro",
             displayName = "Copilot Pro",
             aliases = listOf("copilot", "copilot pro", "microsoft copilot", "\uCF54\uD30C\uC77C\uB7FF"),
-            logoRes = R.drawable.ic_service_generic_ai,
+            logoRes = R.drawable.ic_service_copilot_pro,
             packageNames = setOf("com.microsoft.copilot")
         ),
         service(
             key = "notion_ai",
             displayName = "Notion AI",
             aliases = listOf("notion", "notion ai", "\uB178\uC158", "\uB178\uC158 ai"),
-            logoRes = R.drawable.ic_service_notion_ai
+            logoRes = R.drawable.ic_service_notion_ai,
+            packageNames = setOf("notion.id")
         ),
         service(
             key = "grammarly_pro",
             displayName = "Grammarly Pro",
             aliases = listOf("grammarly", "grammarly pro"),
-            logoRes = R.drawable.ic_service_generic_ai,
+            logoRes = R.drawable.ic_service_grammarly_pro,
             packageNames = setOf("com.grammarly.android.keyboard")
         ),
         service(
             key = "canva_pro",
             displayName = "Canva Pro",
             aliases = listOf("canva", "canva pro"),
-            logoRes = R.drawable.ic_service_generic_ai,
+            logoRes = R.drawable.ic_service_canva_pro,
             packageNames = setOf("com.canva.editor")
         ),
         service(
@@ -178,32 +182,36 @@ object SubscriptionServiceCatalog {
             key = "amazon_prime",
             displayName = "Amazon Prime",
             aliases = listOf("amazon prime", "\uC544\uB9C8\uC874 \uD504\uB77C\uC784"),
-            logoRes = R.drawable.ic_service_generic_shopping,
+            logoRes = R.drawable.ic_service_amazon_prime,
             packageNames = setOf("com.amazon.mShop.android.shopping")
         ),
         service(
             key = "baemin_club",
             displayName = "\uBC30\uBBFC\uD074\uB7FD",
             aliases = listOf("\uBC30\uBBFC\uD074\uB7FD", "\uBC30\uB2EC\uC758\uBBFC\uC871", "\uBC30\uBBFC", "baemin club", "baemin"),
-            logoRes = R.drawable.ic_service_generic_delivery
+            logoRes = R.drawable.ic_service_baemin_club,
+            packageNames = setOf("com.sampleapp")
         ),
         service(
             key = "yogiyo_pass",
             displayName = "\uC694\uAE30\uC694 Plus",
             aliases = listOf("\uC694\uAE30\uC694", "\uC694\uAE30\uC694 plus", "yogiyo", "yogiyo plus"),
-            logoRes = R.drawable.ic_service_generic_delivery
+            logoRes = R.drawable.ic_service_yogiyo_pass,
+            packageNames = setOf("com.fineapp.yogiyo")
         ),
         service(
             key = "coupang_eats",
             displayName = "\uCFE0\uD321\uC774\uCE20",
             aliases = listOf("\uCFE0\uD321\uC774\uCE20", "\uCFE0\uD321 \uC774\uCE20", "\uCFE0\uD321", "coupang eats", "coupang"),
-            logoRes = R.drawable.ic_service_generic_delivery
+            logoRes = R.drawable.ic_service_coupang_eats,
+            packageNames = setOf("com.coupang.mobile.eats")
         ),
         service(
             key = "millie",
             displayName = "\uBC00\uB9AC\uC758\uC11C\uC7AC",
             aliases = listOf("\uBC00\uB9AC\uC758\uC11C\uC7AC", "\uBC00\uB9AC", "millie", "millie's library"),
-            logoRes = R.drawable.ic_service_millie
+            logoRes = R.drawable.ic_service_millie,
+            packageNames = setOf("kr.co.millie.millieshelf")
         ),
         service(
             key = "ridi_select",
