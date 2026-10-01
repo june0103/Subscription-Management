@@ -14,5 +14,8 @@ data class SubscriptionPreview(
     val billingDay: Int,
     val annualMonth: Int? = null,
     val reminderDaysBefore: Int,
-    @ColorRes val accentColorRes: Int
+    @ColorRes val accentColorRes: Int,
+    val category: SubscriptionCategory? = null,
+    val paymentMethod: PaymentMethod? = null,
+    val memo: String? = null
 )

@@ -9,5 +9,8 @@ data class SubscriptionDraft(
     val billingCycle: BillingCycle,
     val billingDay: Int,
     val annualMonth: Int?,
-    val reminderDaysBefore: Int
+    val reminderDaysBefore: Int,
+    val category: SubscriptionCategory? = null,
+    val paymentMethod: PaymentMethod? = null,
+    val memo: String? = null
 )

@@ -57,7 +57,7 @@ class TimelineAdapter(
             val context = row.root.context
             val subscription = schedule.subscription
             row.tvName.text = subscription.name
-            row.tvMeta.text = SubscriptionLabels.cycleWithReminder(context, subscription)
+            SubscriptionLabels.bindMeta(row.tvMeta, SubscriptionLabels.timelineMeta(context, subscription), subscription.category)
             row.tvAmount.text =
                 SubscriptionFormatters.currency(subscription.amountMinor, subscription.currencyCode)
             ServiceIconBinder.bind(

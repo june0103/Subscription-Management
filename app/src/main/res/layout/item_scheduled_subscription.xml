@@ -57,7 +57,21 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.Gudok.Caption"
-            tools:text="매월 2일 · 1일 전 알림" />
+            tools:text="매월 2일 · 영상 · 카카오페이" />
+
+        <!-- 메모가 있으면 한 줄로. 해지 경로를 목록에서 바로 볼 수 있다. -->
+        <TextView
+            android:id="@+id/tvMemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Gudok.Caption"
+            android:textColor="@color/ink_3"
+            android:visibility="gone"
+            tools:text="넷플릭스 웹 > 계정 > 멤버십 취소"
+            tools:visibility="visible" />
     </LinearLayout>
 
     <LinearLayout

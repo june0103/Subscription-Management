@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.management.subscription.R
 import com.management.subscription.data.BillingCycle
+import com.management.subscription.data.PaymentMethod
+import com.management.subscription.data.SubscriptionCategory
 import com.management.subscription.data.SettingsRepository
 import com.management.subscription.data.SubscriptionDraft
 import com.management.subscription.data.SubscriptionRepository
@@ -93,6 +95,9 @@ class SubscriptionEditorViewModel(
         linkedPackageName: String?
     ) {
         selectedIdentityLabel = displayName
+        val catalogCategory = SubscriptionServiceCatalog.defaultCategory(serviceKey)
+            ?: SubscriptionServiceCatalog.findByPackage(linkedPackageName)
+                ?.let { SubscriptionServiceCatalog.defaultCategory(it.key) }
         _uiState.update {
             it.copy(
                 name = displayName,
@@ -100,6 +105,7 @@ class SubscriptionEditorViewModel(
                 isSuggestionsLoading = false,
                 serviceKey = serviceKey,
                 linkedPackageName = linkedPackageName,
+                category = if (it.isCategoryChosenByUser) it.category else catalogCategory ?: it.category,
                 suggestions = suggestionRepository.suggestionsFor(displayName),
                 nameErrorResId = null,
                 textSyncVersion = it.textSyncVersion + 1
@@ -130,6 +136,18 @@ class SubscriptionEditorViewModel(
 
     fun onReminderDaysChanged(daysBefore: Int) {
         _uiState.update { it.copy(reminderDaysBefore = daysBefore.coerceIn(0, MAX_REMINDER_DAYS)) }
+    }
+
+    fun onCategoryChanged(category: SubscriptionCategory?) {
+        _uiState.update { it.copy(category = category, isCategoryChosenByUser = true) }
+    }
+
+    fun onPaymentMethodChanged(paymentMethod: PaymentMethod?) {
+        _uiState.update { it.copy(paymentMethod = paymentMethod) }
+    }
+
+    fun onMemoChanged(memo: String) {
+        _uiState.update { it.copy(memo = memo.take(MAX_MEMO_LENGTH)) }
     }
 
     fun submit() {
@@ -166,7 +184,13 @@ class SubscriptionEditorViewModel(
                 billingCycle = state.billingCycle,
                 billingDay = state.billingDay,
                 annualMonth = if (state.billingCycle == BillingCycle.ANNUAL) state.annualMonth else null,
-                reminderDaysBefore = state.reminderDaysBefore
+                reminderDaysBefore = state.reminderDaysBefore,
+                // 직접 입력한 이름이 카탈로그 서비스와 맞으면 카테고리를 채워 준다.
+                category = state.category
+                    ?: SubscriptionServiceCatalog.defaultCategory(resolvedIdentity.serviceKey)
+                        .takeUnless { state.isCategoryChosenByUser },
+                paymentMethod = state.paymentMethod,
+                memo = state.memo
             )
 
             if (subscriptionId == null) {
@@ -212,6 +236,10 @@ class SubscriptionEditorViewModel(
                 billingDay = subscription.billingDay,
                 annualMonth = subscription.annualMonth ?: it.annualMonth,
                 reminderDaysBefore = subscription.reminderDaysBefore,
+                category = subscription.category,
+                isCategoryChosenByUser = subscription.category != null,
+                paymentMethod = subscription.paymentMethod,
+                memo = subscription.memo.orEmpty(),
                 showDelete = true,
                 textSyncVersion = it.textSyncVersion + 1
             )
@@ -249,6 +277,7 @@ class SubscriptionEditorViewModel(
 
     companion object {
         const val MAX_REMINDER_DAYS = 30
+        const val MAX_MEMO_LENGTH = 500
 
         fun factory(
             repository: SubscriptionRepository,

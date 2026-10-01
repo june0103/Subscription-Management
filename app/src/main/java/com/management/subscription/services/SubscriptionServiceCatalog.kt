@@ -2,6 +2,7 @@ package com.management.subscription.services
 
 import androidx.annotation.DrawableRes
 import com.management.subscription.R
+import com.management.subscription.data.SubscriptionCategory
 
 data class SubscriptionServiceDefinition(
     val key: String,
@@ -251,6 +252,26 @@ object SubscriptionServiceCatalog {
 
     val allServices: List<SubscriptionServiceDefinition>
         get() = services
+
+    /** 카탈로그 서비스를 고르면 미리 선택해 두는 카테고리. 사용자가 바꿀 수 있다. */
+    fun defaultCategory(key: String?): SubscriptionCategory? = defaultCategories[key]
+
+    private val defaultCategories: Map<String, SubscriptionCategory> = buildMap {
+        listOf(
+            "youtube_premium", "netflix", "disney_plus", "prime_video", "tving", "wavve",
+            "watcha", "laftel", "apple_tv_plus"
+        ).forEach { put(it, SubscriptionCategory.VIDEO) }
+        listOf("spotify", "apple_music").forEach { put(it, SubscriptionCategory.MUSIC) }
+        listOf("millie", "ridi_select").forEach { put(it, SubscriptionCategory.BOOK) }
+        listOf("xbox_game_pass", "playstation_plus").forEach { put(it, SubscriptionCategory.GAME) }
+        listOf(
+            "coupang_wow", "naver_plus", "amazon_prime", "baemin_club", "yogiyo_pass", "coupang_eats"
+        ).forEach { put(it, SubscriptionCategory.LIFE) }
+        listOf(
+            "google_one", "chatgpt_plus", "claude_pro", "gemini_advanced", "perplexity_pro",
+            "copilot_pro", "notion_ai", "grammarly_pro", "canva_pro"
+        ).forEach { put(it, SubscriptionCategory.WORK) }
+    }
 
     fun findByKey(key: String?): SubscriptionServiceDefinition? {
         return services.firstOrNull { it.key == key }

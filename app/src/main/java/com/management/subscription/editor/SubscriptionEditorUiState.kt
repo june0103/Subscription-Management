@@ -1,6 +1,8 @@
 package com.management.subscription.editor
 
 import com.management.subscription.data.BillingCycle
+import com.management.subscription.data.PaymentMethod
+import com.management.subscription.data.SubscriptionCategory
 import com.management.subscription.services.ServiceSuggestionUiModel
 import java.time.LocalDate
 
@@ -25,6 +27,11 @@ data class SubscriptionEditorUiState(
     val reminderDaysBefore: Int = 1,
     val reminderHour: Int = 9,
     val reminderMinute: Int = 0,
+    val category: SubscriptionCategory? = null,
+    /** 사용자가 카테고리를 직접 고르면 서비스를 바꿔도 자동 선택으로 덮어쓰지 않는다. */
+    val isCategoryChosenByUser: Boolean = false,
+    val paymentMethod: PaymentMethod? = null,
+    val memo: String = "",
     val today: LocalDate = LocalDate.now(),
     val showDelete: Boolean = false,
     val nameErrorResId: Int? = null,

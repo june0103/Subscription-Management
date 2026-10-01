@@ -290,6 +290,76 @@
                 android:textAppearance="@style/TextAppearance.Gudok.Caption"
                 tools:text="10월 1일 오전 9:00에 알려드려요. 알림 시각은 설정에서 바꿀 수 있어요." />
 
+            <!-- 카테고리 -->
+            <TextView
+                style="@style/Widget.Gudok.SectionLabel"
+                android:layout_marginTop="28dp"
+                android:text="@string/editor_label_category" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="@dimen/space_2"
+                app:chipSpacingVertical="0dp"
+                app:singleSelection="true" />
+
+            <TextView
+                android:id="@+id/tvCategoryHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_1"
+                android:text="@string/editor_category_auto_hint"
+                android:textAppearance="@style/TextAppearance.Gudok.Caption"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- 결제수단 -->
+            <TextView
+                android:id="@+id/tvPaymentLabel"
+                style="@style/Widget.Gudok.SectionLabel"
+                android:layout_marginTop="28dp"
+                tools:text="결제수단 (선택)" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupPayment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="@dimen/space_2"
+                app:chipSpacingVertical="0dp"
+                app:singleSelection="true" />
+
+            <!-- 메모 -->
+            <TextView
+                android:id="@+id/tvMemoLabel"
+                style="@style/Widget.Gudok.SectionLabel"
+                android:layout_marginTop="28dp"
+                android:labelFor="@id/editMemo"
+                tools:text="메모 (선택)" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="500"
+                app:counterTextColor="@color/ink_3"
+                app:helperText="@string/editor_memo_helper"
+                app:helperTextEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editMemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|start"
+                    android:hint="@string/editor_memo_hint"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLength="500"
+                    android:minHeight="104dp"
+                    android:minLines="3"
+                    android:textAppearance="@style/TextAppearance.Gudok.Body" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonDelete"
                 style="@style/Widget.Gudok.Button.Danger"

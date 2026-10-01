@@ -106,6 +106,14 @@ android {
         buildConfig = true
         viewBinding = true
     }
+    sourceSets {
+        // Room이 내보낸 DB 스키마로 마이그레이션을 테스트한다.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {

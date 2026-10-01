@@ -82,6 +82,13 @@
     <string name="editor_label_reminder">알림 시점</string>
     <string name="editor_reminder_hint_format">%1$s %2$s에 알려드려요. 알림 시각은 설정에서 바꿀 수 있어요.</string>
     <string name="editor_summary_format">%1$s 결제 · 다음 알림 %2$s</string>
+    <string name="editor_optional">(선택)</string>
+    <string name="editor_label_category">카테고리</string>
+    <string name="editor_category_auto_hint">서비스에 맞춰 자동으로 골랐어요. 다른 카테고리를 눌러 바꿀 수 있어요.</string>
+    <string name="editor_label_payment">결제수단</string>
+    <string name="editor_label_memo">메모</string>
+    <string name="editor_memo_hint">해지 방법이나 계정을 적어두세요</string>
+    <string name="editor_memo_helper">어디서 해지해야 하는지 적어두면 나중에 찾기 쉬워요.</string>
     <string name="editor_button_save">저장</string>
     <string name="editor_button_delete">구독 삭제</string>
     <string name="editor_save_success_format">%1$s 구독을 저장했어요</string>

@@ -42,7 +42,10 @@ class SubscriptionRepository(
                 reminderDaysBefore = draft.reminderDaysBefore,
                 accentColorRes = SubscriptionAccentPalette.pick(id),
                 createdAt = now,
-                updatedAt = now
+                updatedAt = now,
+                category = draft.category?.name,
+                paymentMethod = draft.paymentMethod?.name,
+                memo = draft.memo?.trim()?.takeIf { it.isNotEmpty() }
             )
         )
     }
@@ -60,6 +63,9 @@ class SubscriptionRepository(
                 billingDay = draft.billingDay,
                 annualMonth = draft.annualMonth,
                 reminderDaysBefore = draft.reminderDaysBefore,
+                category = draft.category?.name,
+                paymentMethod = draft.paymentMethod?.name,
+                memo = draft.memo?.trim()?.takeIf { it.isNotEmpty() },
                 updatedAt = System.currentTimeMillis()
             )
         )

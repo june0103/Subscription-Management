@@ -19,5 +19,11 @@ data class SubscriptionEntity(
     val reminderDaysBefore: Int,
     @ColorRes val accentColorRes: Int,
     val createdAt: Long,
-    val updatedAt: Long
+    val updatedAt: Long,
+    /** SubscriptionCategory 이름. v3에서 추가, 비어 있을 수 있다. */
+    val category: String? = null,
+    /** PaymentMethod 이름. v3에서 추가, 비어 있을 수 있다. */
+    val paymentMethod: String? = null,
+    /** 해지 방법 등 자유 메모. v3에서 추가. */
+    val memo: String? = null
 )

@@ -18,7 +18,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.management.subscription.R
 import com.management.subscription.SubscriptionEditorArgs
+import android.content.res.ColorStateList
+import android.text.SpannableStringBuilder
+import androidx.core.content.ContextCompat
+import androidx.core.text.color
+import com.google.android.material.chip.Chip
 import com.management.subscription.data.BillingCycle
+import com.management.subscription.data.PaymentMethod
+import com.management.subscription.data.SubscriptionCategory
 import com.management.subscription.data.SettingsRepository
 import com.management.subscription.data.SubscriptionRepository
 import com.management.subscription.databinding.FragmentSubscriptionEditorBinding
@@ -47,6 +54,8 @@ class SubscriptionEditorFragment : Fragment() {
     }
     private var isRenderingState = false
     private var appliedTextSyncVersion = -1
+    private val categoryChips = mutableMapOf<SubscriptionCategory, Chip>()
+    private val paymentChips = mutableMapOf<PaymentMethod, Chip>()
 
     private val repository by lazy(LazyThreadSafetyMode.NONE) {
         SubscriptionRepository.getInstance(requireContext().applicationContext)
@@ -195,6 +204,14 @@ class SubscriptionEditorFragment : Fragment() {
             openReminderSheet()
         }
 
+        buildCategoryChips()
+        buildPaymentChips()
+        binding.tvPaymentLabel.text = optionalLabel(R.string.editor_label_payment)
+        binding.tvMemoLabel.text = optionalLabel(R.string.editor_label_memo)
+        binding.editMemo.doAfterTextChanged { text ->
+            if (!isRenderingState) viewModel.onMemoChanged(text?.toString().orEmpty())
+        }
+
         binding.buttonSave.setOnClickListener { viewModel.submit() }
 
         binding.buttonDelete.setOnClickListener {
@@ -207,6 +224,60 @@ class SubscriptionEditorFragment : Fragment() {
                 }
                 .show()
         }
+    }
+
+    /** 카테고리 칩: 앞에 카테고리 색 점, 선택되면 점은 on_primary. */
+    private fun buildCategoryChips() {
+        categoryChips.clear()
+        binding.chipGroupCategory.removeAllViews()
+        val onPrimary = ContextCompat.getColor(requireContext(), R.color.on_primary)
+        SubscriptionCategory.entries.forEach { category ->
+            val chip = newChip(category.label)
+            chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.bg_dot)
+            chip.chipIconSize = resources.displayMetrics.density * 8
+            chip.iconStartPadding = resources.displayMetrics.density * 4
+            chip.isChipIconVisible = true
+            chip.chipIconTint = ColorStateList(
+                arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
+                intArrayOf(onPrimary, ContextCompat.getColor(requireContext(), category.colorRes))
+            )
+            chip.setOnClickListener {
+                viewModel.onCategoryChanged(if (chip.isChecked) category else null)
+            }
+            categoryChips[category] = chip
+            binding.chipGroupCategory.addView(chip)
+        }
+    }
+
+    private fun buildPaymentChips() {
+        paymentChips.clear()
+        binding.chipGroupPayment.removeAllViews()
+        PaymentMethod.entries.forEach { method ->
+            val chip = newChip(method.label)
+            // 한 번 더 누르면 선택을 풀 수 있다(선택 사항).
+            chip.setOnClickListener {
+                viewModel.onPaymentMethodChanged(if (chip.isChecked) method else null)
+            }
+            paymentChips[method] = chip
+            binding.chipGroupPayment.addView(chip)
+        }
+    }
+
+    private fun newChip(label: String): Chip {
+        val chip = layoutInflater.inflate(R.layout.view_choice_chip, binding.chipGroupCategory, false) as Chip
+        chip.id = View.generateViewId()
+        chip.text = label
+        return chip
+    }
+
+    /** "결제수단 (선택)"에서 "(선택)"만 옅게 */
+    private fun optionalLabel(labelRes: Int): CharSequence {
+        return SpannableStringBuilder()
+            .append(getString(labelRes))
+            .append(" ")
+            .color(ContextCompat.getColor(requireContext(), R.color.ink_3)) {
+                append(getString(R.string.editor_optional))
+            }
     }
 
     private fun openReminderSheet() {
@@ -242,6 +313,9 @@ class SubscriptionEditorFragment : Fragment() {
                 binding.editAmount.setText(state.amountText)
                 binding.editAmount.setSelection(state.amountText.length)
             }
+            if (binding.editMemo.text?.toString() != state.memo) {
+                binding.editMemo.setText(state.memo)
+            }
         }
 
         binding.tilServiceName.error = state.nameErrorResId?.let(::getString)
@@ -266,6 +340,9 @@ class SubscriptionEditorFragment : Fragment() {
         )
         renderBillingDate(state)
         renderReminder(state)
+        categoryChips.forEach { (category, chip) -> chip.isChecked = category == state.category }
+        binding.tvCategoryHint.isVisible = state.category != null && !state.isCategoryChosenByUser
+        paymentChips.forEach { (method, chip) -> chip.isChecked = method == state.paymentMethod }
         renderSummary(state)
 
         isRenderingState = false

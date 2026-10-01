@@ -45,7 +45,9 @@ class ScheduledSubscriptionAdapter(
         fun bind(item: ScheduledSubscriptionItemUiModel) {
             binding.root.setOnClickListener { onItemClick(item) }
             binding.tvName.text = item.title
-            binding.tvSubtitle.text = item.subtitle
+            SubscriptionLabels.bindMeta(binding.tvSubtitle, item.subtitle, item.category)
+            binding.tvMemo.isVisible = item.memo != null
+            binding.tvMemo.text = item.memo
             binding.tvAmount.text = item.amountLabel
             binding.tvDueLabel.isVisible = item.dDay != null
             item.dDay?.let { DueViews.bindDueLabel(binding.tvDueLabel, it) }
@@ -83,7 +85,14 @@ class ScheduledSubscriptionAdapter(
                 id = subscription.id,
                 serviceIconModel = ServiceIconResolver.resolve(context, subscription),
                 title = subscription.name,
-                subtitle = SubscriptionLabels.cycleWithReminder(context, subscription),
+                // 날짜가 이미 보이는 곳(캘린더)에서는 결제 주기를 빼서 한 줄에 들어가게 한다.
+                subtitle = if (showDue) {
+                    SubscriptionLabels.listMeta(context, subscription)
+                } else {
+                    SubscriptionLabels.timelineMeta(context, subscription)
+                },
+                category = subscription.category,
+                memo = subscription.memo,
                 amountLabel = SubscriptionFormatters.currency(subscription.amountMinor, subscription.currencyCode),
                 dDay = if (showDue) schedule.dDay else null
             )
