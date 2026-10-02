@@ -43,7 +43,7 @@ class SubscriptionCycleListFragment : Fragment() {
     }
 
     private val adapter = ScheduledSubscriptionAdapter { item ->
-        (activity as? MainActivity)?.openEditor(item.id)
+        (activity as? MainActivity)?.openEditor(item.id, entry = "list")
     }
 
     override fun onCreateView(

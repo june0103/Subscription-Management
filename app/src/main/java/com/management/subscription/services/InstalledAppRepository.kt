@@ -3,6 +3,7 @@ package com.management.subscription.services
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import com.management.subscription.analytics.Analytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -20,7 +21,8 @@ class InstalledAppRepository private constructor(
     private var cachedLauncherApps: List<InstalledAppInfo>? = null
 
     suspend fun getLauncherApps(): List<InstalledAppInfo> = withContext(Dispatchers.IO) {
-        cachedLauncherApps ?: loadLauncherApps().also { cachedLauncherApps = it }
+        cachedLauncherApps ?: Analytics.trace("installed_apps_scan") { loadLauncherApps() }
+            .also { cachedLauncherApps = it }
     }
 
     fun getCachedLauncherApps(): List<InstalledAppInfo> {

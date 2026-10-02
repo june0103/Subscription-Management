@@ -39,7 +39,7 @@ class CalendarFragment : Fragment() {
         viewModel.selectDate(item.date)
     }
     private val selectedAdapter = ScheduledSubscriptionAdapter { item ->
-        (activity as? MainActivity)?.openEditor(item.id)
+        (activity as? MainActivity)?.openEditor(item.id, entry = "calendar")
     }
 
     override fun onCreateView(

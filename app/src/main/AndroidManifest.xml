@@ -13,6 +13,7 @@
     </queries>
 
     <application
+        android:name=".SubscriptionApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,6 +23,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SubscriptionManagement"
         tools:targetApi="31">
+        <!--
+          Firebase 수집은 모두 꺼진 채로 시작하고, 앱이 켜질 때 사용자의 '사용 통계 보내기'
+          설정을 적용한다(SubscriptionApp). 화면 조회는 단일 액티비티라 직접 기록한다.
+        -->
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_performance_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="google_analytics_automatic_screen_reporting_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="google_analytics_default_allow_ad_personalization_signals"
+            android:value="false" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${ADMOB_APP_ID}" />

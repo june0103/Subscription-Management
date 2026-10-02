@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
 }
 
 
@@ -29,6 +32,12 @@ android {
         .orElse("ca-app-pub-3940256099942544/9214589741")
         .get()
     val useRealDebugAds = providers.gradleProperty("USE_REAL_DEBUG_ADS")
+        .map(String::toBoolean)
+        .orElse(false)
+        .get()
+    // 디버그 빌드는 기본으로 사용 통계를 보내지 않는다. DebugView로 확인할 때만
+    // ./gradlew assembleDebug -PENABLE_DEBUG_ANALYTICS=true
+    val enableDebugAnalytics = providers.gradleProperty("ENABLE_DEBUG_ANALYTICS")
         .map(String::toBoolean)
         .orElse(false)
         .get()
@@ -76,6 +85,7 @@ android {
                 "\"$debugBannerAdUnitId\""
             )
             buildConfigField("boolean", "USE_TEST_ADS", (!useRealDebugAds).toString())
+            buildConfigField("boolean", "ANALYTICS_DEFAULT_ENABLED", enableDebugAnalytics.toString())
         }
         release {
             isMinifyEnabled = false
@@ -85,6 +95,7 @@ android {
                 "\"$admobHomeBannerAdUnitId\""
             )
             buildConfigField("boolean", "USE_TEST_ADS", "false")
+            buildConfigField("boolean", "ANALYTICS_DEFAULT_ENABLED", "true")
             if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("release")
             }
@@ -131,6 +142,10 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.google.play.services.ads)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.perf)
     implementation("com.google.android.material:material:1.12.0")
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)

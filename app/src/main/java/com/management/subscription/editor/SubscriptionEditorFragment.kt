@@ -18,6 +18,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.management.subscription.R
 import com.management.subscription.SubscriptionEditorArgs
+import com.management.subscription.analytics.Analytics
+import com.management.subscription.analytics.AnalyticsEvent
 import android.content.res.ColorStateList
 import android.text.SpannableStringBuilder
 import androidx.core.content.ContextCompat
@@ -123,7 +125,8 @@ class SubscriptionEditorFragment : Fragment() {
             viewModel.onSuggestionSelected(
                 displayName = bundle.getString(RESULT_DISPLAY_NAME).orEmpty(),
                 serviceKey = bundle.getString(RESULT_SERVICE_KEY),
-                linkedPackageName = bundle.getString(RESULT_LINKED_PACKAGE)
+                linkedPackageName = bundle.getString(RESULT_LINKED_PACKAGE),
+                source = "discovery"
             )
         }
         childFragmentManager.setFragmentResultListener(BillingDateSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
@@ -282,6 +285,7 @@ class SubscriptionEditorFragment : Fragment() {
 
     private fun openReminderSheet() {
         if (childFragmentManager.findFragmentByTag(ReminderDaysSheet.TAG) != null) return
+        Analytics.log(AnalyticsEvent.ReminderCustomOpen)
         val state = viewModel.uiState.value
         ReminderDaysSheet.newInstance(
             days = state.reminderDaysBefore,

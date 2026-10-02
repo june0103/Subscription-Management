@@ -3,6 +3,9 @@ package com.management.subscription.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.management.subscription.BuildConfig
+import com.management.subscription.analytics.Analytics
+import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.data.SettingsRepository
 import com.management.subscription.notifications.ReminderScheduler
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,7 +23,8 @@ class SettingsViewModel(
             SettingsUiState(
                 notificationsEnabled = settings.notificationsEnabled,
                 reminderHour = settings.reminderHour,
-                reminderMinute = settings.reminderMinute
+                reminderMinute = settings.reminderMinute,
+                analyticsEnabled = settings.analyticsEnabled ?: BuildConfig.ANALYTICS_DEFAULT_ENABLED
             )
         }
         .stateIn(
@@ -29,7 +33,15 @@ class SettingsViewModel(
             initialValue = SettingsUiState()
         )
 
+    fun setAnalyticsEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setAnalyticsEnabled(enabled)
+            Analytics.setCollectionEnabled(enabled)
+        }
+    }
+
     fun setNotificationsEnabled(enabled: Boolean, canSchedule: Boolean) {
+        Analytics.log(AnalyticsEvent.NotificationsToggled(enabled))
         viewModelScope.launch {
             settingsRepository.setNotificationsEnabled(enabled)
             if (enabled && canSchedule) {

@@ -32,6 +32,8 @@ data class SubscriptionEditorUiState(
     val isCategoryChosenByUser: Boolean = false,
     val paymentMethod: PaymentMethod? = null,
     val memo: String = "",
+    /** 서비스를 어떻게 골랐는지(분석용): discovery / suggestion / manual / existing */
+    val identitySource: String = "manual",
     val today: LocalDate = LocalDate.now(),
     val showDelete: Boolean = false,
     val nameErrorResId: Int? = null,

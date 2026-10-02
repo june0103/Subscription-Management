@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
     }
 
     private val timelineAdapter = TimelineAdapter { subscriptionId ->
-        (activity as? MainActivity)?.openEditor(subscriptionId)
+        (activity as? MainActivity)?.openEditor(subscriptionId, entry = "home")
     }
 
     override fun onCreateView(
@@ -56,9 +56,12 @@ class HomeFragment : Fragment() {
             itemAnimator = null
         }
 
-        val openEditor = View.OnClickListener { (activity as? MainActivity)?.openEditor() }
-        binding.fabAddSubscription.setOnClickListener(openEditor)
-        binding.buttonEmptyAdd.setOnClickListener(openEditor)
+        binding.fabAddSubscription.setOnClickListener {
+            (activity as? MainActivity)?.openEditor(entry = "fab")
+        }
+        binding.buttonEmptyAdd.setOnClickListener {
+            (activity as? MainActivity)?.openEditor(entry = "empty_state")
+        }
 
         val openCalendar = View.OnClickListener {
             (activity as? MainActivity)?.openCalendarTab(LocalDate.now())

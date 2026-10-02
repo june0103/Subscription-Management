@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.management.subscription.R
+import com.management.subscription.analytics.Analytics
+import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.data.BillingCycle
 import com.management.subscription.data.PaymentMethod
 import com.management.subscription.data.SubscriptionCategory
@@ -74,6 +76,7 @@ class SubscriptionEditorViewModel(
                 suggestionQuery = name,
                 isSuggestionsLoading = false,
                 serviceKey = if (shouldClearIdentity) null else state.serviceKey,
+                identitySource = if (shouldClearIdentity) "manual" else state.identitySource,
                 linkedPackageName = if (shouldClearIdentity) null else state.linkedPackageName,
                 suggestions = if (name.isBlank()) emptyList() else suggestionRepository.suggestionsFor(name),
                 nameErrorResId = null
@@ -85,14 +88,17 @@ class SubscriptionEditorViewModel(
         onSuggestionSelected(
             displayName = suggestion.displayName,
             serviceKey = suggestion.serviceKey,
-            linkedPackageName = suggestion.linkedPackageName
+            linkedPackageName = suggestion.linkedPackageName,
+            source = "suggestion"
         )
     }
 
+    /** source: 등록 화면 드롭다운이면 suggestion, 설치된 앱에서 찾기면 discovery */
     fun onSuggestionSelected(
         displayName: String,
         serviceKey: String?,
-        linkedPackageName: String?
+        linkedPackageName: String?,
+        source: String
     ) {
         selectedIdentityLabel = displayName
         val catalogCategory = SubscriptionServiceCatalog.defaultCategory(serviceKey)
@@ -106,6 +112,7 @@ class SubscriptionEditorViewModel(
                 serviceKey = serviceKey,
                 linkedPackageName = linkedPackageName,
                 category = if (it.isCategoryChosenByUser) it.category else catalogCategory ?: it.category,
+                identitySource = source,
                 suggestions = suggestionRepository.suggestionsFor(displayName),
                 nameErrorResId = null,
                 textSyncVersion = it.textSyncVersion + 1
@@ -168,6 +175,7 @@ class SubscriptionEditorViewModel(
         }
 
         if (nameError != null || amountError != null) {
+            Analytics.log(AnalyticsEvent.SubscriptionSaveError(field = if (nameError != null) "name" else "amount"))
             _uiState.update { it.copy(nameErrorResId = nameError, amountErrorResId = amountError) }
             return
         }
@@ -198,6 +206,20 @@ class SubscriptionEditorViewModel(
             } else {
                 repository.updateSubscription(subscriptionId, draft)
             }
+            Analytics.log(
+                AnalyticsEvent.SubscriptionSaved(
+                    isEdit = subscriptionId != null,
+                    source = state.identitySource,
+                    // 카탈로그 키만 보낸다. 직접 입력한 서비스명은 보내지 않는다.
+                    serviceKey = draft.serviceKey,
+                    category = draft.category,
+                    paymentMethod = draft.paymentMethod,
+                    cycle = draft.billingCycle,
+                    reminderDays = draft.reminderDaysBefore,
+                    currencyCode = draft.currencyCode,
+                    hasMemo = !draft.memo.isNullOrBlank()
+                )
+            )
             _events.emit(EditorEvent.Saved(trimmedName))
         }
     }
@@ -206,6 +228,7 @@ class SubscriptionEditorViewModel(
         val targetId = subscriptionId ?: return
         viewModelScope.launch {
             repository.deleteSubscription(targetId)
+            Analytics.log(AnalyticsEvent.SubscriptionDeleted)
             _events.emit(EditorEvent.Deleted)
         }
     }
@@ -240,6 +263,7 @@ class SubscriptionEditorViewModel(
                 isCategoryChosenByUser = subscription.category != null,
                 paymentMethod = subscription.paymentMethod,
                 memo = subscription.memo.orEmpty(),
+                identitySource = "existing",
                 showDelete = true,
                 textSyncVersion = it.textSyncVersion + 1
             )

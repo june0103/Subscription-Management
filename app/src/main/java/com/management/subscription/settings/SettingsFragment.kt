@@ -111,6 +111,10 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        binding.switchAnalytics.setOnCheckedChangeListener { _, isChecked ->
+            if (!isRenderingState) viewModel.setAnalyticsEnabled(isChecked)
+        }
+
         binding.layoutReminderTime.setOnClickListener {
             showTimePicker()
         }
@@ -141,6 +145,10 @@ class SettingsFragment : Fragment() {
 
         if (binding.switchNotifications.isChecked != state.notificationsEnabled) {
             binding.switchNotifications.isChecked = state.notificationsEnabled
+        }
+
+        if (binding.switchAnalytics.isChecked != state.analyticsEnabled) {
+            binding.switchAnalytics.isChecked = state.analyticsEnabled
         }
 
         binding.tvReminderTimeValue.text =

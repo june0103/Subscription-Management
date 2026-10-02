@@ -1,5 +1,6 @@
 package com.management.subscription
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -17,6 +19,8 @@ import com.google.android.gms.ads.RequestConfiguration
 import com.management.subscription.notifications.ReminderNotifier
 import com.management.subscription.notifications.ReminderScheduler
 import com.management.subscription.ads.HomeBannerAdController
+import com.management.subscription.analytics.Analytics
+import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 import com.management.subscription.data.BillingCycle
@@ -30,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var pendingCalendarFocusDate: LocalDate? = null
     private var currentDestinationId: Int? = null
     private var mobileAdsInitialized = false
+    private var currentScreenName: String? = null
 
     private val homeBannerAdController by lazy(LazyThreadSafetyMode.NONE) {
         HomeBannerAdController(this)
@@ -55,6 +60,9 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             currentDestinationId = destination.id
+            currentScreenName = screenNames[destination.id]
+            // Firebase는 앱이 앞에 있을 때만 화면 조회를 받는다. 시작 직후 화면은 onResume에서 보낸다.
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) logCurrentScreen()
             binding.bottomNavigation.isVisible = destination.id in topLevelDestinations
             binding.bottomNavigationDivider.isVisible = binding.bottomNavigation.isVisible
             updateBannerVisibility()
@@ -76,6 +84,29 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             ReminderScheduler.getInstance(applicationContext).sync()
         }
+        if (savedInstanceState == null) logNotificationOpen(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logCurrentScreen()
+    }
+
+    private fun logCurrentScreen() {
+        currentScreenName?.let { Analytics.log(AnalyticsEvent.ScreenView(it)) }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        logNotificationOpen(intent)
+    }
+
+    private fun logNotificationOpen(intent: Intent?) {
+        val count = intent?.getIntExtra(ReminderNotifier.EXTRA_NOTIFICATION_COUNT, 0) ?: 0
+        if (count > 0) {
+            Analytics.log(AnalyticsEvent.NotificationOpen(count))
+            intent?.removeExtra(ReminderNotifier.EXTRA_NOTIFICATION_COUNT)
+        }
     }
 
     override fun onDestroy() {
@@ -83,7 +114,12 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun openEditor(subscriptionId: String? = null) {
+    /** entry: 어디서 열었는지(분석용). 새 구독은 fab / empty_state, 기존 구독은 home / calendar / list */
+    fun openEditor(subscriptionId: String? = null, entry: String) {
+        Analytics.log(
+            if (subscriptionId == null) AnalyticsEvent.SubscriptionAddStart(entry)
+            else AnalyticsEvent.SubscriptionOpen(entry)
+        )
         val navController = findNavController(R.id.mainNavHost)
         navController.navigate(
             R.id.subscriptionEditorFragment,
@@ -162,6 +198,15 @@ class MainActivity : AppCompatActivity() {
             "Ad request settings configured. useTestAds=${BuildConfig.USE_TEST_ADS}, testDevices=${testDeviceIds.size}"
         )
     }
+
+    private val screenNames = mapOf(
+        R.id.homeFragment to "home",
+        R.id.calendarFragment to "calendar",
+        R.id.settingsFragment to "settings",
+        R.id.subscriptionEditorFragment to "editor",
+        R.id.subscriptionDiscoveryFragment to "discovery",
+        R.id.subscriptionCycleListFragment to "subscription_list"
+    )
 
     companion object {
         private const val TAG = "AdMobSetup"

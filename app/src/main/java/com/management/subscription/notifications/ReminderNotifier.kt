@@ -19,6 +19,7 @@ object ReminderNotifier {
     const val CHANNEL_ID = "subscription_reminders"
     private const val CHANNEL_NAME = "subscription-reminders"
     private const val NOTIFICATION_ID = 1001
+    const val EXTRA_NOTIFICATION_COUNT = "notification_count"
 
     fun ensureChannel(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
@@ -82,7 +83,7 @@ object ReminderNotifier {
         )
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setAutoCancel(true)
-        .setContentIntent(mainPendingIntent(context))
+        .setContentIntent(mainPendingIntent(context, count = 1))
         .build()
 
     private fun buildSummaryNotification(
@@ -118,13 +119,14 @@ object ReminderNotifier {
             .setStyle(inboxStyle)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
-            .setContentIntent(mainPendingIntent(context))
+            .setContentIntent(mainPendingIntent(context, count = schedules.size))
             .build()
     }
 
-    private fun mainPendingIntent(context: Context): PendingIntent {
+    private fun mainPendingIntent(context: Context, count: Int): PendingIntent {
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(EXTRA_NOTIFICATION_COUNT, count)
         }
         return PendingIntent.getActivity(
             context,

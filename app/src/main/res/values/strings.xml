@@ -143,6 +143,9 @@
     <string name="settings_status_on">매일 %1$s에 결제 예정 구독을 확인해 알려드려요.</string>
     <string name="settings_permission_denied">알림 권한이 없어서 결제 알림을 켤 수 없어요.</string>
     <string name="settings_time_picker_title">알림 시각 선택</string>
+    <string name="settings_section_privacy">개인정보</string>
+    <string name="settings_analytics_title">사용 통계 보내기</string>
+    <string name="settings_analytics_subtitle">앱을 고치는 데 쓰는 사용 기록과 오류 정보를 보내요. 직접 입력한 서비스 이름·금액·메모와 설치된 앱 목록은 보내지 않아요.</string>
     <string name="settings_section_app">앱 정보</string>
     <string name="settings_version">버전</string>
 

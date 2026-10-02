@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.management.subscription.analytics.Analytics
+import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.databinding.FragmentSubscriptionDiscoveryBinding
 import com.management.subscription.services.ServiceSuggestionRepository
 import kotlinx.coroutines.launch
@@ -45,6 +47,7 @@ class SubscriptionDiscoveryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState == null) Analytics.log(AnalyticsEvent.DiscoveryOpen)
         binding.toolbarDiscovery.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -52,6 +55,12 @@ class SubscriptionDiscoveryFragment : Fragment() {
         binding.listSuggestions.adapter = suggestionAdapter
         binding.listSuggestions.setOnItemClickListener { _, _, position, _ ->
             val suggestion = suggestionAdapter.getItemOrNull(position) ?: return@setOnItemClickListener
+            Analytics.log(
+                AnalyticsEvent.DiscoveryPick(
+                    installed = suggestion.linkedPackageName != null,
+                    serviceKey = suggestion.serviceKey
+                )
+            )
             parentFragmentManager.setFragmentResult(
                 SubscriptionEditorFragment.REQUEST_KEY_DISCOVERY_RESULT,
                 bundleOf(
