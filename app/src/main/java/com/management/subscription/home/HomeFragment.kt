@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.text.color
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -119,11 +120,18 @@ class HomeFragment : Fragment() {
 
             state.todaySchedules.isNotEmpty() -> {
                 val count = getString(R.string.home_count_format, state.todaySchedules.size)
-                val accent = ContextCompat.getColor(requireContext(), R.color.due_today_ink)
-                binding.tvHeadline.text = SpannableStringBuilder()
-                    .append(getString(R.string.home_headline_today_prefix))
-                    .color(accent) { append(count) }
-                    .append(getString(R.string.home_headline_today_suffix))
+                val sentence = getString(R.string.home_headline_today_format, count)
+                val start = sentence.indexOf(count)
+                binding.tvHeadline.text = SpannableStringBuilder(sentence).apply {
+                    if (start >= 0) {
+                        setSpan(
+                            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.due_today_ink)),
+                            start,
+                            start + count.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                }
                 binding.tvHeadlineSub.text = getString(
                     R.string.home_headline_sub_format,
                     joinNames(state.todaySchedules.map { it.subscription.name }),

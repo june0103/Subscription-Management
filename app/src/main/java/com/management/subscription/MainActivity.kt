@@ -166,6 +166,8 @@ class MainActivity : AppCompatActivity() {
         )
         if (shouldShowBanner) {
             homeBannerAdController.show(binding.adBannerContainer)
+        } else if (currentDestinationId == R.id.homeFragment) {
+            homeBannerAdController.reserve(binding.adBannerContainer)
         } else {
             homeBannerAdController.hide(binding.adBannerContainer)
         }

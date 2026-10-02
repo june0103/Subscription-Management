@@ -23,8 +23,8 @@
     <!-- 홈 -->
     <string name="home_headline_empty">아직 등록한 구독이 없어요</string>
     <string name="home_headline_empty_sub">구독을 추가하면 결제일을 미리 알려드려요.</string>
-    <string name="home_headline_today_prefix">오늘 결제할 구독이 </string>
-    <string name="home_headline_today_suffix"> 있어요</string>
+    <!-- %1$s(개수)만 강조색. 앞뒤 공백은 리소스에서 잘리므로 문장을 나누지 않는다. -->
+    <string name="home_headline_today_format">오늘 결제할 구독이 %1$s 있어요</string>
     <string name="home_headline_sub_format">%1$s · %2$s</string>
     <string name="home_headline_next_format">다음 결제는 %1$s</string>
     <string name="home_headline_tomorrow">내일이에요</string>
