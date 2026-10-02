@@ -57,7 +57,7 @@
 ## 9. 현재 준비된 파일
 - 출시용 AAB: `app/build/outputs/bundle/release/app-release.aab`
 - 스토어 문구 초안: `docs/play-store-copy-ko.md`
-- 개인정보처리방침 초안: `docs/privacy-policy-draft-ko.md`
+- 개인정보처리방침: `docs/privacy-policy-ko.md` (웹 게시용 `docs/privacy-policy-ko.html`)
 - 대표 그래픽: `marketing/play-store/feature-graphic-1024x500.jpg`
 - 앱 아이콘: `marketing/play-store/play-icon-512.png`
 
