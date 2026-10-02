@@ -187,25 +187,60 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_card"
-            android:gravity="center_vertical"
-            android:minHeight="56dp"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/space_4">
+            android:divider="@drawable/divider_line"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-            <TextView
-                android:layout_width="0dp"
+            <!-- 방침 주소(privacy_policy_url)가 비어 있으면 숨긴다 -->
+            <LinearLayout
+                android:id="@+id/rowPrivacyPolicy"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/settings_version"
-                android:textAppearance="@style/TextAppearance.Gudok.BodyStrong" />
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:minHeight="56dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/space_4">
 
-            <TextView
-                android:id="@+id/tvAppVersion"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_privacy_policy"
+                    android:textAppearance="@style/TextAppearance.Gudok.BodyStrong" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_chevron_right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Gudok.Body"
-                android:textColor="@color/ink_2"
-                tools:text="1.0.1" />
+                android:gravity="center_vertical"
+                android:minHeight="56dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/space_4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_version"
+                    android:textAppearance="@style/TextAppearance.Gudok.BodyStrong" />
+
+                <TextView
+                    android:id="@+id/tvAppVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Gudok.Body"
+                    android:textColor="@color/ink_2"
+                    tools:text="1.0.1" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

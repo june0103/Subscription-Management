@@ -1,6 +1,9 @@
 package com.management.subscription.settings
 
 import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.management.subscription.BuildConfig
 import com.management.subscription.R
 import com.management.subscription.data.SettingsRepository
@@ -74,6 +78,7 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tvAppVersion.text = BuildConfig.VERSION_NAME
+        configurePrivacyPolicyLink()
         configureListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -117,6 +122,19 @@ class SettingsFragment : Fragment() {
 
         binding.layoutReminderTime.setOnClickListener {
             showTimePicker()
+        }
+    }
+
+    private fun configurePrivacyPolicyLink() {
+        val url = getString(R.string.privacy_policy_url).trim()
+        binding.rowPrivacyPolicy.isVisible = url.isNotEmpty()
+        binding.rowPrivacyPolicy.setOnClickListener {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            } catch (e: ActivityNotFoundException) {
+                Snackbar.make(binding.root, R.string.settings_privacy_policy_open_failed, Snackbar.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 

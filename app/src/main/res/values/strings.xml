@@ -148,6 +148,10 @@
     <string name="settings_analytics_subtitle">앱을 고치는 데 쓰는 사용 기록과 오류 정보를 보내요. 직접 입력한 서비스 이름·금액·메모와 설치된 앱 목록은 보내지 않아요.</string>
     <string name="settings_section_app">앱 정보</string>
     <string name="settings_version">버전</string>
+    <string name="settings_privacy_policy">개인정보처리방침</string>
+    <string name="settings_privacy_policy_open_failed">개인정보처리방침을 열 수 있는 브라우저가 없어요.</string>
+    <!-- 웹사이트에 올린 개인정보처리방침 주소. 비어 있으면 설정의 방침 메뉴를 숨긴다. -->
+    <string name="privacy_policy_url" translatable="false">https://sites.google.com/view/managementsubscription/%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EB%B0%A9%EC%B9%A8?authuser=1</string>
 
     <!-- 월간·연간 목록 -->
     <string name="subscription_list_title_annual">연간 구독</string>
