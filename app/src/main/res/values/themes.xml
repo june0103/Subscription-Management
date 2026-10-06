@@ -68,7 +68,12 @@
         <item name="colorSurfaceContainerLow">@color/surface</item>
         <item name="elevationOverlayEnabled">false</item>
         <item name="bottomSheetStyle">@style/Widget.Gudok.BottomSheet</item>
-        <item name="android:navigationBarColor">@color/surface</item>
+        <!--
+          내비게이션 바 색(android:navigationBarColor)을 직접 칠하지 않는다(Android 15에서 지원 중단).
+          대신 시트를 내비게이션 바 뒤까지 그리게 해서, 모든 버전에서 바 뒤가 시트 색으로 보이게 한다.
+          시트 내용은 Material 바텀시트가 바 높이만큼 아래 여백을 넣어 가리지 않는다.
+        -->
+        <item name="enableEdgeToEdge">true</item>
     </style>
 
     <style name="Widget.Gudok.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
