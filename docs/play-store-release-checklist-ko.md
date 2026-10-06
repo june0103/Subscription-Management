@@ -1,69 +1,42 @@
-# 구독체크 플레이스토어 출시 체크리스트
+# 구독체크 업데이트 출시 체크리스트
 
-## 1. 앱 기본 상태 확인
-- [x] 앱 이름을 `구독체크`로 반영
-- [x] `targetSdk` 35 적용
-- [x] 출시용 AAB 생성
-- [x] AdMob 배너 연동
-- [x] 알림 기능 동작
-- [x] 서비스 자동완성 및 자동 찾기 기능 반영
+이미 스토어에 올라간 앱의 새 버전을 낼 때 위에서부터 차례로 확인한다.
+현재 준비 중인 버전: **1.1.0 (versionCode 3)**, 스토어 버전 1.0.1 (versionCode 2).
 
-## 2. 업로드 전 최종 점검
-- [ ] 실제 기기에서 출시 빌드로 구독 추가/수정/삭제 확인
-- [ ] 홈 배너 광고가 홈 화면에서만 보이는지 확인
-- [ ] 알림 권한 요청과 실제 알림 수신 확인
-- [ ] 서비스명 자동완성과 자동 찾기 결과 확인
-- [ ] 설치된 앱 기반 추천이 정상 동작하는지 확인
-- [ ] 앱 재실행 후 데이터 유지 확인
+## 1. 빌드 전
+- [x] `app/build.gradle.kts`의 `versionCode`를 스토어 버전보다 크게, `versionName` 갱신
+- [x] `targetSdk`가 Play 요구 수준인지 확인 (현재 36, 마감 2026-11-01)
+- [x] 단위 테스트 `./gradlew testDebugUnitTest`, lint `./gradlew lintDebug` 오류 0
+- [ ] DB 스키마가 바뀌었으면 기기에서 마이그레이션 테스트 `./gradlew connectedDebugAndroidTest`
 
-## 3. 스토어 등록 정보 준비
-- [ ] 앱 이름
-- [ ] 짧은 설명
-- [ ] 전체 설명
-- [ ] 512x512 앱 아이콘
-- [ ] 1024x500 대표 그래픽
-- [ ] 휴대전화 스크린샷 2장 이상
+## 2. 서명된 AAB 만들기
+- [x] `./gradlew bundleRelease` → `app/build/outputs/bundle/release/app-release.aab`
+- [x] 업로드 키로 서명됐는지 확인 ([release-signing-ko.md](release-signing-ko.md)의 "서명 확인")
+- [x] 릴리즈 APK(`assembleRelease`)를 에뮬레이터에 설치해 시작 → 추가 → 저장 → 홈·캘린더·설정 흐름에서 크래시 없는지 확인
+- [ ] 실제 기기에서 알림 권한 요청과 알림 수신 확인 (스토어 버전이 깔린 기기는 서명이 달라 덮어 설치가 안 되므로 내부 테스트 트랙으로 받아 확인)
 
-## 4. 스크린샷 주의사항
-- [ ] 현재 초안 스크린샷 대신 실제 앱 실행 화면 캡처로 교체
-- [ ] 홈, 캘린더, 등록, 설정 흐름이 보이도록 구성
-- [ ] 스크린샷 안에 과도한 홍보 문구나 실제 UI에 없는 요소를 넣지 않기
+## 3. 업로드 키 (1.1.0 한정)
+- [x] 2026-10-01에 요청한 업로드 키 재설정이 승인됐는지 확인. 승인 전에는 새 키로 서명한 AAB가 거부된다.
 
-## 5. 개인정보 및 정책 문서
-- [ ] 개인정보처리방침을 공개 HTTPS URL로 게시
-- [ ] 자동 찾기 기능이 설치된 앱 정보를 기기 내에서만 사용한다는 내용 반영
-- [ ] AdMob 사용 사실과 외부 SDK 데이터 처리 내용 반영
-- [ ] 지원 이메일 준비
+## 4. Play Console 앱 콘텐츠
+이번 버전에 Firebase(Analytics·Crashlytics·Performance)가 들어갔다.
+- [x] Data safety: 대략적 위치·앱 상호작용·진단·기기 ID 수집, 제3자 공유 예
+- [x] Data safety: '비정상 종료 로그'를 선택 → **필수**로 변경 (사용자가 끌 수 없게 항상 수집)
+- [ ] 개인정보처리방침: Google Sites 페이지를 [privacy-policy-ko.md](privacy-policy-ko.md) 최신본(시행일 2026-10-06)으로 다시 게시
+- [ ] 앱 콘텐츠 → 개인정보처리방침 URL 등록(주소에 `authuser` 붙지 않게)
+- [ ] 광고 포함: 예 (홈 배너) — 변경 없음
 
-## 6. Play Console 입력 항목
-- [ ] App access: 로그인 필요 없음
-- [ ] Ads: 예
-- [ ] Content rating 설문 작성
-- [ ] Target audience 설정
-- [ ] Data safety 작성
-- [ ] 개인정보처리방침 URL 입력
+## 5. 스토어 등록정보
+- [x] 짧은 설명·전체 설명: [play-store-copy-ko.md](play-store-copy-ko.md)
+- [x] 그래픽(아이콘, 그래픽 이미지, 스크린샷 6장)과 대체 텍스트: [store/](store/README.md)
 
-## 7. 광고 관련 확인
-- [ ] 출시 빌드에서 실제 광고 단위로 동작 확인
-- [ ] 테스트 디바이스에서만 검증
-- [ ] 개발자 웹사이트가 준비되면 `app-ads.txt` 검토
-- [ ] EEA/영국/스위스 배포 시 UMP 동의 플로우 검토
+## 6. 출시
+- [ ] 내부 테스트 트랙에 AAB 업로드 → 테스트 기기에서 설치·실행 확인
+- [x] 출시 노트 입력 ([play-store-copy-ko.md](play-store-copy-ko.md)의 "출시 노트")
+- [ ] 프로덕션으로 승격, 단계적 출시 비율 결정
+- [x] 게시 개요에서 "검토를 위해 변경사항 전송" (스토어 등록정보 변경과 함께 보낼 수 있음) — 2026-10-06 프로덕션 검토 요청
 
-## 8. 테스트 트랙
-- [ ] Internal testing 업로드
-- [ ] 필요 시 Closed testing 진행
-- [ ] 개인 개발자 계정 신규 정책 대상이면 12명/14일 요건 확인
-
-## 9. 현재 준비된 파일
-- 출시용 AAB: `app/build/outputs/bundle/release/app-release.aab`
-- 스토어 문구 초안: `docs/play-store-copy-ko.md`
-- 개인정보처리방침: `docs/privacy-policy-ko.md` (웹 게시용 `docs/privacy-policy-ko.html`)
-- 스토어 이미지(아이콘·대표 그래픽·스크린샷 6장, 대체 텍스트): `docs/store/` ([README](store/README.md))
-
-## 10. 제출 순서
-1. Play Console에서 새 앱 생성
-2. 스토어 등록 정보 입력
-3. 앱 콘텐츠 입력
-4. 개인정보처리방침 URL 등록
-5. 테스트 트랙에 AAB 업로드
-6. 검토 후 프로덕션 제출
+## 7. 출시 후
+- [ ] Firebase Crashlytics에 첫 보고서가 들어오는지 확인
+- [ ] Play Console 출시 대시보드의 권장 조치 확인 (edge-to-edge 경고 2건이 사라졌는지)
+- [ ] 출시한 커밋에 태그 달기 (예: `git tag v1.1.0`)

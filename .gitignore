@@ -19,3 +19,4 @@ keystore.properties
 
 # Firebase 설정 (공개 저장소에 올리지 않는다)
 app/google-services.json
+*.pem
