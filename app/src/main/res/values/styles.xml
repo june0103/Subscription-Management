@@ -16,6 +16,17 @@
         <item name="android:fontFeatureSettings">tnum</item>
     </style>
 
+    <!-- 요약 카드의 두 번째 통화(+ $30.99). 첫 통화보다 한 단계 작지만 같은 흰 굵은 숫자 -->
+    <style name="TextAppearance.Gudok.AmountHeroSecondary" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">26sp</item>
+        <item name="lineHeight">32sp</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
     <style name="TextAppearance.Gudok.DateDay" parent="TextAppearance.Material3.HeadlineSmall">
         <item name="android:textSize">26sp</item>
         <item name="lineHeight">28sp</item>

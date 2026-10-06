@@ -53,7 +53,7 @@
                 android:id="@+id/cardTodayBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_6"
+                android:layout_marginTop="@dimen/space_4"
                 android:background="@drawable/bg_today_banner"
                 android:clickable="true"
                 android:focusable="true"
@@ -62,7 +62,7 @@
                 android:minHeight="56dp"
                 android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/space_4"
-                android:paddingVertical="@dimen/space_3"
+                android:paddingVertical="@dimen/space_2"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -84,6 +84,7 @@
                         android:id="@+id/tvTodayTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
                         android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
                         android:textColor="@color/due_today_ink"
                         android:fontFamily="@font/ibm_plex_sans_kr"
@@ -92,8 +93,12 @@
 
                     <TextView
                         android:id="@+id/tvTodayNames"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:includeFontPadding="false"
                         android:textAppearance="@style/TextAppearance.Gudok.BodySmall"
                         android:textColor="@color/due_today_ink"
                         tools:text="YouTube Premium · 쿠팡 와우" />
@@ -107,14 +112,16 @@
                     app:tint="@color/due_today_ink" />
             </LinearLayout>
 
-            <!-- SummaryHero -->
+            <!-- SummaryHero: 다가오는 결제가 한 화면에 더 보이도록 위아래 여백을 줄였다 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_6"
+                android:layout_marginTop="@dimen/space_4"
                 android:background="@drawable/bg_hero"
                 android:orientation="vertical"
-                android:padding="@dimen/space_6">
+                android:paddingHorizontal="@dimen/space_6"
+                android:paddingTop="@dimen/space_4"
+                android:paddingBottom="@dimen/space_2">
 
                 <TextView
                     android:id="@+id/tvMonthlyLabel"
@@ -129,16 +136,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_1"
+                    android:includeFontPadding="false"
                     android:textAppearance="@style/TextAppearance.Gudok.AmountHero"
                     android:textColor="@color/on_brand"
                     tools:text="72,480원" />
 
+                <!-- 달러 등 다른 통화도 실제로 결제되는 돈이라 보조 글씨가 아니라 큰 숫자로 보여 준다 -->
                 <TextView
                     android:id="@+id/tvHeroSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
-                    android:textColor="@color/on_brand_2"
+                    android:layout_marginTop="@dimen/space_1"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/TextAppearance.Gudok.AmountHeroSecondary"
+                    android:textColor="@color/on_brand"
                     tools:text="+ $30.99" />
 
                 <View
@@ -150,7 +161,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_2"
+                    android:layout_marginTop="@dimen/space_1"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -160,8 +171,9 @@
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:minHeight="48dp"
+                        android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:paddingVertical="@dimen/space_2">
+                        android:paddingVertical="@dimen/space_1">
 
                         <TextView
                             android:id="@+id/tvMonthlyCountValue"
@@ -188,8 +200,9 @@
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:minHeight="48dp"
+                        android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:paddingVertical="@dimen/space_2">
+                        android:paddingVertical="@dimen/space_1">
 
                         <TextView
                             android:id="@+id/tvAnnualCountValue"
@@ -213,8 +226,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:paddingVertical="@dimen/space_2">
+                        android:paddingVertical="@dimen/space_1">
 
                         <TextView
                             android:id="@+id/tvDueThisWeekValue"
@@ -236,11 +250,11 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 다가오는 결제 -->
+            <!-- 다가오는 결제. 제목 줄 자체가 48dp(캘린더 보기 터치 영역)라 위 간격은 조금만 둔다 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_6"
+                android:layout_marginTop="@dimen/space_3"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

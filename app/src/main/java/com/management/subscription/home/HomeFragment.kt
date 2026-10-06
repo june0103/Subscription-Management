@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import androidx.core.view.isVisible
+import androidx.core.view.doOnLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -159,11 +161,8 @@ class HomeFragment : Fragment() {
                         )
                     }
                 }
-                binding.tvHeadlineSub.text = getString(
-                    R.string.home_headline_sub_format,
-                    joinNames(state.todaySchedules.map { it.subscription.name }),
-                    SubscriptionFormatters.totals(state.todayTotals)
-                )
+                // 서비스와 금액은 바로 아래 오늘 결제 배너가 보여 주므로 여기서는 반복하지 않는다.
+                binding.tvHeadlineSub.text = ""
             }
 
             else -> {
@@ -197,7 +196,20 @@ class HomeFragment : Fragment() {
             R.string.home_today_banner_format,
             SubscriptionFormatters.totals(state.todayTotals)
         )
-        binding.tvTodayNames.text = state.todaySchedules.joinToString(" · ") { it.subscription.name }
+        val names = state.todaySchedules.map { it.subscription.name }
+        // 화면 낭독기는 줄인 문구 대신 모든 서비스 이름을 읽는다.
+        binding.tvTodayNames.contentDescription = names.joinToString(", ")
+        // 한 줄에 들어가는 이름까지만 쓰고 나머지는 "외 N개". 폭은 배치가 끝나야 알 수 있다.
+        binding.tvTodayNames.doOnLayout { view ->
+            val namesView = view as TextView
+            val width = (namesView.width - namesView.totalPaddingLeft - namesView.totalPaddingRight).toFloat()
+            namesView.text = ServiceNamesLine.fit(
+                names = names,
+                maxWidth = width,
+                measure = namesView.paint::measureText,
+                more = { getString(R.string.home_today_more_format, it) }
+            )
+        }
     }
 
     /** 원화 합계를 크게, 다른 통화는 아래 줄에 "+ $30.99"로. 서로 더하지 않는다. */
