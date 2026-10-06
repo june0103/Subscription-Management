@@ -42,4 +42,16 @@
     <color name="cat_etc">#FF6E7484</color>
 
     <color name="scrim">#7A0E1422</color>
+
+    <!-- 시작 화면. 라이트·다크 모드 모두 같은 남색 브랜드 화면을 쓴다. -->
+    <color name="splash_background">#FF163A5A</color>
+    <color name="splash_top">#FF172D50</color>
+    <color name="splash_bottom">#FF123E59</color>
+    <color name="splash_glow">#FF2B5878</color>
+    <color name="splash_glow_edge">#002B5878</color>
+    <color name="splash_tagline">#FFCFD8E3</color>
+    <color name="splash_check_start">#FFFF9775</color>
+    <color name="splash_check_end">#FFFFA77D</color>
+    <color name="splash_check_highlight">#59FFE4D2</color>
+    <color name="splash_check_shadow">#73061224</color>
 </resources>

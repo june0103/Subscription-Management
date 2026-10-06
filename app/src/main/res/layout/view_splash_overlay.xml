@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  시스템 시작 화면을 이어받는 오버레이. 로고(288dp 캔버스)는 화면 정가운데에서 시작해
+  시스템 시작 화면의 아이콘과 정확히 겹친다. 끝나면 MainActivity가 이 뷰를 지운다.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:importantForAccessibility="noHideDescendants">
+
+    <!--
+      배경 빛은 처음부터 거의 투명하게(0.01) 그려 둔다. 0이면 아예 안 그려져서 나타나는 첫 프레임에
+      그라데이션을 처음 그리느라 멈칫한다. 겹치는 자식이 없으니 투명도를 바로 적용해 큰 레이어를 만들지 않는다.
+    -->
+    <View
+        android:id="@+id/splashGlow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.01"
+        android:background="@drawable/bg_splash"
+        android:forceHasOverlappingRendering="false" />
+
+    <FrameLayout
+        android:id="@+id/splashLogo"
+        android:layout_width="288dp"
+        android:layout_height="288dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/splash_icon" />
+
+        <com.management.subscription.splash.SplashCheckView
+            android:id="@+id/splashCheck"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <!-- 로고 아래 글자. 위치는 코드에서 로고 기준으로 잡는다. -->
+    <LinearLayout
+        android:id="@+id/splashTexts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/splashTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:forceHasOverlappingRendering="false"
+            android:fontFamily="@font/ibm_plex_sans_kr"
+            android:includeFontPadding="false"
+            android:letterSpacing="-0.02"
+            android:text="@string/app_name"
+            android:textColor="@color/on_brand"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/splashTagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:alpha="0"
+            android:forceHasOverlappingRendering="false"
+            android:fontFamily="@font/ibm_plex_sans_kr"
+            android:includeFontPadding="false"
+            android:text="@string/splash_tagline"
+            android:textColor="@color/splash_tagline"
+            android:textSize="16sp" />
+    </LinearLayout>
+</FrameLayout>

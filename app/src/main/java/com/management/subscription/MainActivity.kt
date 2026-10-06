@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -22,6 +23,7 @@ import com.management.subscription.ads.HomeBannerAdController
 import com.management.subscription.analytics.Analytics
 import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.databinding.ActivityMainBinding
+import com.management.subscription.splash.SplashIntro
 import kotlinx.coroutines.launch
 import com.management.subscription.data.BillingCycle
 import com.management.subscription.subscriptionlist.SubscriptionCycleListArgs
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private var pendingCalendarFocusDate: LocalDate? = null
     private var currentDestinationId: Int? = null
     private var mobileAdsInitialized = false
+    private var adsStarted = false
     private var currentScreenName: String? = null
 
     private val homeBannerAdController by lazy(LazyThreadSafetyMode.NONE) {
@@ -47,11 +50,17 @@ class MainActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // 시스템 시작 화면(Theme.Gudok.Starting)을 붙이고 앱 테마로 바꾼다. super.onCreate보다 먼저 불러야 한다.
+        val splashScreen = installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         applySystemBarInsets()
+        val playIntro = SplashIntro.shouldPlay(intent, isFreshStart = savedInstanceState == null)
+        if (playIntro) {
+            SplashIntro.play(this, splashScreen, onFinished = ::startAds)
+        }
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.mainNavHost) as NavHostFragment
@@ -75,16 +84,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         ReminderNotifier.ensureChannel(this)
+        // 광고 SDK 초기화는 웹뷰를 띄우느라 메인 스레드를 수백 ms 붙잡는다.
+        // 시작 애니메이션이 있으면 끝난 뒤에 시작해 체크가 끊기지 않게 한다.
+        if (!playIntro) startAds()
+        lifecycleScope.launch {
+            ReminderScheduler.getInstance(applicationContext).sync()
+        }
+        if (savedInstanceState == null) logNotificationOpen(intent)
+    }
+
+    private fun startAds() {
+        if (adsStarted || isFinishing || isDestroyed) return
+        adsStarted = true
         configureAdRequestSettings()
         MobileAds.initialize(this) {
             mobileAdsInitialized = true
             Log.d(TAG, "Mobile Ads initialized. useTestAds=${BuildConfig.USE_TEST_ADS}")
             updateBannerVisibility()
         }
-        lifecycleScope.launch {
-            ReminderScheduler.getInstance(applicationContext).sync()
-        }
-        if (savedInstanceState == null) logNotificationOpen(intent)
     }
 
     override fun onResume() {

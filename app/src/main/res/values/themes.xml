@@ -64,6 +64,18 @@
     <!-- 앱 테마. Android 13+에서는 values-v33에서 한국어 줄바꿈을 단어 단위로 바꾼다. -->
     <style name="Theme.SubscriptionManagement" parent="Base.Theme.SubscriptionManagement" />
 
+    <!--
+      앱을 처음 켤 때 보이는 시스템 시작 화면. Android 12+는 SplashScreen API, 그 아래는
+      core-splashscreen이 같은 모양을 흉내 낸다. 체크 없는 달력 로고만 띄우고,
+      앱이 뜨면 MainActivity가 같은 자리에서 체크를 그리는 애니메이션으로 이어받는다.
+      로고는 288dp 캔버스 가운데 152dp라서 Android 12+의 원형 마스크(지름 192dp)에 잘리지 않는다.
+    -->
+    <style name="Theme.Gudok.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.SubscriptionManagement</item>
+    </style>
+
     <style name="ThemeOverlay.Gudok.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="colorSurfaceContainerLow">@color/surface</item>
         <item name="elevationOverlayEnabled">false</item>

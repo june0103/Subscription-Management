@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 시작 화면 배경: 위에서 아래로 남색→청록 그라데이션 + 로고 뒤의 은은한 빛 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:endColor="@color/splash_bottom"
+                android:startColor="@color/splash_top"
+                android:type="linear" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:centerX="0.5"
+                android:centerY="0.43"
+                android:endColor="@color/splash_glow_edge"
+                android:gradientRadius="65%p"
+                android:startColor="@color/splash_glow"
+                android:type="radial" />
+        </shape>
+    </item>
+</layer-list>

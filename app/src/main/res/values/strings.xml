@@ -2,6 +2,7 @@
 <!-- 문구 규칙: 해요체, 짧게, 느낌표·이모지 없이. 금액 14,900원 / $10.99, 날짜 10월 2일 (금). -->
 <resources>
     <string name="app_name">구독체크</string>
+    <string name="splash_tagline">흩어진 구독, 한눈에 체크</string>
 
 
     <string name="tab_home">홈</string>
