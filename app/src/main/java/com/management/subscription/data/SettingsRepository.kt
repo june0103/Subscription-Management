@@ -39,12 +39,6 @@ class SettingsRepository private constructor(
         }
     }
 
-    suspend fun setAnalyticsEnabled(enabled: Boolean) {
-        appContext.settingsDataStore.edit { preferences ->
-            preferences[KEY_ANALYTICS_ENABLED] = enabled
-        }
-    }
-
     suspend fun updateLastDispatchDate(date: LocalDate?) {
         appContext.settingsDataStore.edit { preferences ->
             if (date == null) {
@@ -64,8 +58,7 @@ class SettingsRepository private constructor(
             notificationsEnabled = preferences[KEY_NOTIFICATIONS_ENABLED] ?: false,
             reminderHour = preferences[KEY_REMINDER_HOUR] ?: 9,
             reminderMinute = preferences[KEY_REMINDER_MINUTE] ?: 0,
-            lastDispatchDate = lastDispatchDate,
-            analyticsEnabled = preferences[KEY_ANALYTICS_ENABLED]
+            lastDispatchDate = lastDispatchDate
         )
     }
 
@@ -74,7 +67,6 @@ class SettingsRepository private constructor(
         private val KEY_REMINDER_HOUR = intPreferencesKey("reminder_hour")
         private val KEY_REMINDER_MINUTE = intPreferencesKey("reminder_minute")
         private val KEY_LAST_DISPATCH_DATE = stringPreferencesKey("last_dispatch_date")
-        private val KEY_ANALYTICS_ENABLED = booleanPreferencesKey("analytics_enabled")
 
         @Volatile
         private var instance: SettingsRepository? = null

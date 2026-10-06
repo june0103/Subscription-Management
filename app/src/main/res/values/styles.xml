@@ -238,6 +238,8 @@
         <item name="android:textSize">13sp</item>
         <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
         <item name="android:textColor">@color/due_later_ink</item>
+        <!-- 높이가 고정된 라벨이라, 글꼴 위쪽 여백(includeFontPadding)이 붙으면 글자가 아래로 쏠린다 -->
+        <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="Widget.Gudok.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">

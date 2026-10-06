@@ -3,7 +3,6 @@ package com.management.subscription.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.management.subscription.BuildConfig
 import com.management.subscription.analytics.Analytics
 import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.data.SettingsRepository
@@ -23,8 +22,7 @@ class SettingsViewModel(
             SettingsUiState(
                 notificationsEnabled = settings.notificationsEnabled,
                 reminderHour = settings.reminderHour,
-                reminderMinute = settings.reminderMinute,
-                analyticsEnabled = settings.analyticsEnabled ?: BuildConfig.ANALYTICS_DEFAULT_ENABLED
+                reminderMinute = settings.reminderMinute
             )
         }
         .stateIn(
@@ -32,13 +30,6 @@ class SettingsViewModel(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = SettingsUiState()
         )
-
-    fun setAnalyticsEnabled(enabled: Boolean) {
-        viewModelScope.launch {
-            settingsRepository.setAnalyticsEnabled(enabled)
-            Analytics.setCollectionEnabled(enabled)
-        }
-    }
 
     fun setNotificationsEnabled(enabled: Boolean, canSchedule: Boolean) {
         Analytics.log(AnalyticsEvent.NotificationsToggled(enabled))

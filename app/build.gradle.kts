@@ -35,7 +35,8 @@ android {
         .map(String::toBoolean)
         .orElse(false)
         .get()
-    // 디버그 빌드는 기본으로 사용 통계를 보내지 않는다. DebugView로 확인할 때만
+    // 릴리스는 항상 사용 통계를 보낸다. 디버그는 테스트 데이터가 섞이지 않게 기본으로 끄고,
+    // DebugView로 확인할 때만
     // ./gradlew assembleDebug -PENABLE_DEBUG_ANALYTICS=true
     val enableDebugAnalytics = providers.gradleProperty("ENABLE_DEBUG_ANALYTICS")
         .map(String::toBoolean)
@@ -85,7 +86,7 @@ android {
                 "\"$debugBannerAdUnitId\""
             )
             buildConfigField("boolean", "USE_TEST_ADS", (!useRealDebugAds).toString())
-            buildConfigField("boolean", "ANALYTICS_DEFAULT_ENABLED", enableDebugAnalytics.toString())
+            buildConfigField("boolean", "ANALYTICS_ENABLED", enableDebugAnalytics.toString())
         }
         release {
             isMinifyEnabled = false
@@ -95,7 +96,7 @@ android {
                 "\"$admobHomeBannerAdUnitId\""
             )
             buildConfigField("boolean", "USE_TEST_ADS", "false")
-            buildConfigField("boolean", "ANALYTICS_DEFAULT_ENABLED", "true")
+            buildConfigField("boolean", "ANALYTICS_ENABLED", "true")
             if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("release")
             }

@@ -46,14 +46,15 @@ class SubscriptionEditorFragment : Fragment() {
     private val binding get() = checkNotNull(_binding)
 
     /** 칩으로 바로 고르는 알림 시점. 나머지 값은 "직접 설정" 칩에 표시된다. */
-    private val reminderPresets by lazy(LazyThreadSafetyMode.NONE) {
-        mapOf(
+    // 화면(뷰)이 다시 만들어지면 칩도 새로 생기므로 매번 현재 뷰에서 찾는다.
+    // (by lazy로 두면 '설치된 앱에서 찾기'에서 돌아온 뒤 예전 칩을 가리켜 새 칩이 비어 보였다.)
+    private val reminderPresets
+        get() = mapOf(
             0 to binding.chipReminder0,
             1 to binding.chipReminder1,
             3 to binding.chipReminder3,
             7 to binding.chipReminder7
         )
-    }
     private var isRenderingState = false
     private var appliedTextSyncVersion = -1
     private val categoryChips = mutableMapOf<SubscriptionCategory, Chip>()

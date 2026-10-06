@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SubscriptionManagement" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.SubscriptionManagement" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/bg</item>
         <item name="android:colorBackground">@color/bg</item>
         <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
@@ -41,6 +41,9 @@
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Gudok.BottomSheet</item>
         <item name="materialSwitchStyle">@style/Widget.Gudok.Switch</item>
     </style>
+
+    <!-- 앱 테마. Android 13+에서는 values-v33에서 한국어 줄바꿈을 단어 단위로 바꾼다. -->
+    <style name="Theme.SubscriptionManagement" parent="Base.Theme.SubscriptionManagement" />
 
     <style name="ThemeOverlay.Gudok.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="colorSurfaceContainerLow">@color/surface</item>
