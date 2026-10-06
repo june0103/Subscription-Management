@@ -55,8 +55,14 @@ object ReminderNotifier {
             buildSummaryNotification(context, schedules)
         }
 
-        notificationManager.notify(CHANNEL_NAME, NOTIFICATION_ID, notification)
-        return true
+        // 위에서 권한을 확인했지만, 그 직후 사용자가 설정에서 알림을 끄면 여기서 예외가 난다.
+        // 그때는 이번 알림만 건너뛴다.
+        return try {
+            notificationManager.notify(CHANNEL_NAME, NOTIFICATION_ID, notification)
+            true
+        } catch (e: SecurityException) {
+            false
+        }
     }
 
     private fun buildSingleNotification(
