@@ -103,8 +103,6 @@ AdMob 앱 ID와 광고 단위 ID는 `gradle.properties`에 있습니다. 값이 
 | [docs/release-signing-ko.md](docs/release-signing-ko.md) | 업로드 키·서명 설정 |
 | [docs/play-store-release-checklist-ko.md](docs/play-store-release-checklist-ko.md) | 출시 체크리스트 |
 
-`marketing/play-store/`는 1.0 시절의 이전 스토어 이미지입니다. 현재 이미지는 `docs/store/`에 있습니다.
-
 ## 라이선스
 
 앱 코드의 라이선스는 아직 정하지 않았습니다. 번들된 IBM Plex Sans KR 글꼴은 SIL Open Font License 1.1을 따릅니다.

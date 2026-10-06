@@ -58,8 +58,7 @@
 - 출시용 AAB: `app/build/outputs/bundle/release/app-release.aab`
 - 스토어 문구 초안: `docs/play-store-copy-ko.md`
 - 개인정보처리방침: `docs/privacy-policy-ko.md` (웹 게시용 `docs/privacy-policy-ko.html`)
-- 대표 그래픽: `marketing/play-store/feature-graphic-1024x500.jpg`
-- 앱 아이콘: `marketing/play-store/play-icon-512.png`
+- 스토어 이미지(아이콘·대표 그래픽·스크린샷 6장, 대체 텍스트): `docs/store/` ([README](store/README.md))
 
 ## 10. 제출 순서
 1. Play Console에서 새 앱 생성
