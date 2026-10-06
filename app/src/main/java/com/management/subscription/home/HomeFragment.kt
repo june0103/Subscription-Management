@@ -1,5 +1,6 @@
 package com.management.subscription.home
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.management.subscription.data.BillingCycle
 import com.management.subscription.data.CurrencyTotal
 import com.management.subscription.data.SubscriptionRepository
 import com.management.subscription.databinding.FragmentHomeBinding
+import com.management.subscription.databinding.ItemCategorySpendBinding
 import com.management.subscription.util.SubscriptionFormatters
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -105,6 +107,35 @@ class HomeFragment : Fragment() {
         binding.recyclerUpcoming.isVisible = state.hasSubscriptions
         binding.cardHomeEmptyState.isVisible = !state.hasSubscriptions
         timelineAdapter.submitList(state.timeline)
+        renderCategorySpend(state)
+    }
+
+    private fun renderCategorySpend(state: HomeUiState) {
+        binding.sectionCategorySpend.isVisible = state.categorySpend.isNotEmpty()
+        binding.tvCategoryBasis.text =
+            getString(R.string.home_category_basis_format, state.today.monthValue)
+
+        val container = binding.containerCategorySpend
+        container.removeAllViews()
+        state.categorySpend.forEach { spend ->
+            val row = ItemCategorySpendBinding.inflate(layoutInflater, container, false)
+            val label = spend.category?.label ?: getString(R.string.home_category_uncategorized)
+            val color = ContextCompat.getColor(
+                requireContext(),
+                spend.category?.colorRes ?: R.color.ink_3
+            )
+            val amount = SubscriptionFormatters.totals(spend.totals)
+            row.viewDot.backgroundTintList = ColorStateList.valueOf(color)
+            row.tvCategory.text = label
+            row.tvCount.text = getString(R.string.home_count_format, spend.count)
+            row.tvAmount.text = amount
+            row.progressShare.setIndicatorColor(color)
+            // 아주 작은 비중도 막대가 보이도록 최소 길이를 둔다.
+            row.progressShare.progress = (spend.share * 1000).toInt().coerceAtLeast(12)
+            row.root.contentDescription =
+                getString(R.string.home_category_row_description, label, spend.count, amount)
+            container.addView(row.root)
+        }
     }
 
     private fun renderHeadline(state: HomeUiState) {

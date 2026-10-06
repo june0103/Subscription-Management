@@ -41,6 +41,10 @@
     <string name="home_due_this_week_title">이번 주 결제</string>
     <string name="home_upcoming_title">다가오는 결제</string>
     <string name="home_more">캘린더 보기</string>
+    <string name="home_category_title">카테고리별 지출</string>
+    <string name="home_category_basis_format">%1$d월 결제 기준</string>
+    <string name="home_category_uncategorized">미분류</string>
+    <string name="home_category_row_description">%1$s, %2$d개, %3$s</string>
     <string name="home_add_subscription">구독 추가</string>
     <string name="home_empty_body">등록된 구독이 없어요</string>
     <string name="timeline_group_summary_format">%1$d건 · %2$s</string>

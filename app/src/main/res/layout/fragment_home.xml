@@ -296,6 +296,51 @@
                     android:paddingHorizontal="@dimen/space_6"
                     android:text="@string/home_add_subscription" />
             </LinearLayout>
+
+            <!-- 카테고리별 지출: 요약 카드와 같은 이번 달 결제 기준 -->
+            <LinearLayout
+                android:id="@+id/sectionCategorySpend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:accessibilityHeading="true"
+                        android:text="@string/home_category_title"
+                        android:textAppearance="@style/TextAppearance.Gudok.Title" />
+
+                    <TextView
+                        android:id="@+id/tvCategoryBasis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.Gudok.Caption"
+                        android:textColor="@color/ink_3"
+                        tools:text="10월 결제 기준" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/containerCategorySpend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_2"
+                    android:background="@drawable/bg_card"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/space_4"
+                    android:paddingVertical="@dimen/space_2" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

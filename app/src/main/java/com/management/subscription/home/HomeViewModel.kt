@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.management.subscription.data.BillingCycle
 import com.management.subscription.data.SubscriptionRepository
+import com.management.subscription.domain.CategorySpendCalculator
 import com.management.subscription.domain.SubscriptionScheduleCalculator
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -49,6 +50,7 @@ class HomeViewModel(
                 monthlyCount = subscriptions.count { it.billingCycle == BillingCycle.MONTHLY },
                 annualCount = subscriptions.count { it.billingCycle == BillingCycle.ANNUAL },
                 monthTotals = SubscriptionScheduleCalculator.currencyTotals(monthlySchedules),
+                categorySpend = CategorySpendCalculator.spendByCategory(monthlySchedules),
                 timeline = groups.take(TIMELINE_GROUP_COUNT)
             )
         }

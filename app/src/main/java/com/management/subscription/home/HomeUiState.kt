@@ -2,6 +2,7 @@ package com.management.subscription.home
 
 import com.management.subscription.data.CurrencyTotal
 import com.management.subscription.data.ScheduledSubscription
+import com.management.subscription.domain.CategorySpend
 import java.time.LocalDate
 
 data class HomeUiState(
@@ -17,6 +18,8 @@ data class HomeUiState(
     val monthlyCount: Int = 0,
     val annualCount: Int = 0,
     val monthTotals: List<CurrencyTotal> = emptyList(),
+    /** 이번 달 결제를 카테고리별로 묶은 합계. 비어 있으면 섹션을 숨긴다. */
+    val categorySpend: List<CategorySpend> = emptyList(),
     val timeline: List<TimelineGroup> = emptyList()
 )
 
