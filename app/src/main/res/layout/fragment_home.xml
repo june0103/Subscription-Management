@@ -86,6 +86,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
                         android:textColor="@color/due_today_ink"
+                        android:fontFamily="@font/ibm_plex_sans_kr"
                         android:textStyle="bold"
                         tools:text="오늘 22,790원이 결제돼요" />
 
@@ -93,7 +94,7 @@
                         android:id="@+id/tvTodayNames"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.Gudok.Label"
+                        android:textAppearance="@style/TextAppearance.Gudok.BodySmall"
                         android:textColor="@color/due_today_ink"
                         tools:text="YouTube Premium · 쿠팡 와우" />
                 </LinearLayout>
@@ -168,6 +169,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
                             android:textColor="@color/on_brand"
+                            android:fontFamily="@font/ibm_plex_sans_kr"
                             android:textStyle="bold"
                             tools:text="9개" />
 
@@ -195,6 +197,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
                             android:textColor="@color/on_brand"
+                            android:fontFamily="@font/ibm_plex_sans_kr"
                             android:textStyle="bold"
                             tools:text="1개" />
 
@@ -219,6 +222,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
                             android:textColor="@color/on_brand"
+                            android:fontFamily="@font/ibm_plex_sans_kr"
                             android:textStyle="bold"
                             tools:text="4건" />
 

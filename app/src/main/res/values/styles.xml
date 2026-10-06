@@ -81,6 +81,16 @@
         <item name="android:textColor">@color/ink_2</item>
     </style>
 
+    <!-- 13sp 보통 굵기. 설명 문장(설정 부제, 시트 안내, 요약 줄)에 쓴다. Label은 굵은 라벨용. -->
+    <style name="TextAppearance.Gudok.BodySmall" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
     <style name="TextAppearance.Gudok.Caption" parent="TextAppearance.Material3.BodySmall">
         <item name="android:textSize">12sp</item>
         <item name="lineHeight">16sp</item>
@@ -193,6 +203,19 @@
         <item name="helperTextTextColor">@color/ink_2</item>
     </style>
 
+    <!-- 한 줄 입력칸 안의 EditText. 서비스 이름과 금액이 같은 높이·글자 크기를 쓴다. -->
+    <style name="Widget.Gudok.EditText.SingleLine" parent="">
+        <item name="android:minHeight">@dimen/input_height</item>
+        <item name="android:paddingStart">@dimen/space_4</item>
+        <item name="android:paddingEnd">@dimen/space_4</item>
+        <item name="android:paddingTop">@dimen/space_3</item>
+        <item name="android:paddingBottom">@dimen/space_3</item>
+        <item name="android:maxLines">1</item>
+        <!-- Plex의 위아래 여백 때문에 52dp보다 커지지 않게 한다 -->
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textAppearance">@style/TextAppearance.Gudok.BodyStrong</item>
+    </style>
+
     <style name="Widget.Gudok.TextInput.Search" parent="Widget.Gudok.TextInput">
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
@@ -268,4 +291,71 @@
         <item name="android:background">@color/line</item>
     </style>
 
+
+    <!-- 텍스트 스타일을 따로 주지 않은 TextView의 기본값 -->
+    <style name="Widget.Gudok.TextView" parent="android:Widget.Material.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.Gudok.Body</item>
+    </style>
+
+    <!-- Material 컴포넌트 기본 글자 스타일(시간 선택기, 스낵바 등)에 Plex를 입힌다 -->
+    <style name="TextAppearance.Gudok.M3.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+    </style>
+    <style name="TextAppearance.Gudok.M3.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+        <item name="fontFamily">@font/ibm_plex_sans_kr_semibold</item>
+    </style>
 </resources>

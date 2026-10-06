@@ -62,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_notifications_subtitle"
-                        android:textAppearance="@style/TextAppearance.Gudok.Label"
+                        android:textAppearance="@style/TextAppearance.Gudok.BodySmall"
                         android:textColor="@color/ink_2" />
                 </LinearLayout>
 
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_time_subtitle"
-                        android:textAppearance="@style/TextAppearance.Gudok.Label"
+                        android:textAppearance="@style/TextAppearance.Gudok.BodySmall"
                         android:textColor="@color/ink_2" />
                 </LinearLayout>
 

@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFeatureSettings="tnum"
-                    android:textAppearance="@style/TextAppearance.Gudok.Label"
+                    android:textAppearance="@style/TextAppearance.Gudok.BodySmall"
                     tools:text="9건 · 72,480원 + $30.99" />
             </LinearLayout>
 

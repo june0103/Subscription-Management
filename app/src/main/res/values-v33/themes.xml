@@ -5,10 +5,10 @@
       "바꿀 수 있어/요"처럼 단어가 잘린다. 모든 TextView에 phrase 줄바꿈을 적용한다.
     -->
     <style name="Theme.SubscriptionManagement" parent="Base.Theme.SubscriptionManagement">
-        <item name="android:textViewStyle">@style/Widget.Gudok.TextView</item>
+        <item name="android:textViewStyle">@style/Widget.Gudok.TextView.Phrase</item>
     </style>
 
-    <style name="Widget.Gudok.TextView" parent="android:Widget.Material.TextView">
+    <style name="Widget.Gudok.TextView.Phrase" parent="Widget.Gudok.TextView">
         <item name="android:lineBreakWordStyle">phrase</item>
     </style>
 </resources>

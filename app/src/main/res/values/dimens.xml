@@ -16,6 +16,8 @@
     <!-- 크기 -->
     <dimen name="screen_gutter">16dp</dimen>
     <dimen name="button_height">52dp</dimen>
+    <!-- 한 줄 입력칸(서비스 이름, 금액, 검색)은 주요 버튼과 같은 높이 -->
+    <dimen name="input_height">52dp</dimen>
     <dimen name="chip_height">36dp</dimen>
     <dimen name="service_icon">44dp</dimen>
     <dimen name="service_icon_sm">36dp</dimen>

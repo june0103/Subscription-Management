@@ -96,6 +96,9 @@ class SubscriptionEditorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // 새 뷰의 입력칸은 비어 있으므로 첫 렌더에서 상태 값으로 채운다.
         appliedTextSyncVersion = -1
+        // '원'·'$' 표시도 입력 글자처럼 위아래 여백을 빼야 금액 칸이 서비스 칸과 같은 높이가 된다.
+        binding.tilAmount.prefixTextView.includeFontPadding = false
+        binding.tilAmount.suffixTextView.includeFontPadding = false
         configureResults()
         configureToolbar()
         configureServiceNameInput()

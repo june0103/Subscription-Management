@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_1"
             android:text="@string/billing_sheet_body"
-            android:textAppearance="@style/TextAppearance.Gudok.Label"
+            android:textAppearance="@style/TextAppearance.Gudok.BodySmall"
             android:textColor="@color/ink_2" />
 
         <LinearLayout
