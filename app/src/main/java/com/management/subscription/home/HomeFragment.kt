@@ -68,7 +68,6 @@ class HomeFragment : Fragment() {
             (activity as? MainActivity)?.openCalendarTab(LocalDate.now())
         }
         binding.tvViewAll.setOnClickListener(openCalendar)
-        binding.buttonCalendarAll.setOnClickListener(openCalendar)
         binding.cardTodayBanner.setOnClickListener(openCalendar)
         binding.cardAnnualSubscriptions.setOnClickListener {
             (activity as? MainActivity)?.openSubscriptionList(BillingCycle.ANNUAL)
@@ -104,9 +103,6 @@ class HomeFragment : Fragment() {
             getString(R.string.home_due_this_week_value, state.dueThisWeekCount)
 
         binding.recyclerUpcoming.isVisible = state.hasSubscriptions
-        binding.buttonCalendarAll.isVisible = state.hasSubscriptions
-        binding.buttonCalendarAll.text =
-            getString(R.string.home_calendar_all_format, state.today.monthValue)
         binding.cardHomeEmptyState.isVisible = !state.hasSubscriptions
         timelineAdapter.submitList(state.timeline)
     }

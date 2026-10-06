@@ -276,8 +276,10 @@ object SubscriptionServiceCatalog {
             "coupang_wow", "naver_plus", "amazon_prime", "baemin_club", "yogiyo_pass", "coupang_eats"
         ).forEach { put(it, SubscriptionCategory.LIFE) }
         listOf(
-            "google_one", "chatgpt_plus", "claude_pro", "gemini_advanced", "perplexity_pro",
-            "copilot_pro", "notion_ai", "grammarly_pro", "canva_pro"
+            "chatgpt_plus", "claude_pro", "gemini_advanced", "perplexity_pro", "copilot_pro"
+        ).forEach { put(it, SubscriptionCategory.AI) }
+        listOf(
+            "google_one", "notion_ai", "grammarly_pro", "canva_pro"
         ).forEach { put(it, SubscriptionCategory.WORK) }
     }
 

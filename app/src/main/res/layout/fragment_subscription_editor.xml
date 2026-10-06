@@ -268,13 +268,6 @@
                     tools:text="3일 전" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chipReminder7"
-                    style="@style/Widget.Gudok.Chip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="7일 전" />
-
-                <com.google.android.material.chip.Chip
                     android:id="@+id/chipReminderCustom"
                     style="@style/Widget.Gudok.Chip"
                     android:layout_width="wrap_content"
@@ -343,9 +336,7 @@
                 android:layout_height="wrap_content"
                 app:counterEnabled="true"
                 app:counterMaxLength="500"
-                app:counterTextColor="@color/ink_3"
-                app:helperText="@string/editor_memo_helper"
-                app:helperTextEnabled="true">
+                app:counterTextColor="@color/ink_3">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editMemo"

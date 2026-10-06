@@ -52,8 +52,7 @@ class SubscriptionEditorFragment : Fragment() {
         get() = mapOf(
             0 to binding.chipReminder0,
             1 to binding.chipReminder1,
-            3 to binding.chipReminder3,
-            7 to binding.chipReminder7
+            3 to binding.chipReminder3
         )
     private var isRenderingState = false
     private var appliedTextSyncVersion = -1

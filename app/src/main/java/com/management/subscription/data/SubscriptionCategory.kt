@@ -6,6 +6,7 @@ import com.management.subscription.R
 /**
  * 구독 카테고리. DB에는 enum 이름(TEXT)으로 저장하므로 이름을 바꾸지 않는다.
  * 색은 디자인 시스템 cat-* 토큰이며, 항상 텍스트 라벨과 함께 쓴다.
+ * 선언 순서가 편집 화면의 칩 순서다.
  */
 enum class SubscriptionCategory(
     val label: String,
@@ -15,8 +16,10 @@ enum class SubscriptionCategory(
     MUSIC("음악", R.color.cat_music),
     BOOK("독서", R.color.cat_book),
     GAME("게임", R.color.cat_game),
-    LIFE("생활", R.color.cat_life),
+    AI("AI", R.color.cat_ai),
     WORK("생산성", R.color.cat_work),
+    // 이름은 그대로 두고 라벨만 '생활'에서 '멤버십'으로 바꿨다(쇼핑·배달 멤버십).
+    LIFE("멤버십", R.color.cat_life),
     ETC("기타", R.color.cat_etc);
 
     companion object {

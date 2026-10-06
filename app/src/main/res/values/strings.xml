@@ -41,10 +41,8 @@
     <string name="home_due_this_week_title">이번 주 결제</string>
     <string name="home_upcoming_title">다가오는 결제</string>
     <string name="home_more">캘린더 보기</string>
-    <string name="home_calendar_all_format">%1$d월 일정 전체 보기</string>
     <string name="home_add_subscription">구독 추가</string>
-    <string name="home_empty_title">등록된 구독이 없어요</string>
-    <string name="home_empty_body">설치된 앱에서 구독을 찾아 바로 추가할 수 있어요.</string>
+    <string name="home_empty_body">등록된 구독이 없어요</string>
     <string name="timeline_group_summary_format">%1$d건 · %2$s</string>
 
     <!-- 캘린더 -->
@@ -88,7 +86,6 @@
     <string name="editor_label_payment">결제수단</string>
     <string name="editor_label_memo">메모</string>
     <string name="editor_memo_hint">해지 방법이나 계정을 적어두세요</string>
-    <string name="editor_memo_helper">어디서 해지해야 하는지 적어두면 나중에 찾기 쉬워요.</string>
     <string name="editor_button_save">저장</string>
     <string name="editor_button_delete">구독 삭제</string>
     <string name="editor_save_success_format">%1$s 구독을 저장했어요</string>
@@ -126,7 +123,7 @@
     <!-- 설치된 앱에서 찾기 -->
     <string name="discovery_title">설치된 앱에서 찾기</string>
     <string name="discovery_search_hint">서비스 이름으로 찾기 (예: 넷플, ㅌㅂ)</string>
-    <string name="discovery_privacy_note">설치된 앱 목록은 기기 안에서만 확인하고 밖으로 보내지 않아요.</string>
+    <string name="discovery_note">설치된 앱과 구독할 만한 추천 서비스를 보여드려요.</string>
     <string name="discovery_empty_title">찾는 서비스가 없어요</string>
     <string name="discovery_empty_body">뒤로 가서 서비스 이름을 직접 입력해 주세요.</string>
 

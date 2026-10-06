@@ -282,13 +282,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_empty_title"
-                    android:textAppearance="@style/TextAppearance.Gudok.BodyStrong" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_1"
                     android:gravity="center"
                     android:text="@string/home_empty_body"
                     android:textAppearance="@style/TextAppearance.Gudok.Body"
@@ -303,22 +296,6 @@
                     android:paddingHorizontal="@dimen/space_6"
                     android:text="@string/home_add_subscription" />
             </LinearLayout>
-
-            <!-- 오른쪽 아래 + 버튼과 겹치지 않게 왼쪽 정렬 텍스트 링크로 둔다 -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonCalendarAll"
-                style="@style/Widget.Gudok.Button.Text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="-12dp"
-                android:textColor="@color/ink"
-                app:icon="@drawable/ic_chevron_right"
-                app:iconGravity="end"
-                app:iconPadding="2dp"
-                app:iconSize="18dp"
-                app:iconTint="@color/ink_2"
-                tools:text="10월 일정 전체 보기" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
