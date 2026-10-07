@@ -1,3 +1,4 @@
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 import java.util.Properties
 
 plugins {
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
+    alias(libs.plugins.play.publisher)
 }
 
 
@@ -60,8 +62,10 @@ android {
         applicationId = "com.management.subscription"
         minSdk = 24
         targetSdk = 36
+        // Play에 올릴 때는 Gradle Play Publisher가 Play에 있는 가장 큰 versionCode + 1로 바꾼다.
         versionCode = 6
-        versionName = "1.1.3"
+        // 릴리스 워크플로는 태그(v1.2.0)에서 -PVERSION_NAME=1.2.0으로 넘긴다.
+        versionName = providers.gradleProperty("VERSION_NAME").getOrElse("1.1.3")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["ADMOB_APP_ID"] = admobAppId
@@ -136,6 +140,17 @@ android {
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+// ./gradlew publishReleaseBundle 로 AAB와 출시 노트(src/main/play/release-notes)를 Play에 올린다.
+// 자격 증명은 ANDROID_PUBLISHER_CREDENTIALS 환경 변수(서비스 계정 JSON 내용)로 받는다.
+play {
+    track.set("production")
+    defaultToAppBundles.set(true)
+    // versionCode를 Play에서 조회하므로 자격 증명이 있을 때만 켠다. 로컬 bundleRelease는 그대로 둔다.
+    if (providers.environmentVariable("ANDROID_PUBLISHER_CREDENTIALS").isPresent) {
+        resolutionStrategy.set(ResolutionStrategy.AUTO)
+    }
 }
 
 dependencies {

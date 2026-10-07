@@ -90,6 +90,30 @@ AdMob 앱 ID와 광고 단위 ID는 `gradle.properties`에 있습니다. 값이 
 
 `app/build/outputs/bundle/release/app-release.aab`가 만들어집니다. R8 mapping 파일이 AAB에 함께 들어가므로 Play Console에서 난독화된 크래시 스택을 그대로 읽을 수 있습니다. 서명 설정은 [docs/release-signing-ko.md](docs/release-signing-ko.md), 출시 전 확인 항목은 [docs/play-store-release-checklist-ko.md](docs/play-store-release-checklist-ko.md)를 참고하세요.
 
+출시는 보통 아래 자동 출시로 하고, 이 명령은 로컬 확인용으로 씁니다.
+
+#### 자동 출시(GitHub Actions)
+
+출시 노트를 고치고 태그를 푸시하면 [release.yml](.github/workflows/release.yml)이 테스트 → 서명된 AAB 빌드 → Play 프로덕션 트랙 업로드까지 합니다.
+
+```bash
+# 1. app/src/main/play/release-notes/ko-KR/default.txt 수정 후 커밋·푸시 (500자 이내)
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+- `versionName`은 태그에서(`v1.2.0` → `1.2.0`), `versionCode`는 Play에 올라간 가장 큰 값 + 1로 자동으로 정해집니다. `build.gradle.kts`의 버전은 로컬 빌드에만 쓰입니다.
+- Actions 탭의 **Release → Run workflow**로 내부 테스트 등 다른 트랙에 올릴 수 있습니다.
+- 업로드 뒤 Google 심사는 그대로 거칩니다. 빌드한 AAB와 mapping은 워크플로 실행 결과의 Artifacts에 30일 동안 남습니다.
+
+처음 한 번은 GitHub Secrets를 등록해야 합니다. Play Console **사용자 및 권한**에서 서비스 계정에 이 앱의 출시 권한을 준 뒤, 로컬 `keystore.properties`·업로드 키·`app/google-services.json`이 있는 상태에서 실행합니다.
+
+```bash
+bash scripts/set-github-secrets.sh <서비스 계정 JSON 경로>
+```
+
+로컬에서 바로 올리려면 `ANDROID_PUBLISHER_CREDENTIALS`에 서비스 계정 JSON 내용을 넣고 `./gradlew publishReleaseBundle`을 실행합니다.
+
 ## 테스트
 
 ```bash
