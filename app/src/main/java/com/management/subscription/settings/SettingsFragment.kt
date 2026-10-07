@@ -66,11 +66,7 @@ class SettingsFragment : Fragment() {
                 viewModel.syncScheduling(canSchedule = false)
                 renderStatus(latestState)
             } else {
-                Snackbar.make(
-                    binding.root,
-                    R.string.settings_permission_denied,
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                // 처음 거부한 경우: 아래 안내 문구가 "알림 권한이 필요해요"로 바뀌므로 스낵바는 띄우지 않는다.
                 binding.switchNotifications.isChecked = false
                 viewModel.syncScheduling(canSchedule = false)
                 renderStatus(latestState)

@@ -150,12 +150,9 @@
     <string name="notification_prompt_message">구독마다 정한 날 %1$s에 결제 예정 구독을 알려 드려요.\n알림 시각은 설정에서 바꿀 수 있어요.</string>
     <string name="notification_prompt_accept">알림 받기</string>
     <string name="notification_prompt_later">나중에</string>
-    <string name="notification_prompt_enabled">결제 알림을 켰어요</string>
-    <string name="notification_prompt_denied">알림 권한이 없어 결제 알림을 보낼 수 없어요.\n설정에서 다시 켤 수 있어요.</string>
     <string name="notification_blocked_message">휴대폰 설정에서 알림이 차단돼 있어요</string>
     <string name="notification_open_settings">설정 열기</string>
     <string name="settings_status_open_settings_hint">\n눌러서 휴대폰 알림 설정을 열 수 있어요.</string>
-    <string name="settings_permission_denied">알림 권한이 없어서 결제 알림을 켤 수 없어요.</string>
     <string name="settings_time_picker_title">알림 시각 선택</string>
     <string name="settings_section_app">앱 정보</string>
     <string name="settings_version">버전</string>

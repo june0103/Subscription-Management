@@ -65,9 +65,8 @@ class MainActivity : AppCompatActivity() {
             } else if (NotificationPermissionHelper.isBlockedAfterDenial(this)) {
                 // 시스템이 더 이상 권한 창을 띄우지 않는다. 휴대폰 설정에서 직접 켜도록 안내한다.
                 showOpenSettingsSnackbar(permissionRequestSource)
-            } else {
-                Snackbar.make(binding.root, R.string.notification_prompt_denied, Snackbar.LENGTH_LONG).show()
             }
+            // 처음 거부한 경우는 사용자가 방금 직접 고른 것이라 따로 알리지 않는다.
         }
 
     private val homeBannerAdController by lazy(LazyThreadSafetyMode.NONE) {
@@ -226,7 +225,6 @@ class MainActivity : AppCompatActivity() {
             ReminderScheduler.getInstance(applicationContext).sync()
             Analytics.setUserProperty(Analytics.PROPERTY_NOTIFICATIONS_ON, "true")
         }
-        Snackbar.make(binding.root, R.string.notification_prompt_enabled, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun logCurrentScreen() {
