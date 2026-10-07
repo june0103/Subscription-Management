@@ -15,7 +15,8 @@
 - **캘린더**: 월별 결제일과 선택한 날의 결제 목록
 - **구독 추가**: 서비스 이름·금액(원화/달러)·매월/매년 결제일, 카테고리·결제수단·메모(해지 방법 등)
 - **설치된 앱에서 찾기**: 휴대폰에 설치된 구독 앱과 추천 서비스를 골라 바로 입력
-- **결제 알림**: 결제 당일부터 30일 전까지 구독마다 알림 시점을 정하고, 알림 시각은 전체에 하나로 설정
+- **결제 알림**: 결제 당일부터 30일 전까지 구독마다 알림 시점을 정하고, 알림 시각은 전체에 하나로 설정. 첫 구독을 저장하면 알림을 켤지 한 번 묻고, 권한이 막혀 있으면 휴대폰 알림 설정으로 바로 이동
+- **앱 업데이트**: 스토어에 새 버전이 나오면 홈 배너로 알리고, 앱 안에서 내려받아 다시 시작
 - 라이트·다크 모드, 시작 화면 애니메이션
 
 구독 데이터는 기기 안(Room DB)에만 저장하고 서버로 보내지 않습니다. 자세한 내용은 [개인정보처리방침](docs/privacy-policy-ko.md)을 참고하세요.
@@ -29,7 +30,8 @@
 | UI | Android View + ViewBinding, Material 3, Navigation, SplashScreen API |
 | 데이터 | Room 2.7(스키마 내보내기·마이그레이션 테스트), DataStore |
 | 백그라운드 | WorkManager(결제 알림) |
-| 그 외 | AdMob(홈 배너), Firebase Analytics·Crashlytics·Performance |
+| 그 외 | AdMob(홈 배너), Firebase Analytics·Crashlytics·Performance, Google Play In-App Updates |
+| 릴리즈 | R8 코드 축소·난독화, 리소스 축소 |
 | 글꼴 | IBM Plex Sans KR (SIL OFL 1.1, `app/src/main/assets/licenses`) |
 
 ## 프로젝트 구조
@@ -47,6 +49,7 @@ app/src/main/java/com/management/subscription/
 ├── domain/            결제일·알림일 계산, 카테고리별 합계
 ├── data/              Room DB, 저장소, 설정(DataStore)
 ├── analytics/         Firebase 이벤트 정의
+├── updates/           Play 인앱 업데이트(홈 배너)
 ├── ads/               AdMob 배너
 └── ui/, util/         공통 표시 문구·포맷터
 ```
@@ -77,6 +80,7 @@ AdMob 앱 ID와 광고 단위 ID는 `gradle.properties`에 있습니다. 값이 
 | `-PUSE_REAL_DEBUG_ADS=true` | 디버그 빌드에서도 실제 광고 단위 사용(기본은 테스트 광고) |
 | `-PADMOB_TEST_DEVICE_IDS=ID1,EMULATOR` | 테스트 기기로 등록할 기기 ID |
 | `-PENABLE_DEBUG_ANALYTICS=true` | 디버그 빌드에서 Firebase 수집 켜기(DebugView 확인용). 릴리즈는 항상 수집 |
+| `-PFAKE_APP_UPDATE=true` | 디버그 빌드에서 Play의 가짜 업데이트 관리자로 업데이트 배너 흐름 확인(에뮬레이터용). 실제 업데이트는 Play에서 설치한 앱에서만 잡힙니다 |
 
 ### 릴리즈
 
@@ -84,7 +88,7 @@ AdMob 앱 ID와 광고 단위 ID는 `gradle.properties`에 있습니다. 값이 
 ./gradlew bundleRelease
 ```
 
-`app/build/outputs/bundle/release/app-release.aab`가 만들어집니다. 서명 설정은 [docs/release-signing-ko.md](docs/release-signing-ko.md), 출시 전 확인 항목은 [docs/play-store-release-checklist-ko.md](docs/play-store-release-checklist-ko.md)를 참고하세요.
+`app/build/outputs/bundle/release/app-release.aab`가 만들어집니다. R8 mapping 파일이 AAB에 함께 들어가므로 Play Console에서 난독화된 크래시 스택을 그대로 읽을 수 있습니다. 서명 설정은 [docs/release-signing-ko.md](docs/release-signing-ko.md), 출시 전 확인 항목은 [docs/play-store-release-checklist-ko.md](docs/play-store-release-checklist-ko.md)를 참고하세요.
 
 ## 테스트
 
@@ -102,6 +106,7 @@ AdMob 앱 ID와 광고 단위 ID는 `gradle.properties`에 있습니다. 값이 
 | [docs/play-store-copy-ko.md](docs/play-store-copy-ko.md) | 스토어 등록 문구 |
 | [docs/release-signing-ko.md](docs/release-signing-ko.md) | 업로드 키·서명 설정 |
 | [docs/play-store-release-checklist-ko.md](docs/play-store-release-checklist-ko.md) | 출시 체크리스트 |
+| [docs/metrics-baseline-1.0.md](docs/metrics-baseline-1.0.md) | 1.0 출시 전 기준 지표(Play·AdMob), 업데이트 후 비교용 |
 
 ## 라이선스
 
