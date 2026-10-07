@@ -18,6 +18,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.management.subscription.MainActivity
+import com.management.subscription.notifications.NotificationPermissionHelper
+import com.management.subscription.data.UserSettings
+import com.management.subscription.data.SettingsRepository
+import androidx.core.app.NotificationManagerCompat
 import com.management.subscription.R
 import com.management.subscription.data.BillingCycle
 import com.management.subscription.data.CurrencyTotal
@@ -39,6 +43,11 @@ class HomeFragment : Fragment() {
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, HomeViewModel.factory(repository))[HomeViewModel::class.java]
     }
+    private val settingsRepository by lazy(LazyThreadSafetyMode.NONE) {
+        SettingsRepository.getInstance(requireContext().applicationContext)
+    }
+    private var hasSubscriptions = false
+    private var latestSettings: UserSettings? = null
 
     private val timelineAdapter = TimelineAdapter { subscriptionId ->
         (activity as? MainActivity)?.openEditor(subscriptionId, entry = "home")
@@ -66,6 +75,23 @@ class HomeFragment : Fragment() {
         }
         binding.buttonEmptyAdd.setOnClickListener {
             (activity as? MainActivity)?.openEditor(entry = "empty_state")
+        }
+
+        binding.buttonReminderPromptEnable.setOnClickListener {
+            binding.cardReminderPrompt.isVisible = false
+            (activity as? MainActivity)?.onReminderBannerAnswered(accept = true)
+        }
+        binding.buttonReminderPromptClose.setOnClickListener {
+            binding.cardReminderPrompt.isVisible = false
+            (activity as? MainActivity)?.onReminderBannerAnswered(accept = false)
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                settingsRepository.observeSettings().collect { settings ->
+                    latestSettings = settings
+                    renderReminderPrompt()
+                }
+            }
         }
 
         binding.tvViewAll.setOnClickListener {
@@ -111,6 +137,24 @@ class HomeFragment : Fragment() {
         binding.cardHomeEmptyState.isVisible = !state.hasSubscriptions
         timelineAdapter.submitList(state.timeline)
         renderCategorySpend(state)
+        hasSubscriptions = state.hasSubscriptions
+        renderReminderPrompt()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 시스템 설정에서 알림 권한을 바꾸고 돌아올 수 있다.
+        if (_binding != null) renderReminderPrompt()
+    }
+
+    /** 구독은 있는데 결제 알림을 받지 않고, 아직 한 번도 묻지 않았을 때만 배너를 보인다. */
+    private fun renderReminderPrompt() {
+        val settings = latestSettings
+        val receiving = settings != null && settings.notificationsEnabled &&
+            NotificationPermissionHelper.hasNotificationPermission(requireContext()) &&
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+        binding.cardReminderPrompt.isVisible =
+            settings != null && hasSubscriptions && !receiving && !settings.notificationPromptShown
     }
 
     private fun renderCategorySpend(state: HomeUiState) {

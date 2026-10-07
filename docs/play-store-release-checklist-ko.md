@@ -39,4 +39,4 @@
 ## 7. 출시 후
 - [ ] Firebase Crashlytics에 첫 보고서가 들어오는지 확인
 - [ ] Play Console 출시 대시보드의 권장 조치 확인 (edge-to-edge 경고 2건이 사라졌는지)
-- [ ] 출시한 커밋에 태그 달기 (예: `git tag v1.1.0`)
+- [x] 출시한 커밋에 태그 달기 (`v1.1.0` → c0abd1b)

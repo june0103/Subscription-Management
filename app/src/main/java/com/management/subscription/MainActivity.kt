@@ -54,9 +54,12 @@ class MainActivity : AppCompatActivity() {
         SettingsRepository.getInstance(applicationContext)
     }
 
+    /** 권한 요청을 띄운 곳(after_save / home_banner). 결과 이벤트에 붙인다. */
+    private var permissionRequestSource = "after_save"
+
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            Analytics.log(AnalyticsEvent.NotificationPermission(granted, source = "after_save"))
+            Analytics.log(AnalyticsEvent.NotificationPermission(granted, source = permissionRequestSource))
             if (granted) {
                 enableReminders()
             } else {
@@ -163,17 +166,32 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(R.string.notification_prompt_title)
                 .setMessage(getString(R.string.notification_prompt_message, time))
                 .setPositiveButton(R.string.notification_prompt_accept) { _, _ ->
-                    Analytics.log(AnalyticsEvent.NotificationPrompt("accept"))
-                    if (NotificationPermissionHelper.hasNotificationPermission(this@MainActivity)) {
-                        enableReminders()
-                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                    }
+                    Analytics.log(AnalyticsEvent.NotificationPrompt("accept", source = "after_save"))
+                    turnOnReminders(source = "after_save")
                 }
                 .setNegativeButton(R.string.notification_prompt_later) { _, _ ->
-                    Analytics.log(AnalyticsEvent.NotificationPrompt("later"))
+                    Analytics.log(AnalyticsEvent.NotificationPrompt("later", source = "after_save"))
                 }
                 .show()
+        }
+    }
+
+    /** 홈의 "결제 알림이 꺼져 있어요" 배너. accept면 켜고, 어느 쪽이든 다시 묻지 않는다. */
+    fun onReminderBannerAnswered(accept: Boolean) {
+        Analytics.log(
+            AnalyticsEvent.NotificationPrompt(if (accept) "accept" else "later", source = "home_banner")
+        )
+        lifecycleScope.launch { settingsRepository.markNotificationPromptShown() }
+        if (accept) turnOnReminders(source = "home_banner")
+    }
+
+    /** 권한이 있으면 바로 켜고, 없으면(Android 13+) 시스템 권한부터 묻는다. */
+    private fun turnOnReminders(source: String) {
+        if (NotificationPermissionHelper.hasNotificationPermission(this)) {
+            enableReminders()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionRequestSource = source
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 

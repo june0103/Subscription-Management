@@ -9,7 +9,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** 이미 출시된 앱의 v2 DB가 v3으로 올라가도 구독이 그대로 남는지 확인한다. */
+/**
+ * 이미 출시된 앱의 v2 DB가 v3으로 올라가도 구독이 그대로 남는지 확인한다.
+ * 스토어에 나간 1.0이 DB v2였다. v1 스키마는 내보낸 적이 없어 1→2는 테스트하지 않는다.
+ */
 @RunWith(AndroidJUnit4::class)
 class SubscriptionDatabaseMigrationTest {
 

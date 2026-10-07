@@ -88,7 +88,9 @@ class AnalyticsEventTest {
         assertEquals("false", permission.params["granted"])
         assertEquals("after_save", permission.params["source"])
 
-        assertEquals("accept", AnalyticsEvent.NotificationPrompt("accept").params["action"])
+        val prompt = AnalyticsEvent.NotificationPrompt("accept", source = "home_banner")
+        assertEquals("accept", prompt.params["action"])
+        assertEquals("home_banner", prompt.params["source"])
         assertEquals("today_banner", AnalyticsEvent.CalendarOpen("today_banner").params["entry"])
 
         // 알림 시각은 시만 보낸다(분 단위 습관까지는 모으지 않는다).

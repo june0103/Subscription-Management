@@ -144,6 +144,10 @@
     <string name="settings_status_permission_required">알림 권한이 필요해요.\n허용하면 매일 %1$s에 결제 예정 구독을 확인해요.</string>
     <string name="settings_status_system_disabled">휴대폰 설정에서 앱 알림이 꺼져 있어요.\n설정에서 켜야 알림이 표시돼요.</string>
     <string name="settings_status_on">매일 %1$s에 결제 예정 구독을 확인해 알려드려요.</string>
+    <string name="home_reminder_prompt_title">결제 알림이 꺼져 있어요</string>
+    <string name="home_reminder_prompt_body">결제 전에 미리 알려 드릴까요?</string>
+    <string name="home_reminder_prompt_enable">알림 켜기</string>
+    <string name="home_reminder_prompt_close">안내 닫기</string>
     <string name="notification_prompt_title">결제 전에 알려 드릴까요?</string>
     <string name="notification_prompt_message">구독마다 정한 날 %1$s에 결제 예정 구독을 알려 드려요.\n알림 시각은 설정에서 바꿀 수 있어요.</string>
     <string name="notification_prompt_accept">알림 받기</string>

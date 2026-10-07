@@ -81,16 +81,19 @@ sealed class AnalyticsEvent(
     data class NotificationShown(val count: Int) :
         AnalyticsEvent("notification_shown", mapOf("count" to count.toLong()))
 
-    /** 시스템 알림 권한 요청 결과. source: settings / after_save */
+    /** 시스템 알림 권한 요청 결과. source: settings / after_save / home_banner */
     data class NotificationPermission(val granted: Boolean, val source: String) :
         AnalyticsEvent(
             "notification_permission",
             mapOf("granted" to granted.asParam(), "source" to source)
         )
 
-    /** 첫 저장 뒤 "결제 전에 알려 드릴까요?" 안내에 대한 선택. action: accept / later */
-    data class NotificationPrompt(val action: String) :
-        AnalyticsEvent("notification_prompt", mapOf("action" to action))
+    /**
+     * 결제 알림 켜기 안내에 대한 선택. action: accept / later
+     * source: after_save(새 구독 저장 직후 창) / home_banner(홈 배너)
+     */
+    data class NotificationPrompt(val action: String, val source: String) :
+        AnalyticsEvent("notification_prompt", mapOf("action" to action, "source" to source))
 
     /** 캘린더 탭으로 들어온 경로. entry: today_banner / view_all / tab */
     data class CalendarOpen(val entry: String) :
