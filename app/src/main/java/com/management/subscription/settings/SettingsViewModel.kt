@@ -33,6 +33,8 @@ class SettingsViewModel(
 
     fun setNotificationsEnabled(enabled: Boolean, canSchedule: Boolean) {
         Analytics.log(AnalyticsEvent.NotificationsToggled(enabled))
+        // 앱이 다시 앞에 올 때까지 기다리지 않고 바로 반영한다. canSchedule이면 시스템 권한도 있는 상태다.
+        Analytics.setUserProperty(Analytics.PROPERTY_NOTIFICATIONS_ON, (enabled && canSchedule).toString())
         viewModelScope.launch {
             settingsRepository.setNotificationsEnabled(enabled)
             if (enabled && canSchedule) {

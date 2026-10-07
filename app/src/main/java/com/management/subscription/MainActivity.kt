@@ -167,10 +167,16 @@ class MainActivity : AppCompatActivity() {
      * 설정 화면에 가지 않는 사용자는 핵심 기능을 영영 못 쓰게 되기 때문이다.
      */
     fun onSubscriptionAdded() {
+        // 홈으로 돌아가는 순간 홈 배너가 이 창과 함께 잠깐 보이지 않도록, 판단이 끝날 때까지 배너를 막는다.
+        reminderPromptPending = true
         lifecycleScope.launch {
             val settings = settingsRepository.getSettings()
-            if (settings.notificationsEnabled || settings.notificationPromptShown) return@launch
+            if (settings.notificationsEnabled || settings.notificationPromptShown) {
+                reminderPromptPending = false
+                return@launch
+            }
             settingsRepository.markNotificationPromptShown()
+            reminderPromptPending = false
             val time = SubscriptionFormatters.reminderTime(settings.reminderHour, settings.reminderMinute)
             MaterialAlertDialogBuilder(this@MainActivity)
                 .setTitle(R.string.notification_prompt_title)
@@ -182,7 +188,11 @@ class MainActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.notification_prompt_later) { _, _ ->
                     Analytics.log(AnalyticsEvent.NotificationPrompt("later", source = "after_save"))
                 }
+                .setOnCancelListener {
+                    Analytics.log(AnalyticsEvent.NotificationPrompt("dismiss", source = "after_save"))
+                }
                 .show()
+            Analytics.log(AnalyticsEvent.NotificationPromptShown(source = "after_save"))
         }
     }
 
@@ -204,6 +214,10 @@ class MainActivity : AppCompatActivity() {
             notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
+
+    /** 새 구독 저장 직후 안내를 띄울지 판단 중이면 true. 그동안 홈 배너는 숨긴다. */
+    var reminderPromptPending = false
+        private set
 
     /** 설정 화면에서 알림을 허용하고 돌아오면 바로 켜기 위해 기억해 둔다. */
     private var enableRemindersOnReturn = false

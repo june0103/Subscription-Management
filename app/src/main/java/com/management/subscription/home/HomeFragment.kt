@@ -18,6 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.management.subscription.MainActivity
+import com.management.subscription.analytics.AnalyticsEvent
+import com.management.subscription.analytics.Analytics
 import com.management.subscription.notifications.NotificationPermissionHelper
 import com.management.subscription.data.UserSettings
 import com.management.subscription.data.SettingsRepository
@@ -153,8 +155,15 @@ class HomeFragment : Fragment() {
         val receiving = settings != null && settings.notificationsEnabled &&
             NotificationPermissionHelper.hasNotificationPermission(requireContext()) &&
             NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
-        binding.cardReminderPrompt.isVisible =
-            settings != null && hasSubscriptions && !receiving && !settings.notificationPromptShown
+        val promptPending = (activity as? MainActivity)?.reminderPromptPending == true
+        val visible = settings != null && hasSubscriptions && !receiving &&
+            !settings.notificationPromptShown && !promptPending
+        binding.cardReminderPrompt.isVisible = visible
+        // 노출 수는 앱을 켤 때마다 한 번만 센다(홈을 오갈 때마다 세면 부풀려진다).
+        if (visible && !bannerShownLogged) {
+            bannerShownLogged = true
+            Analytics.log(AnalyticsEvent.NotificationPromptShown(source = "home_banner"))
+        }
     }
 
     private fun renderCategorySpend(state: HomeUiState) {
@@ -272,5 +281,10 @@ class HomeFragment : Fragment() {
             1, 2 -> names.joinToString(", ")
             else -> getString(R.string.names_and_more_format, names.first(), names.size - 1)
         }
+    }
+
+    private companion object {
+        /** 이번 앱 실행에서 홈 배너 노출을 이미 기록했는지 */
+        var bannerShownLogged = false
     }
 }

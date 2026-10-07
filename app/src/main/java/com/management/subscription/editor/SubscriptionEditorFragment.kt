@@ -434,8 +434,9 @@ class SubscriptionEditorFragment : Fragment() {
         when (event) {
             // 저장·삭제는 목록이 바로 바뀌어 결과가 보이므로 따로 알리지 않는다.
             is EditorEvent.Saved -> {
-                findNavController().popBackStack()
+                // 홈이 다시 그려지기 전에 알려야 홈 배너가 안내 창과 겹쳐 보이지 않는다.
                 if (event.isNew) (activity as? MainActivity)?.onSubscriptionAdded()
+                findNavController().popBackStack()
             }
 
             EditorEvent.Deleted -> findNavController().popBackStack()

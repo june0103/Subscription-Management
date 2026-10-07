@@ -88,8 +88,12 @@ sealed class AnalyticsEvent(
             mapOf("granted" to granted.asParam(), "source" to source)
         )
 
+    /** 결제 알림 켜기 안내가 보인 경우. source: after_save / home_banner(앱을 켤 때마다 한 번) */
+    data class NotificationPromptShown(val source: String) :
+        AnalyticsEvent("notification_prompt_shown", mapOf("source" to source))
+
     /**
-     * 결제 알림 켜기 안내에 대한 선택. action: accept / later
+     * 결제 알림 켜기 안내에 대한 선택. action: accept / later / dismiss(저장 직후 창을 뒤로 가기·바깥 터치로 닫음)
      * source: after_save(새 구독 저장 직후 창) / home_banner(홈 배너)
      */
     data class NotificationPrompt(val action: String, val source: String) :
