@@ -44,6 +44,7 @@ class SettingsViewModel(
     }
 
     fun updateReminderTime(hour: Int, minute: Int, canSchedule: Boolean) {
+        Analytics.log(AnalyticsEvent.ReminderTimeChanged(hour))
         viewModelScope.launch {
             settingsRepository.updateReminderTime(hour, minute)
             if (canSchedule) {

@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.management.subscription.MainActivity
 import com.management.subscription.R
 import com.management.subscription.SubscriptionEditorArgs
 import com.management.subscription.analytics.Analytics
@@ -439,6 +440,7 @@ class SubscriptionEditorFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
                 findNavController().popBackStack()
+                if (event.isNew) (activity as? MainActivity)?.onSubscriptionAdded()
             }
 
             EditorEvent.Deleted -> {

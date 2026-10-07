@@ -68,11 +68,12 @@ class HomeFragment : Fragment() {
             (activity as? MainActivity)?.openEditor(entry = "empty_state")
         }
 
-        val openCalendar = View.OnClickListener {
-            (activity as? MainActivity)?.openCalendarTab(LocalDate.now())
+        binding.tvViewAll.setOnClickListener {
+            (activity as? MainActivity)?.openCalendarTab(LocalDate.now(), entry = "view_all")
         }
-        binding.tvViewAll.setOnClickListener(openCalendar)
-        binding.cardTodayBanner.setOnClickListener(openCalendar)
+        binding.cardTodayBanner.setOnClickListener {
+            (activity as? MainActivity)?.openCalendarTab(LocalDate.now(), entry = "today_banner")
+        }
         binding.cardAnnualSubscriptions.setOnClickListener {
             (activity as? MainActivity)?.openSubscriptionList(BillingCycle.ANNUAL)
         }

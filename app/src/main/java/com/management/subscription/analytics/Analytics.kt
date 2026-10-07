@@ -13,6 +13,9 @@ interface AnalyticsTracker {
 
     /** 사용 통계·비정상 종료·성능 수집을 한 번에 켜고 끈다. */
     fun setCollectionEnabled(enabled: Boolean)
+
+    /** 사용자 속성(예: notifications_on). 보고서에서 사용자를 나눠 보는 기준이 된다. */
+    fun setUserProperty(name: String, value: String?) = Unit
 }
 
 /** 테스트용, 그리고 init 전에 불려도 죽지 않게 하는 기본값 */
@@ -37,6 +40,10 @@ class FirebaseAnalyticsTracker(context: Context) : AnalyticsTracker {
             return
         }
         analytics.logEvent(event.name, event.params.toBundle())
+    }
+
+    override fun setUserProperty(name: String, value: String?) {
+        analytics.setUserProperty(name, value)
     }
 
     override fun setCollectionEnabled(enabled: Boolean) {
@@ -77,6 +84,7 @@ object Analytics {
      * 여기에 잠깐 모았다가, 설정이 정해지면 보내거나 버린다.
      */
     private val pending = mutableListOf<AnalyticsEvent>()
+    private val pendingUserProperties = linkedMapOf<String, String?>()
     private var collectionDecided = false
 
     fun init(tracker: AnalyticsTracker) {
@@ -93,23 +101,45 @@ object Analytics {
         send(event)
     }
 
+    /** 사용자 속성. 이벤트처럼 수집 여부가 정해질 때까지는 마지막 값만 들고 있다. */
+    fun setUserProperty(name: String, value: String?) {
+        synchronized(pending) {
+            if (!collectionDecided) {
+                pendingUserProperties[name] = value
+                return
+            }
+        }
+        sendUserProperty(name, value)
+    }
+
     fun setCollectionEnabled(enabled: Boolean) {
         runCatching { tracker.setCollectionEnabled(enabled) }
             .onFailure { Log.w(TAG, "Failed to apply collection=$enabled", it) }
-        val queued = synchronized(pending) {
+        val (queued, queuedProperties) = synchronized(pending) {
             collectionDecided = true
-            pending.toList().also { pending.clear() }
+            val events = pending.toList().also { pending.clear() }
+            val properties = pendingUserProperties.toMap().also { pendingUserProperties.clear() }
+            events to properties
         }
-        if (enabled) queued.forEach(::send)
+        if (enabled) {
+            queuedProperties.forEach { (name, value) -> sendUserProperty(name, value) }
+            queued.forEach(::send)
+        }
     }
 
     @androidx.annotation.VisibleForTesting
     internal fun resetForTest(tracker: AnalyticsTracker) {
         synchronized(pending) {
             pending.clear()
+            pendingUserProperties.clear()
             collectionDecided = false
         }
         this.tracker = tracker
+    }
+
+    private fun sendUserProperty(name: String, value: String?) {
+        runCatching { tracker.setUserProperty(name, value) }
+            .onFailure { Log.w(TAG, "Failed to set user property $name", it) }
     }
 
     private fun send(event: AnalyticsEvent) {
@@ -127,6 +157,9 @@ object Analytics {
             runCatching { trace?.stop() }
         }
     }
+
+    /** 결제 알림을 받는 상태인지(앱 설정이 켜져 있고 시스템 권한도 있음). "true" / "false" */
+    const val PROPERTY_NOTIFICATIONS_ON = "notifications_on"
 
     private const val TAG = "Analytics"
     private const val MAX_PENDING = 50

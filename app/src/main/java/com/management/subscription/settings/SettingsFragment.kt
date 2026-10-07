@@ -21,6 +21,8 @@ import com.google.android.material.timepicker.TimeFormat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.management.subscription.BuildConfig
+import com.management.subscription.analytics.Analytics
+import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.R
 import com.management.subscription.data.SettingsRepository
 import com.management.subscription.databinding.FragmentSettingsBinding
@@ -52,6 +54,7 @@ class SettingsFragment : Fragment() {
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            Analytics.log(AnalyticsEvent.NotificationPermission(granted, source = "settings"))
             if (granted) {
                 viewModel.setNotificationsEnabled(enabled = true, canSchedule = true)
             } else {

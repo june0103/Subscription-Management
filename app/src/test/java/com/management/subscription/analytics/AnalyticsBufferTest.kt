@@ -8,6 +8,7 @@ class AnalyticsBufferTest {
 
     private class FakeTracker : AnalyticsTracker {
         val logged = mutableListOf<AnalyticsEvent>()
+        val properties = mutableMapOf<String, String?>()
         var enabled: Boolean? = null
         override fun log(event: AnalyticsEvent) {
             logged += event
@@ -15,6 +16,33 @@ class AnalyticsBufferTest {
         override fun setCollectionEnabled(enabled: Boolean) {
             this.enabled = enabled
         }
+        override fun setUserProperty(name: String, value: String?) {
+            properties[name] = value
+        }
+    }
+
+    @Test
+    fun userPropertyBeforeDecision_keepsLastValueUntilEnabled() {
+        val fake = FakeTracker()
+        Analytics.resetForTest(fake)
+
+        Analytics.setUserProperty(Analytics.PROPERTY_NOTIFICATIONS_ON, "false")
+        Analytics.setUserProperty(Analytics.PROPERTY_NOTIFICATIONS_ON, "true")
+        assertTrue(fake.properties.isEmpty())
+
+        Analytics.setCollectionEnabled(true)
+        assertEquals(mapOf(Analytics.PROPERTY_NOTIFICATIONS_ON to "true"), fake.properties)
+    }
+
+    @Test
+    fun userPropertyBeforeDecision_isDroppedWhenCollectionIsOff() {
+        val fake = FakeTracker()
+        Analytics.resetForTest(fake)
+
+        Analytics.setUserProperty(Analytics.PROPERTY_NOTIFICATIONS_ON, "true")
+        Analytics.setCollectionEnabled(false)
+
+        assertTrue(fake.properties.isEmpty())
     }
 
     @Test

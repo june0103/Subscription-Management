@@ -1,6 +1,15 @@
 package com.management.subscription
 
 import android.content.Intent
+import android.Manifest
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.management.subscription.data.SettingsRepository
+import com.management.subscription.notifications.NotificationPermissionHelper
+import com.management.subscription.util.SubscriptionFormatters
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +47,22 @@ class MainActivity : AppCompatActivity() {
     private var mobileAdsInitialized = false
     private var adsStarted = false
     private var currentScreenName: String? = null
+    /** openCalendarTab으로 들어갈 때의 진입 경로. 하단 탭으로 들어오면 비어 있다. */
+    private var pendingCalendarEntry: String? = null
+
+    private val settingsRepository by lazy(LazyThreadSafetyMode.NONE) {
+        SettingsRepository.getInstance(applicationContext)
+    }
+
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            Analytics.log(AnalyticsEvent.NotificationPermission(granted, source = "after_save"))
+            if (granted) {
+                enableReminders()
+            } else {
+                Snackbar.make(binding.root, R.string.notification_prompt_denied, Snackbar.LENGTH_LONG).show()
+            }
+        }
 
     private val homeBannerAdController by lazy(LazyThreadSafetyMode.NONE) {
         HomeBannerAdController(this)
@@ -67,11 +92,17 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNavigation.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, arguments ->
             currentDestinationId = destination.id
-            currentScreenName = screenNames[destination.id]
+            currentScreenName = screenNameFor(destination.id, arguments)
             // Firebase는 앱이 앞에 있을 때만 화면 조회를 받는다. 시작 직후 화면은 onResume에서 보낸다.
-            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) logCurrentScreen()
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                logCurrentScreen()
+                if (destination.id == R.id.calendarFragment) {
+                    Analytics.log(AnalyticsEvent.CalendarOpen(pendingCalendarEntry ?: "tab"))
+                }
+            }
+            if (destination.id == R.id.calendarFragment) pendingCalendarEntry = null
             binding.bottomNavigation.isVisible = destination.id in topLevelDestinations
             binding.bottomNavigationDivider.isVisible = binding.bottomNavigation.isVisible
             updateBannerVisibility()
@@ -107,6 +138,53 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         logCurrentScreen()
+        // 알림을 실제로 받는 상태인지(앱 설정 + 시스템 권한·알림 허용)를 사용자 속성으로 둔다.
+        lifecycleScope.launch {
+            val settings = settingsRepository.getSettings()
+            val receiving = settings.notificationsEnabled &&
+                NotificationPermissionHelper.hasNotificationPermission(this@MainActivity) &&
+                NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()
+            Analytics.setUserProperty(Analytics.PROPERTY_NOTIFICATIONS_ON, receiving.toString())
+        }
+    }
+
+    /**
+     * 새 구독을 저장한 직후. 결제 알림이 꺼져 있고 아직 한 번도 묻지 않았으면
+     * "결제 전에 알려 드릴까요?"를 한 번 묻는다. 알림은 기본으로 꺼져 있고 권한도 필요해서,
+     * 설정 화면에 가지 않는 사용자는 핵심 기능을 영영 못 쓰게 되기 때문이다.
+     */
+    fun onSubscriptionAdded() {
+        lifecycleScope.launch {
+            val settings = settingsRepository.getSettings()
+            if (settings.notificationsEnabled || settings.notificationPromptShown) return@launch
+            settingsRepository.markNotificationPromptShown()
+            val time = SubscriptionFormatters.reminderTime(settings.reminderHour, settings.reminderMinute)
+            MaterialAlertDialogBuilder(this@MainActivity)
+                .setTitle(R.string.notification_prompt_title)
+                .setMessage(getString(R.string.notification_prompt_message, time))
+                .setPositiveButton(R.string.notification_prompt_accept) { _, _ ->
+                    Analytics.log(AnalyticsEvent.NotificationPrompt("accept"))
+                    if (NotificationPermissionHelper.hasNotificationPermission(this@MainActivity)) {
+                        enableReminders()
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
+                .setNegativeButton(R.string.notification_prompt_later) { _, _ ->
+                    Analytics.log(AnalyticsEvent.NotificationPrompt("later"))
+                }
+                .show()
+        }
+    }
+
+    private fun enableReminders() {
+        Analytics.log(AnalyticsEvent.NotificationsToggled(enabled = true))
+        lifecycleScope.launch {
+            settingsRepository.setNotificationsEnabled(true)
+            ReminderScheduler.getInstance(applicationContext).sync()
+            Analytics.setUserProperty(Analytics.PROPERTY_NOTIFICATIONS_ON, "true")
+        }
+        Snackbar.make(binding.root, R.string.notification_prompt_enabled, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun logCurrentScreen() {
@@ -144,8 +222,10 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun openCalendarTab(focusDate: LocalDate) {
+    /** entry: 분석용 진입 경로(today_banner / view_all) */
+    fun openCalendarTab(focusDate: LocalDate, entry: String) {
         pendingCalendarFocusDate = focusDate
+        pendingCalendarEntry = entry
         binding.bottomNavigation.selectedItemId = R.id.calendarFragment
     }
 
@@ -216,6 +296,16 @@ class MainActivity : AppCompatActivity() {
             TAG,
             "Ad request settings configured. useTestAds=${BuildConfig.USE_TEST_ADS}, testDevices=${testDeviceIds.size}"
         )
+    }
+
+    /** 월간·연간 목록은 같은 화면이라 어느 목록인지 이름에 붙인다. */
+    private fun screenNameFor(destinationId: Int, arguments: Bundle?): String? {
+        if (destinationId == R.id.subscriptionCycleListFragment) {
+            val cycle = arguments?.getString(SubscriptionCycleListArgs.KEY_BILLING_CYCLE)
+                ?.lowercase() ?: return screenNames[destinationId]
+            return "subscription_list_$cycle"
+        }
+        return screenNames[destinationId]
     }
 
     private val screenNames = mapOf(

@@ -32,6 +32,12 @@ class SettingsRepository private constructor(
         }
     }
 
+    suspend fun markNotificationPromptShown() {
+        appContext.settingsDataStore.edit { preferences ->
+            preferences[KEY_NOTIFICATION_PROMPT_SHOWN] = true
+        }
+    }
+
     suspend fun updateReminderTime(hour: Int, minute: Int) {
         appContext.settingsDataStore.edit { preferences ->
             preferences[KEY_REMINDER_HOUR] = hour
@@ -58,7 +64,8 @@ class SettingsRepository private constructor(
             notificationsEnabled = preferences[KEY_NOTIFICATIONS_ENABLED] ?: false,
             reminderHour = preferences[KEY_REMINDER_HOUR] ?: 9,
             reminderMinute = preferences[KEY_REMINDER_MINUTE] ?: 0,
-            lastDispatchDate = lastDispatchDate
+            lastDispatchDate = lastDispatchDate,
+            notificationPromptShown = preferences[KEY_NOTIFICATION_PROMPT_SHOWN] ?: false
         )
     }
 
@@ -67,6 +74,7 @@ class SettingsRepository private constructor(
         private val KEY_REMINDER_HOUR = intPreferencesKey("reminder_hour")
         private val KEY_REMINDER_MINUTE = intPreferencesKey("reminder_minute")
         private val KEY_LAST_DISPATCH_DATE = stringPreferencesKey("last_dispatch_date")
+        private val KEY_NOTIFICATION_PROMPT_SHOWN = booleanPreferencesKey("notification_prompt_shown")
 
         @Volatile
         private var instance: SettingsRepository? = null

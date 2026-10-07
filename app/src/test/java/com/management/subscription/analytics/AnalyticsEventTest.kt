@@ -77,4 +77,23 @@ class AnalyticsEventTest {
             }
         }
     }
+
+    @Test
+    fun notificationAndNavigationEvents_haveStableNamesAndParams() {
+        assertEquals("notification_shown", AnalyticsEvent.NotificationShown(2).name)
+        assertEquals(2L, AnalyticsEvent.NotificationShown(2).params["count"])
+
+        val permission = AnalyticsEvent.NotificationPermission(granted = false, source = "after_save")
+        assertEquals("notification_permission", permission.name)
+        assertEquals("false", permission.params["granted"])
+        assertEquals("after_save", permission.params["source"])
+
+        assertEquals("accept", AnalyticsEvent.NotificationPrompt("accept").params["action"])
+        assertEquals("today_banner", AnalyticsEvent.CalendarOpen("today_banner").params["entry"])
+
+        // 알림 시각은 시만 보낸다(분 단위 습관까지는 모으지 않는다).
+        val time = AnalyticsEvent.ReminderTimeChanged(21)
+        assertEquals("reminder_time_changed", time.name)
+        assertEquals(mapOf<String, Any>("hour" to 21L), time.params)
+    }
 }
