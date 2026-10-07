@@ -89,7 +89,10 @@ android {
             buildConfigField("boolean", "ANALYTICS_ENABLED", enableDebugAnalytics.toString())
         }
         release {
-            isMinifyEnabled = false
+            // R8로 쓰지 않는 코드를 지우고 난독화한다. Play Console "DEX 코드 최적화" 기준을 맞추고,
+            // 라이브러리에 남아 있던 지원 중단 창 색 API(쓰지 않는 사이드시트 등)도 함께 빠진다.
+            isMinifyEnabled = true
+            isShrinkResources = true
             buildConfigField(
                 "String",
                 "ADMOB_HOME_BANNER_AD_UNIT_ID",
@@ -148,7 +151,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.perf)
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.14.0")
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
