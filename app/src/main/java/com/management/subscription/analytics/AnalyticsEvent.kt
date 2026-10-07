@@ -95,6 +95,10 @@ sealed class AnalyticsEvent(
     data class NotificationPrompt(val action: String, val source: String) :
         AnalyticsEvent("notification_prompt", mapOf("action" to action, "source" to source))
 
+    /** 알림이 차단돼 휴대폰 알림 설정 화면으로 보낸 경우. source: after_save / home_banner / settings */
+    data class NotificationSettingsOpen(val source: String) :
+        AnalyticsEvent("notification_settings_open", mapOf("source" to source))
+
     /** 캘린더 탭으로 들어온 경로. entry: today_banner / view_all / tab */
     data class CalendarOpen(val entry: String) :
         AnalyticsEvent("calendar_open", mapOf("entry" to entry))

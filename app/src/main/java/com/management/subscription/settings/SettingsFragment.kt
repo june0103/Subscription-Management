@@ -57,6 +57,14 @@ class SettingsFragment : Fragment() {
             Analytics.log(AnalyticsEvent.NotificationPermission(granted, source = "settings"))
             if (granted) {
                 viewModel.setNotificationsEnabled(enabled = true, canSchedule = true)
+            } else if (NotificationPermissionHelper.isBlockedAfterDenial(requireActivity())) {
+                // 권한 창이 더 뜨지 않는 상태. 휴대폰 설정에서 허용하고 돌아오면 켠다.
+                Snackbar.make(binding.root, R.string.notification_blocked_message, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.notification_open_settings) { openNotificationSettings() }
+                    .show()
+                binding.switchNotifications.isChecked = false
+                viewModel.syncScheduling(canSchedule = false)
+                renderStatus(latestState)
             } else {
                 Snackbar.make(
                     binding.root,
@@ -91,8 +99,25 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    /** 휴대폰 알림 설정에 다녀오면 허용됐는지 보고 바로 켠다. */
+    private var enableOnReturn = false
+
+    private fun openNotificationSettings() {
+        Analytics.log(AnalyticsEvent.NotificationSettingsOpen("settings"))
+        enableOnReturn = true
+        NotificationPermissionHelper.openAppNotificationSettings(requireContext())
+    }
+
     override fun onResume() {
         super.onResume()
+        if (enableOnReturn) {
+            enableOnReturn = false
+            if (NotificationPermissionHelper.hasNotificationPermission(requireContext()) &&
+                NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+            ) {
+                viewModel.setNotificationsEnabled(enabled = true, canSchedule = true)
+            }
+        }
         renderStatus(latestState)
         viewModel.syncScheduling(canSchedule = NotificationPermissionHelper.hasNotificationPermission(requireContext()))
     }
@@ -185,13 +210,20 @@ class SettingsFragment : Fragment() {
         val isActive = state.notificationsEnabled &&
             NotificationPermissionHelper.hasNotificationPermission(requireContext()) &&
             appNotificationsEnabled
+        val blockedByPhone = state.notificationsEnabled && !isActive
         binding.tvNotificationStatus.text = when {
             !state.notificationsEnabled -> getString(R.string.settings_status_off, formattedTime)
             !NotificationPermissionHelper.hasNotificationPermission(requireContext()) ->
-                getString(R.string.settings_status_permission_required, formattedTime)
+                getString(R.string.settings_status_permission_required, formattedTime) +
+                    getString(R.string.settings_status_open_settings_hint)
             !appNotificationsEnabled -> getString(R.string.settings_status_system_disabled)
             else -> getString(R.string.settings_status_on, formattedTime)
         }
+        // 앱은 켜져 있는데 휴대폰에서 막혀 있으면, 안내 문구를 눌러 휴대폰 알림 설정으로 바로 간다.
+        binding.tvNotificationStatus.isClickable = blockedByPhone
+        binding.tvNotificationStatus.setOnClickListener(
+            if (blockedByPhone) View.OnClickListener { openNotificationSettings() } else null
+        )
         // 켜져서 실제로 동작할 때만 success 배너, 아니면 조용한 회색 배너.
         binding.tvNotificationStatus.backgroundTintList = ContextCompat.getColorStateList(
             requireContext(),

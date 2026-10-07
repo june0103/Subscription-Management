@@ -62,6 +62,9 @@ class MainActivity : AppCompatActivity() {
             Analytics.log(AnalyticsEvent.NotificationPermission(granted, source = permissionRequestSource))
             if (granted) {
                 enableReminders()
+            } else if (NotificationPermissionHelper.isBlockedAfterDenial(this)) {
+                // 시스템이 더 이상 권한 창을 띄우지 않는다. 휴대폰 설정에서 직접 켜도록 안내한다.
+                showOpenSettingsSnackbar(permissionRequestSource)
             } else {
                 Snackbar.make(binding.root, R.string.notification_prompt_denied, Snackbar.LENGTH_LONG).show()
             }
@@ -141,6 +144,14 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         logCurrentScreen()
+        if (enableRemindersOnReturn) {
+            enableRemindersOnReturn = false
+            if (NotificationPermissionHelper.hasNotificationPermission(this) &&
+                NotificationManagerCompat.from(this).areNotificationsEnabled()
+            ) {
+                enableReminders()
+            }
+        }
         // 알림을 실제로 받는 상태인지(앱 설정 + 시스템 권한·알림 허용)를 사용자 속성으로 둔다.
         lifecycleScope.launch {
             val settings = settingsRepository.getSettings()
@@ -193,6 +204,19 @@ class MainActivity : AppCompatActivity() {
             permissionRequestSource = source
             notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+
+    /** 설정 화면에서 알림을 허용하고 돌아오면 바로 켜기 위해 기억해 둔다. */
+    private var enableRemindersOnReturn = false
+
+    private fun showOpenSettingsSnackbar(source: String) {
+        Snackbar.make(binding.root, R.string.notification_blocked_message, Snackbar.LENGTH_LONG)
+            .setAction(R.string.notification_open_settings) {
+                Analytics.log(AnalyticsEvent.NotificationSettingsOpen(source))
+                enableRemindersOnReturn = true
+                NotificationPermissionHelper.openAppNotificationSettings(this)
+            }
+            .show()
     }
 
     private fun enableReminders() {
