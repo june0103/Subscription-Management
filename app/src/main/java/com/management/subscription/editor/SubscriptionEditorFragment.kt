@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.management.subscription.MainActivity
 import com.management.subscription.R
 import com.management.subscription.SubscriptionEditorArgs
@@ -433,21 +432,13 @@ class SubscriptionEditorFragment : Fragment() {
 
     private fun handleEvent(event: EditorEvent) {
         when (event) {
+            // 저장·삭제는 목록이 바로 바뀌어 결과가 보이므로 따로 알리지 않는다.
             is EditorEvent.Saved -> {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.editor_save_success_format, event.name),
-                    Snackbar.LENGTH_SHORT
-                ).show()
                 findNavController().popBackStack()
                 if (event.isNew) (activity as? MainActivity)?.onSubscriptionAdded()
             }
 
-            EditorEvent.Deleted -> {
-                Snackbar.make(binding.root, R.string.editor_delete_success_message, Snackbar.LENGTH_SHORT)
-                    .show()
-                findNavController().popBackStack()
-            }
+            EditorEvent.Deleted -> findNavController().popBackStack()
 
             EditorEvent.Close -> findNavController().popBackStack()
         }

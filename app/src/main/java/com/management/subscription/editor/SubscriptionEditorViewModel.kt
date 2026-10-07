@@ -220,7 +220,7 @@ class SubscriptionEditorViewModel(
                     hasMemo = !draft.memo.isNullOrBlank()
                 )
             )
-            _events.emit(EditorEvent.Saved(trimmedName, isNew = subscriptionId == null))
+            _events.emit(EditorEvent.Saved(isNew = subscriptionId == null))
         }
     }
 
@@ -325,7 +325,7 @@ class SubscriptionEditorViewModel(
 }
 
 sealed interface EditorEvent {
-    data class Saved(val name: String, val isNew: Boolean) : EditorEvent
+    data class Saved(val isNew: Boolean) : EditorEvent
     data object Deleted : EditorEvent
     data object Close : EditorEvent
 }
