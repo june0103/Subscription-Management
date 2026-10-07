@@ -33,6 +33,7 @@ import com.management.subscription.analytics.Analytics
 import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.databinding.ActivityMainBinding
 import com.management.subscription.splash.SplashIntro
+import com.management.subscription.updates.InAppUpdater
 import kotlinx.coroutines.launch
 import com.management.subscription.data.BillingCycle
 import com.management.subscription.subscriptionlist.SubscriptionCycleListArgs
@@ -52,6 +53,16 @@ class MainActivity : AppCompatActivity() {
 
     private val settingsRepository by lazy(LazyThreadSafetyMode.NONE) {
         SettingsRepository.getInstance(applicationContext)
+    }
+
+    private val appUpdateLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode != RESULT_OK) appUpdater.onUpdateFlowCanceled()
+        }
+
+    /** Play 인앱 업데이트. 홈 배너가 [appUpdater].state를 보고 그린다. */
+    val appUpdater: InAppUpdater by lazy(LazyThreadSafetyMode.NONE) {
+        InAppUpdater(this, settingsRepository, appUpdateLauncher)
     }
 
     /** 권한 요청을 띄운 곳(after_save / home_banner). 결과 이벤트에 붙인다. */
@@ -138,11 +149,14 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "Mobile Ads initialized. useTestAds=${BuildConfig.USE_TEST_ADS}")
             updateBannerVisibility()
         }
+        // 업데이트 확인도 시작 애니메이션이 끝난 뒤(광고와 같은 시점)에 한다.
+        appUpdater.start()
     }
 
     override fun onResume() {
         super.onResume()
         logCurrentScreen()
+        appUpdater.onResume()
         if (enableRemindersOnReturn) {
             enableRemindersOnReturn = false
             if (NotificationPermissionHelper.hasNotificationPermission(this) &&
@@ -259,6 +273,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        appUpdater.stop()
         homeBannerAdController.hide(binding.adBannerContainer)
         super.onDestroy()
     }

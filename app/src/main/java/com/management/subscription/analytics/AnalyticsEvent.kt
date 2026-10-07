@@ -103,6 +103,14 @@ sealed class AnalyticsEvent(
     data class NotificationSettingsOpen(val source: String) :
         AnalyticsEvent("notification_settings_open", mapOf("source" to source))
 
+    /**
+     * 인앱 업데이트. action: shown(홈 배너 노출, 앱 실행마다 한 번) / accept / later / canceled /
+     * downloaded / install / failed
+     */
+    data class AppUpdate(val action: String) :
+        // "app_update"는 Firebase 예약 이벤트 이름이라 쓸 수 없다.
+        AnalyticsEvent("in_app_update", mapOf("action" to action))
+
     /** 캘린더 탭으로 들어온 경로. entry: today_banner / view_all / tab */
     data class CalendarOpen(val entry: String) :
         AnalyticsEvent("calendar_open", mapOf("entry" to entry))

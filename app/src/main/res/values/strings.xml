@@ -142,6 +142,14 @@
     <string name="settings_status_permission_required">알림 권한이 필요해요.\n허용하면 매일 %1$s에 결제 예정 구독을 확인해요.</string>
     <string name="settings_status_system_disabled">휴대폰 설정에서 앱 알림이 꺼져 있어요.\n설정에서 켜야 알림이 표시돼요.</string>
     <string name="settings_status_on">매일 %1$s에 결제 예정 구독을 확인해 알려드려요.</string>
+    <string name="home_update_available_title">새 버전이 있어요</string>
+    <string name="home_update_available_body">업데이트하고 새 기능을 써 보세요</string>
+    <string name="home_update_downloading_body">뒤에서 내려받고 있어요</string>
+    <string name="home_update_ready_title">업데이트 준비됐어요</string>
+    <string name="home_update_ready_body">다시 시작하면 새 버전으로 바뀌어요</string>
+    <string name="home_update_action">업데이트</string>
+    <string name="home_update_restart">다시 시작</string>
+    <string name="home_update_close">업데이트 안내 닫기</string>
     <string name="home_reminder_prompt_title">결제 알림이 꺼져 있어요</string>
     <string name="home_reminder_prompt_body">결제 전에 미리 알려 드릴까요?</string>
     <string name="home_reminder_prompt_enable">알림 켜기</string>

@@ -112,6 +112,71 @@
                     app:tint="@color/due_today_ink" />
             </LinearLayout>
 
+            <!-- 앱 업데이트 안내(인앱 업데이트). 새 버전이 있을 때와 다 받았을 때만 보인다. -->
+            <LinearLayout
+                android:id="@+id/cardUpdatePrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:background="@drawable/bg_card"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/space_2"
+                android:paddingStart="@dimen/space_4"
+                android:paddingEnd="@dimen/space_1"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_update"
+                    app:tint="@color/ink" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_3"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvUpdateTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:textAppearance="@style/TextAppearance.Gudok.BodyStrong"
+                        tools:text="새 버전이 있어요" />
+
+                    <TextView
+                        android:id="@+id/tvUpdateBody"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:includeFontPadding="false"
+                        android:textAppearance="@style/TextAppearance.Gudok.BodySmall"
+                        tools:text="업데이트하고 새 기능을 써 보세요" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonUpdateAction"
+                    style="@style/Widget.Gudok.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/ink"
+                    tools:text="업데이트" />
+
+                <ImageButton
+                    android:id="@+id/buttonUpdateClose"
+                    android:layout_width="40dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/home_update_close"
+                    android:src="@drawable/ic_close"
+                    app:tint="@color/ink_3" />
+            </LinearLayout>
+
             <!--
               결제 알림 켜기 안내. 구독은 있는데 알림을 받지 않고, 아직 한 번도 묻지 않은 사용자에게만
               보인다(1.1.0 이전부터 쓰던 사용자는 새 구독을 추가하지 않으면 저장 직후 안내를 못 본다).

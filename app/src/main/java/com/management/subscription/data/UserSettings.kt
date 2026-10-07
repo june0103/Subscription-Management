@@ -8,5 +8,8 @@ data class UserSettings(
     val reminderMinute: Int = 0,
     val lastDispatchDate: LocalDate? = null,
     /** 저장 직후 "결제 전에 알려 드릴까요?" 안내를 이미 보여 줬는지. 한 번만 묻는다. */
-    val notificationPromptShown: Boolean = false
+    val notificationPromptShown: Boolean = false,
+    /** 업데이트 배너를 닫은 버전과 날짜(epoch day). 같은 버전은 며칠 동안 다시 묻지 않는다. */
+    val updateDismissedVersionCode: Int = 0,
+    val updateDismissedEpochDay: Long = 0
 )

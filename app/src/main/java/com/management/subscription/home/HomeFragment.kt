@@ -18,6 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.management.subscription.MainActivity
+import com.management.subscription.updates.AppUpdateState
+import com.management.subscription.updates.InAppUpdater
 import com.management.subscription.analytics.AnalyticsEvent
 import com.management.subscription.analytics.Analytics
 import com.management.subscription.notifications.NotificationPermissionHelper
@@ -77,6 +79,16 @@ class HomeFragment : Fragment() {
         }
         binding.buttonEmptyAdd.setOnClickListener {
             (activity as? MainActivity)?.openEditor(entry = "empty_state")
+        }
+
+        val updater = (activity as? MainActivity)?.appUpdater
+        binding.buttonUpdateClose.setOnClickListener { updater?.dismiss() }
+        if (updater != null) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                    updater.state.collect { renderUpdatePrompt(it, updater) }
+                }
+            }
         }
 
         binding.buttonReminderPromptEnable.setOnClickListener {
@@ -147,6 +159,39 @@ class HomeFragment : Fragment() {
         super.onResume()
         // 시스템 설정에서 알림 권한을 바꾸고 돌아올 수 있다.
         if (_binding != null) renderReminderPrompt()
+    }
+
+    private fun renderUpdatePrompt(state: AppUpdateState, updater: InAppUpdater) {
+        binding.cardUpdatePrompt.isVisible = state != AppUpdateState.None
+        when (state) {
+            AppUpdateState.None -> Unit
+            is AppUpdateState.Available -> {
+                binding.tvUpdateTitle.setText(R.string.home_update_available_title)
+                binding.tvUpdateBody.setText(R.string.home_update_available_body)
+                binding.buttonUpdateAction.isVisible = true
+                binding.buttonUpdateAction.setText(R.string.home_update_action)
+                binding.buttonUpdateAction.setOnClickListener { updater.startUpdate() }
+                binding.buttonUpdateClose.isVisible = true
+                if (updateShownLoggedFor != state.versionCode) {
+                    updateShownLoggedFor = state.versionCode
+                    Analytics.log(AnalyticsEvent.AppUpdate("shown"))
+                }
+            }
+            AppUpdateState.Downloading -> {
+                binding.tvUpdateTitle.setText(R.string.home_update_available_title)
+                binding.tvUpdateBody.setText(R.string.home_update_downloading_body)
+                binding.buttonUpdateAction.isVisible = false
+                binding.buttonUpdateClose.isVisible = false
+            }
+            AppUpdateState.ReadyToInstall -> {
+                binding.tvUpdateTitle.setText(R.string.home_update_ready_title)
+                binding.tvUpdateBody.setText(R.string.home_update_ready_body)
+                binding.buttonUpdateAction.isVisible = true
+                binding.buttonUpdateAction.setText(R.string.home_update_restart)
+                binding.buttonUpdateAction.setOnClickListener { updater.completeUpdate() }
+                binding.buttonUpdateClose.isVisible = false
+            }
+        }
     }
 
     /** 구독은 있는데 결제 알림을 받지 않고, 아직 한 번도 묻지 않았을 때만 배너를 보인다. */
@@ -286,5 +331,8 @@ class HomeFragment : Fragment() {
     private companion object {
         /** 이번 앱 실행에서 홈 배너 노출을 이미 기록했는지 */
         var bannerShownLogged = false
+
+        /** 업데이트 배너 노출을 기록한 버전(앱 실행마다 버전당 한 번) */
+        var updateShownLoggedFor = 0
     }
 }

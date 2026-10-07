@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -38,6 +39,13 @@ class SettingsRepository private constructor(
         }
     }
 
+    suspend fun markUpdateDismissed(versionCode: Int, epochDay: Long) {
+        appContext.settingsDataStore.edit { preferences ->
+            preferences[KEY_UPDATE_DISMISSED_VERSION] = versionCode
+            preferences[KEY_UPDATE_DISMISSED_DAY] = epochDay
+        }
+    }
+
     suspend fun updateReminderTime(hour: Int, minute: Int) {
         appContext.settingsDataStore.edit { preferences ->
             preferences[KEY_REMINDER_HOUR] = hour
@@ -65,7 +73,9 @@ class SettingsRepository private constructor(
             reminderHour = preferences[KEY_REMINDER_HOUR] ?: 9,
             reminderMinute = preferences[KEY_REMINDER_MINUTE] ?: 0,
             lastDispatchDate = lastDispatchDate,
-            notificationPromptShown = preferences[KEY_NOTIFICATION_PROMPT_SHOWN] ?: false
+            notificationPromptShown = preferences[KEY_NOTIFICATION_PROMPT_SHOWN] ?: false,
+            updateDismissedVersionCode = preferences[KEY_UPDATE_DISMISSED_VERSION] ?: 0,
+            updateDismissedEpochDay = preferences[KEY_UPDATE_DISMISSED_DAY] ?: 0L
         )
     }
 
@@ -75,6 +85,8 @@ class SettingsRepository private constructor(
         private val KEY_REMINDER_MINUTE = intPreferencesKey("reminder_minute")
         private val KEY_LAST_DISPATCH_DATE = stringPreferencesKey("last_dispatch_date")
         private val KEY_NOTIFICATION_PROMPT_SHOWN = booleanPreferencesKey("notification_prompt_shown")
+        private val KEY_UPDATE_DISMISSED_VERSION = intPreferencesKey("update_dismissed_version")
+        private val KEY_UPDATE_DISMISSED_DAY = longPreferencesKey("update_dismissed_epoch_day")
 
         @Volatile
         private var instance: SettingsRepository? = null

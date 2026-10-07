@@ -42,6 +42,11 @@ android {
         .map(String::toBoolean)
         .orElse(false)
         .get()
+    // 인앱 업데이트 흐름을 에뮬레이터에서 확인할 때만: ./gradlew assembleDebug -PFAKE_APP_UPDATE=true
+    val fakeAppUpdate = providers.gradleProperty("FAKE_APP_UPDATE")
+        .map(String::toBoolean)
+        .orElse(false)
+        .get()
     val admobTestDeviceIds = providers.gradleProperty("ADMOB_TEST_DEVICE_IDS")
         .orElse("")
         .get()
@@ -55,8 +60,8 @@ android {
         applicationId = "com.management.subscription"
         minSdk = 24
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.1.1"
+        versionCode = 5
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["ADMOB_APP_ID"] = admobAppId
@@ -87,6 +92,7 @@ android {
             )
             buildConfigField("boolean", "USE_TEST_ADS", (!useRealDebugAds).toString())
             buildConfigField("boolean", "ANALYTICS_ENABLED", enableDebugAnalytics.toString())
+            buildConfigField("boolean", "FAKE_APP_UPDATE", fakeAppUpdate.toString())
         }
         release {
             // R8로 쓰지 않는 코드를 지우고 난독화한다. Play Console "DEX 코드 최적화" 기준을 맞추고,
@@ -100,6 +106,7 @@ android {
             )
             buildConfigField("boolean", "USE_TEST_ADS", "false")
             buildConfigField("boolean", "ANALYTICS_ENABLED", "true")
+            buildConfigField("boolean", "FAKE_APP_UPDATE", "false")
             if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("release")
             }
@@ -152,6 +159,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.perf)
     implementation("com.google.android.material:material:1.14.0")
+    // Play 스토어 새 버전을 앱 안에서 받는 인앱 업데이트
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
